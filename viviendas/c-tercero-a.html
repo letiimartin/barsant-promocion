@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vivienda A Primero A | Ventanilla Residencial</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3a3a3a;
+            --secondary-color: #e0c88c;
+            --light-bg: #f5f5f5;
+            --dark-bg: #2a2a2a;
+            --text-color: #333;
+            --light-text: #fff;
+            --border-radius: 4px;
+            --shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--light-bg);
+            padding: 20px 0;
+            box-shadow: var(--shadow);
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--secondary-color);
+        }
+
+        /* Vivienda Details */
+        .vivienda-header {
+            padding: 60px 0;
+            background-color: var(--light-bg);
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .vivienda-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .vivienda-subtitle {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            margin-bottom: 30px;
+        }
+
+        .vivienda-content {
+            padding: 60px 0;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+
+        .vivienda-gallery {
+            position: relative;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 400px;
+            background-color: var(--light-bg);
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        .thumbnail-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .thumbnail {
+            width: 100%;
+            height: 100px;
+            background-color: var(--light-bg);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: opacity 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+        }
+
+        .thumbnail:hover {
+            opacity: 0.8;
+        }
+
+        .vivienda-info {
+            background-color: var(--light-bg);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            height: fit-content;
+        }
+
+        .info-section {
+            margin-bottom: 30px;
+        }
+
+        .info-section h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-list i {
+            color: var(--secondary-color);
+            margin-right: 10px;
+            width: 20px;
+        }
+
+        .price {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .estado {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .estado-disponible {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .estado-reservado {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            padding: 15px 30px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            width: 100%;
+            text-align: center;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+        }
+
+        .plano-section {
+            margin-top: 40px;
+        }
+
+        .plano-image {
+            width: 100%;
+            height: 300px;
+            background-color: var(--light-bg);
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        /* Modal de Reserva */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 40px;
+            border-radius: var(--border-radius);
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--primary-color);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1em;
+        }
+
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        @media (max-width: 992px) {
+            .vivienda-content {
+                grid-template-columns: 1fr;
+            }
+
+            .thumbnail-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .vivienda-title {
+                font-size: 2rem;
+            }
+
+            .thumbnail-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="../index.html" class="logo">Barsant <span>Promociones</span></a>
+        </div>
+    </header>
+
+    <div class="vivienda-header">
+        <div class="container">
+            <h1 class="vivienda-title">Vivienda C Tercero A</h1>
+            <p class="vivienda-subtitle">2 dormitorios · 2 baños · 60.49 m²</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="vivienda-content">
+            <div class="vivienda-gallery">
+                <div class="main-image">
+                    <i class="fas fa-image"></i> Imagen principal
+                </div>
+                <div class="thumbnail-grid">
+                    <div class="thumbnail"><i class="fas fa-image"></i></div>
+                    <div class="thumbnail"><i class="fas fa-image"></i></div>
+                    <div class="thumbnail"><i class="fas fa-image"></i></div>
+                    <div class="thumbnail"><i class="fas fa-image"></i></div>
+                </div>
+                <div class="plano-section">
+                    <h3>Plano de la vivienda</h3>
+                    <div class="plano-image">
+                        <i class="fas fa-drafting-compass"></i> Plano
+                    </div>
+                </div>
+            </div>
+
+            <div class="vivienda-info">
+                <div class="info-section">
+                    <div class="price">€353.412</div>
+                    <div class="estado estado-disponible">Disponible</div>
+                </div>
+
+                <div class="info-section">
+                    <h3>Características</h3>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-bed"></i> 2 dormitorios</li>
+                        <li><i class="fas fa-bath"></i> 2 baños</li>
+                        <li><i class="fas fa-ruler-combined"></i> 60.49 m² útiles</li>
+                        <li><i class="fas fa-warehouse"></i> Trastero incluido</li>
+                        <li><i class="fas fa-car"></i> Plaza de garaje incluida</li>
+                    </ul>
+                </div>
+
+                <div class="info-section">
+                    <h3>Calidades</h3>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> Cocina totalmente equipada</li>
+                        <li><i class="fas fa-check"></i> Armarios empotrados</li>
+                        <li><i class="fas fa-check"></i> Suelo de parquet</li>
+                        <li><i class="fas fa-check"></i> Ventanas de doble acristalamiento</li>
+                        <li><i class="fas fa-check"></i> Aire acondicionado</li>
+                    </ul>
+                </div>
+
+                <button class="cta-button" id="reservar-btn">Reservar esta vivienda</button>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+<script>
+document.getElementById('reservar-btn').addEventListener('click', function() {
+    const viviendaInfo = {
+        nombre: 'Vivienda C Tercero A',
+        caracteristicas: '2 dormitorios · 2 baños · 60.49 m²',
+        precio: '€353.412',
+        bloque: 'C',
+        piso: 'Tercero A'
+    };
+    const params = new URLSearchParams();
+    params.append('vivienda', viviendaInfo.nombre);
+    params.append('info', viviendaInfo.caracteristicas);
+    params.append('precio', viviendaInfo.precio);
+    params.append('bloque', viviendaInfo.bloque);
+    params.append('piso', viviendaInfo.piso);
+    window.location.href = '../reserva/index.html?' + params.toString();
+});
+</script>
+</body>
+</html> 

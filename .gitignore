@@ -1,0 +1,29 @@
+# Node.js dependencies
+node_modules/
+
+# Build output
+/dist/
+/build/
+
+# Environment files
+.env
+.env.*.local
+
+# Logs
+logs/
+*.log
+
+# Coverage directories
+coverage/
+.nyc_output/
+
+# Editor directories
+.vscode/
+.idea/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Webpack cache
+.cache/

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Acceso a Ventanilla: Nueva promoción de 33 viviendas en Granada. Barsant Promociones Inmobiliarias.">
+    <title>Acceso | Ventanilla | Barsant Promociones Inmobiliarias</title>
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <!-- Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Estilos Modularizados -->
+    <link rel="stylesheet" href="src/css/styles.css">
+    <style>
+        .login-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('assets/images/foto3.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 20px;
+        }
+        
+        .login-box {
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        .login-logo {
+            margin-bottom: 30px;
+            max-width: 200px;
+        }
+        
+        .login-title {
+            font-family: 'Playfair Display', serif;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .login-form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .login-input {
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .login-button {
+            background-color: #b8860b;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .login-button:hover {
+            background-color: #a67c00;
+        }
+        
+        .error-message {
+            color: #d9534f;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <img src="assets/images/logo (3).png" alt="Barsant Promociones Logo" class="login-logo">
+            <h1 class="login-title">Acceso Privado</h1>
+            <p>Introduzca la contraseña para acceder al contenido</p>
+            <div class="login-form">
+                <input type="password" id="password" class="login-input" placeholder="Contraseña" required>
+                <button type="button" id="login-btn" class="login-button">Acceder</button>
+                <p id="error-message" class="error-message">Contraseña incorrecta. Por favor, inténtelo de nuevo.</p>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Importar la contraseña desde el archivo de configuración
+        import { PASSWORD } from './src/js/config.js';
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Comprobar si ya está autenticado
+            if (sessionStorage.getItem('authenticated') === 'true') {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // Elementos del DOM
+            const passwordInput = document.getElementById('password');
+            const loginButton = document.getElementById('login-btn');
+            const errorMessage = document.getElementById('error-message');
+            
+            // Función para verificar la contraseña
+            function checkPassword() {
+                if (passwordInput.value === PASSWORD) {
+                    // Guardar estado de autenticación en sessionStorage
+                    sessionStorage.setItem('authenticated', 'true');
+                    // Redirigir a la página principal
+                    window.location.href = 'index.html';
+                } else {
+                    // Mostrar mensaje de error
+                    errorMessage.style.display = 'block';
+                    // Limpiar el campo de contraseña
+                    passwordInput.value = '';
+                    // Enfocar el campo de contraseña
+                    passwordInput.focus();
+                }
+            }
+            
+            // Evento click para el botón de login
+            loginButton.addEventListener('click', checkPassword);
+            
+            // Evento keypress para permitir presionar Enter
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkPassword();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

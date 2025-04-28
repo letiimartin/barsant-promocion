@@ -54,6 +54,33 @@
             color: var(--secondary-color);
         }
 
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-buttons {
+            display: flex;
+            align-items: center;
+        }
+
+        .logout-button {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .logout-button:hover {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+        }
+
         /* Vivienda Details */
         .vivienda-header {
             padding: 60px 0;
@@ -293,11 +320,19 @@
             }
         }
     </style>
+    <!-- Script de autenticación -->
+    <script type="module" src="../src/js/auth.js"></script>
 </head>
 <body>
     <header>
         <div class="container">
-            <a href="../index.html" class="logo">Barsant <span>Promociones</span></a>
+            <div class="header-content">
+                <a href="../index.html" class="logo">Barsant <span>Promociones</span></a>
+                <div class="header-buttons">
+                    <a href="../index.html#contact" class="cta-button">Solicitar Información</a>
+                    <a href="#" id="logout-btn" class="logout-button"><i class="fas fa-sign-out-alt"></i> Salir</a>
+                </div>
+            </div>
         </div>
     </header>
 

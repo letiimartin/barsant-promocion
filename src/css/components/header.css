@@ -67,6 +67,34 @@ nav a.active::after {
   background-color: var(--primary-color);
 }
 
+/* Header buttons */
+.header-buttons {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.logout-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-color);
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: all var(--transition-normal);
+  font-size: 14px;
+}
+
+.logout-button:hover {
+  background-color: #f5f5f5;
+  color: #d9534f;
+}
+
+.logout-button i {
+  font-size: 14px;
+}
+
 /* Responsive navbar */
 @media (max-width: 768px) {
   .header-content {
@@ -85,5 +113,11 @@ nav a.active::after {
   
   nav li {
     margin: 0 var(--spacing-md) var(--spacing-sm) 0;
+  }
+  
+  .header-buttons {
+    width: 100%;
+    margin-top: var(--spacing-md);
+    justify-content: space-between;
   }
 }

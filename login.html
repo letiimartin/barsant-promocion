@@ -98,7 +98,7 @@
 
     <script type="module">
         // Importar la contraseña desde el archivo de configuración
-        import { PASSWORD } from '/src/js/config.js';
+        import { PASSWORD_HASH } from '/src/js/config.js';
         
         document.addEventListener('DOMContentLoaded', function() {
             // Comprobar si ya está autenticado
@@ -114,19 +114,25 @@
             
             // Función para verificar la contraseña
             function checkPassword() {
-                if (passwordInput.value === PASSWORD) {
+                const encoder = new TextEncoder();
+                const data = encoder.encode(passwordInput.value);
+                crypto.subtle.digest('SHA-256', data).then(hash => {
+                    const hashArray = Array.from(new Uint8Array(hash));
+                    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+                    if (hashHex === PASSWORD_HASH) {
                     // Guardar estado de autenticación en sessionStorage
                     sessionStorage.setItem('authenticated', 'true');
                     // Redirigir a la página principal
                     window.location.href = window.location.origin + '/index.html';
-                } else {
-                    // Mostrar mensaje de error
-                    errorMessage.style.display = 'block';
-                    // Limpiar el campo de contraseña
-                    passwordInput.value = '';
-                    // Enfocar el campo de contraseña
-                    passwordInput.focus();
-                }
+                    } else {
+                        // Mostrar mensaje de error
+                        errorMessage.style.display = 'block';
+                        // Limpiar el campo de contraseña
+                        passwordInput.value = '';
+                        // Enfocar el campo de contraseña
+                        passwordInput.focus();
+                    }
+                });
             }
             
             // Evento click para el botón de login

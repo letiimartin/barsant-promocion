@@ -19,7 +19,7 @@
             justify-content: center;
             min-height: 100vh;
             background-color: #f5f5f5;
-            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('assets/images/foto3.jpg');
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/assets/images/foto3.jpg');
             background-size: cover;
             background-position: center;
             padding: 20px;
@@ -85,7 +85,7 @@
 <body>
     <div class="login-container">
         <div class="login-box">
-            <img src="assets/images/logo (3).png" alt="Barsant Promociones Logo" class="login-logo">
+            <img src="/assets/images/logo (3).png" alt="Barsant Promociones Logo" class="login-logo">
             <h1 class="login-title">Acceso Privado</h1>
             <p>Introduzca la contraseña para acceder al contenido</p>
             <div class="login-form">
@@ -98,7 +98,7 @@
 
     <script type="module">
         // Importar la contraseña desde el archivo de configuración
-        import { PASSWORD } from './src/js/config.js';
+        import { PASSWORD } from '/src/js/config.js';
         
         document.addEventListener('DOMContentLoaded', function() {
             // Comprobar si ya está autenticado

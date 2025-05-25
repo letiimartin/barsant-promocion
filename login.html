@@ -96,9 +96,9 @@
         </div>
     </div>
 
-    <script type="module">
-        // Importar la contraseña desde el archivo de configuración
-        import { PASSWORD_HASH } from '/src/js/config.js';
+    <script>
+        // La contraseña se configura como variable de entorno en Netlify
+        const PASSWORD = window.ENV ? window.ENV.SITE_PASSWORD : '';
         
         document.addEventListener('DOMContentLoaded', function() {
             // Comprobar si ya está autenticado
@@ -114,25 +114,20 @@
             
             // Función para verificar la contraseña
             function checkPassword() {
-                // Convertir la contraseña a UTF-8 y calcular el hash
-                const data = new TextEncoder().encode(passwordInput.value);
-                crypto.subtle.digest('SHA-256', data).then(hashBuffer => {
-                    const hashArray = Array.from(new Uint8Array(hashBuffer));
-                    const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-                    if (hashHex === PASSWORD_HASH) {
+                // Verificar la contraseña directamente
+                if (passwordInput.value === PASSWORD) {
                     // Guardar estado de autenticación en sessionStorage
                     sessionStorage.setItem('authenticated', 'true');
                     // Redirigir a la página principal
                     window.location.href = window.location.origin + '/index.html';
-                    } else {
-                        // Mostrar mensaje de error
-                        errorMessage.style.display = 'block';
-                        // Limpiar el campo de contraseña
-                        passwordInput.value = '';
-                        // Enfocar el campo de contraseña
-                        passwordInput.focus();
-                    }
-                });
+                } else {
+                    // Mostrar mensaje de error
+                    errorMessage.style.display = 'block';
+                    // Limpiar el campo de contraseña
+                    passwordInput.value = '';
+                    // Enfocar el campo de contraseña
+                    passwordInput.focus();
+                }
             }
             
             // Evento click para el botón de login

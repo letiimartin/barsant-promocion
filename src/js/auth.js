@@ -7,12 +7,11 @@
 function verificarAutenticacion() {
     // Si no está autenticado, redirigir a login
     if (sessionStorage.getItem('authenticated') !== 'true') {
-        // Calcular la ruta relativa a la raíz del sitio
-        const currentPath = window.location.pathname;
-        const pathToRoot = currentPath.split('/').filter(Boolean).map(() => '..').join('/') || '.';
+        // Obtener la ruta base del sitio
+        const baseUrl = window.location.origin;
         
-        // Redirigir a login.html con la ruta relativa correcta
-        window.location.href = `${pathToRoot}/login.html`;
+        // Redirigir a login.html usando ruta absoluta
+        window.location.href = `${baseUrl}/login.html`;
     }
 }
 
@@ -23,12 +22,11 @@ function cerrarSesion(e) {
     // Eliminar la autenticación
     sessionStorage.removeItem('authenticated');
     
-    // Calcular la ruta relativa a la raíz del sitio
-    const currentPath = window.location.pathname;
-    const pathToRoot = currentPath.split('/').filter(Boolean).map(() => '..').join('/') || '.';
+    // Obtener la ruta base del sitio
+    const baseUrl = window.location.origin;
     
-    // Redirigir a login.html
-    window.location.href = `${pathToRoot}/login.html`;
+    // Redirigir a login.html usando ruta absoluta
+    window.location.href = `${baseUrl}/login.html`;
 }
 
 // Verificar autenticación cuando se carga la página

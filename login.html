@@ -10,7 +10,7 @@
     <!-- Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Estilos Modularizados -->
-    <link rel="stylesheet" href="src/css/styles.css">
+    <link rel="stylesheet" href="/src/css/styles.css">
     <style>
         .login-container {
             display: flex;
@@ -103,7 +103,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Comprobar si ya está autenticado
             if (sessionStorage.getItem('authenticated') === 'true') {
-                window.location.href = 'index.html';
+                window.location.href = window.location.origin + '/index.html';
                 return;
             }
             
@@ -118,7 +118,7 @@
                     // Guardar estado de autenticación en sessionStorage
                     sessionStorage.setItem('authenticated', 'true');
                     // Redirigir a la página principal
-                    window.location.href = 'index.html';
+                    window.location.href = window.location.origin + '/index.html';
                 } else {
                     // Mostrar mensaje de error
                     errorMessage.style.display = 'block';

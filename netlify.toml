@@ -1,0 +1,15 @@
+[build]
+  publish = "/"
+  command = "# no build command needed"
+
+[[redirects]]
+  from = "/*"
+  to = "/login.html"
+  status = 200
+  conditions = {Role = ["anonymous"]}
+
+[context.production.environment]
+  NODE_VERSION = "18"
+
+[template.environment]
+  SITE_PASSWORD = "Cambia esto por tu contraseña"

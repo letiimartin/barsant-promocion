@@ -114,11 +114,11 @@
             
             // Función para verificar la contraseña
             function checkPassword() {
-                const encoder = new TextEncoder();
-                const data = encoder.encode(passwordInput.value);
-                crypto.subtle.digest('SHA-256', data).then(hash => {
-                    const hashArray = Array.from(new Uint8Array(hash));
-                    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+                // Convertir la contraseña a UTF-8 y calcular el hash
+                const data = new TextEncoder().encode(passwordInput.value);
+                crypto.subtle.digest('SHA-256', data).then(hashBuffer => {
+                    const hashArray = Array.from(new Uint8Array(hashBuffer));
+                    const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
                     if (hashHex === PASSWORD_HASH) {
                     // Guardar estado de autenticación en sessionStorage
                     sessionStorage.setItem('authenticated', 'true');

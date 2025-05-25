@@ -4,4 +4,4 @@
  */
 
 // Hash de la contraseña para acceso al sitio
-export const PASSWORD_HASH = '8dc9d0ec05a1f9f5242b04e567159f7651db8dfa1be4ecaaf59073ed5d5e7f91';
+export const PASSWORD_HASH = '5012893daa2f0413178e3e5d8e42dd4e23a0642eae6e84ecd8713fd4e671f621';

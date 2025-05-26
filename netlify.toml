@@ -1,10 +1,12 @@
 [build]
   publish = "/"
-  command = ""
 
 [[edge_functions]]
   function = "env"
-  path = "/login.html"
+  path = "/*"
 
-[context.production.environment]
-  NODE_VERSION = "18"
+[functions]
+  directory = "netlify/edge-functions"
+
+[dev]
+  framework = "#static"

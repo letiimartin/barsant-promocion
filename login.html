@@ -97,8 +97,12 @@
     </div>
 
     <script>
+        // Inyectar variables de entorno desde Netlify
+        window.SITE_PASSWORD = '<%=process.env.SITE_PASSWORD%>';
+    </script>
+    <script>
         // La contraseña se configura como variable de entorno en Netlify
-        const PASSWORD = window.ENV ? window.ENV.SITE_PASSWORD : '';
+        const PASSWORD = window.SITE_PASSWORD || '';
         
         document.addEventListener('DOMContentLoaded', function() {
             // Comprobar si ya está autenticado

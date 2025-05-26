@@ -1,12 +1,18 @@
 [build]
   publish = "/"
 
-[[edge_functions]]
-  function = "env"
-  path = "/*"
-
 [functions]
-  directory = "netlify/edge-functions"
+  directory = "netlify/functions"
 
-[dev]
-  framework = "#static"
+[[redirects]]
+  from = "/*"
+  to = "/login.html"
+  status = 200
+  force = false
+  conditions = {Role = ["anonymous"]}
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = false

@@ -97,13 +97,10 @@
     </div>
 
     <script>
-        // La contraseña se obtiene de las variables de entorno
-        const PASSWORD = window.ENV?.SITE_PASSWORD || '';
-        
         document.addEventListener('DOMContentLoaded', function() {
             // Comprobar si ya está autenticado
             if (sessionStorage.getItem('authenticated') === 'true') {
-                window.location.href = window.location.origin + '/index.html';
+                window.location.href = '/index.html';
                 return;
             }
             
@@ -113,19 +110,32 @@
             const errorMessage = document.getElementById('error-message');
             
             // Función para verificar la contraseña
-            function checkPassword() {
+            async function checkPassword() {
                 const inputPassword = passwordInput.value.trim();
-                console.log('Checking password:', inputPassword); // Para debug
+                
+                try {
+                    const response = await fetch('/.netlify/functions/auth', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ password: inputPassword })
+                    });
 
-                if (inputPassword === PASSWORD) {
-                    console.log('Password correct'); // Para debug
-                    sessionStorage.setItem('authenticated', 'true');
-                    window.location.href = '/index.html';
-                } else {
-                    console.log('Password incorrect'); // Para debug
+                    const data = await response.json();
+
+                    if (data.success) {
+                        sessionStorage.setItem('authenticated', 'true');
+                        window.location.href = '/index.html';
+                    } else {
+                        errorMessage.style.display = 'block';
+                        passwordInput.value = '';
+                        passwordInput.focus();
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    errorMessage.textContent = 'Error al verificar la contraseña';
                     errorMessage.style.display = 'block';
-                    passwordInput.value = '';
-                    passwordInput.focus();
                 }
             }
             

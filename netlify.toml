@@ -4,12 +4,9 @@
 
 [[redirects]]
   from = "/*"
-  to = "/login.html"
+  to = "/index.html"
   status = 200
-  conditions = {Role = ["anonymous"]}
+  force = false
 
 [context.production.environment]
   NODE_VERSION = "18"
-
-[template.environment]
-  SITE_PASSWORD = "Cambia esto por tu contraseña"

@@ -97,8 +97,8 @@
     </div>
 
     <script>
-        // La contraseña se configura como variable de entorno en Netlify
-        const PASSWORD = '<%=process.env.SITE_PASSWORD%>';
+        // La contraseña se obtiene de las variables de entorno
+        const PASSWORD = window.ENV?.SITE_PASSWORD || '';
         
         document.addEventListener('DOMContentLoaded', function() {
             // Comprobar si ya está autenticado
@@ -114,18 +114,17 @@
             
             // Función para verificar la contraseña
             function checkPassword() {
-                // Verificar la contraseña directamente
-                if (passwordInput.value === PASSWORD) {
-                    // Guardar estado de autenticación en sessionStorage
+                const inputPassword = passwordInput.value.trim();
+                console.log('Checking password:', inputPassword); // Para debug
+
+                if (inputPassword === PASSWORD) {
+                    console.log('Password correct'); // Para debug
                     sessionStorage.setItem('authenticated', 'true');
-                    // Redirigir a la página principal
-                    window.location.href = window.location.origin + '/index.html';
+                    window.location.href = '/index.html';
                 } else {
-                    // Mostrar mensaje de error
+                    console.log('Password incorrect'); // Para debug
                     errorMessage.style.display = 'block';
-                    // Limpiar el campo de contraseña
                     passwordInput.value = '';
-                    // Enfocar el campo de contraseña
                     passwordInput.focus();
                 }
             }

@@ -2,11 +2,9 @@
   publish = "/"
   command = ""
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-  force = false
+[[edge_functions]]
+  function = "env"
+  path = "/login.html"
 
 [context.production.environment]
   NODE_VERSION = "18"

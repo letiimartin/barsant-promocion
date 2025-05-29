@@ -19,6 +19,11 @@ module.exports = (env, argv) => {
       filename: 'assets/js/[name].[contenthash].js',
       publicPath: '/'
     },
+    resolve: {
+      alias: {
+        '@components': path.resolve(__dirname, 'src/js/components')
+      }
+    },
     devtool: isProduction ? false : 'source-map',
     devServer: {
       static: {

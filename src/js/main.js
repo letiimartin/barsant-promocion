@@ -16,7 +16,7 @@ import {
   getFooter, 
   getPropertyCard,
   getPropertyCardsContainer
-} from './components/index.js';
+} from '@components/index.js';
 
 // Importar utilidades
 import { 

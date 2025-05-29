@@ -17,7 +17,7 @@ import {
   getReservationSteps,
   getPropertySummary,
   getDocumentsList
-} from './components/index.js';
+} from '@components/index.js';
 
 // Importar utilidades
 import { 

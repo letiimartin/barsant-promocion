@@ -1,0 +1,432 @@
+[
+  {
+    "id": "C1",
+    "sup_util": 14.97,
+    "sup_zonas_comunes": 19.38,
+    "sup_total": 34.35,
+    "precio_m2": 1000,
+    "precio": 34350,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.435807860262009
+  },
+  {
+    "id": "C2",
+    "sup_util": 15.51,
+    "sup_zonas_comunes": 20.08,
+    "sup_total": 35.59,
+    "precio_m2": 1000,
+    "precio": 35590,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.435796572070806
+  },
+  {
+    "id": "C3",
+    "sup_util": 14.47,
+    "sup_zonas_comunes": 18.74,
+    "sup_total": 33.21,
+    "precio_m2": 1000,
+    "precio": 33210,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.435712134899127
+  },
+  {
+    "id": "C4",
+    "sup_util": 14.56,
+    "sup_zonas_comunes": 18.85,
+    "sup_total": 33.41,
+    "precio_m2": 1000,
+    "precio": 33410,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.43579766536965
+  },
+  {
+    "id": "C5",
+    "sup_util": 14.8,
+    "sup_zonas_comunes": 19.16,
+    "sup_total": 33.96,
+    "precio_m2": 1000,
+    "precio": 33960,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.435806831566549
+  },
+  {
+    "id": "C6",
+    "sup_util": 15.04,
+    "sup_zonas_comunes": 19.48,
+    "sup_total": 34.52,
+    "precio_m2": 1000,
+    "precio": 34520,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.435689455388181
+  },
+  {
+    "id": "C7",
+    "sup_util": 15.06,
+    "sup_zonas_comunes": 19.5,
+    "sup_total": 34.56,
+    "precio_m2": 1000,
+    "precio": 34560,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.435763888888889
+  },
+  {
+    "id": "C8",
+    "sup_util": 14.16,
+    "sup_zonas_comunes": 18.34,
+    "sup_total": 32.5,
+    "precio_m2": 1000,
+    "precio": 32500,
+    "precio_redondeado": 33000,
+    "ratio_util": 0.435692307692308
+  },
+  {
+    "id": "C9",
+    "sup_util": 14.06,
+    "sup_zonas_comunes": 18.21,
+    "sup_total": 32.27,
+    "precio_m2": 1000,
+    "precio": 32270,
+    "precio_redondeado": 33000,
+    "ratio_util": 0.435698791447165
+  },
+  {
+    "id": "C10",
+    "sup_util": 14.09,
+    "sup_zonas_comunes": 18.24,
+    "sup_total": 32.33,
+    "precio_m2": 1000,
+    "precio": 32330,
+    "precio_redondeado": 33000,
+    "ratio_util": 0.435818125579957
+  },
+  {
+    "id": "C11",
+    "sup_util": 15.15,
+    "sup_zonas_comunes": 19.62,
+    "sup_total": 34.77,
+    "precio_m2": 1000,
+    "precio": 34770,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.43572044866264
+  },
+  {
+    "id": "C12",
+    "sup_util": 14.74,
+    "sup_zonas_comunes": 19.09,
+    "sup_total": 33.83,
+    "precio_m2": 1000,
+    "precio": 33830,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.435707951522318
+  },
+  {
+    "id": "C13",
+    "sup_util": 15.55,
+    "sup_zonas_comunes": 20.14,
+    "sup_total": 35.69,
+    "precio_m2": 1000,
+    "precio": 35690,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.435696273465957
+  },
+  {
+    "id": "C14",
+    "sup_util": 15.58,
+    "sup_zonas_comunes": 20.17,
+    "sup_total": 35.75,
+    "precio_m2": 1000,
+    "precio": 35750,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.435804195804196
+  },
+  {
+    "id": "C15",
+    "sup_util": 15.06,
+    "sup_zonas_comunes": 19.5,
+    "sup_total": 34.56,
+    "precio_m2": 1000,
+    "precio": 34560,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.435763888888889
+  },
+  {
+    "id": "C16",
+    "sup_util": 10.33,
+    "sup_zonas_comunes": 13.38,
+    "sup_total": 23.71,
+    "precio_m2": 1000,
+    "precio": 23710,
+    "precio_redondeado": 25000,
+    "ratio_util": 0.435681147195276
+  },
+  {
+    "id": "C17",
+    "sup_util": 12.4,
+    "sup_zonas_comunes": 16.06,
+    "sup_total": 28.46,
+    "precio_m2": 1000,
+    "precio": 28460,
+    "precio_redondeado": 30000,
+    "ratio_util": 0.435699226985242
+  },
+  {
+    "id": "C18",
+    "sup_util": 16.07,
+    "sup_zonas_comunes": 20.81,
+    "sup_total": 36.88,
+    "precio_m2": 1000,
+    "precio": 36880,
+    "precio_redondeado": 37000,
+    "ratio_util": 0.435737527114967
+  },
+  {
+    "id": "C19",
+    "sup_util": 13.29,
+    "sup_zonas_comunes": 17.21,
+    "sup_total": 30.5,
+    "precio_m2": 1000,
+    "precio": 30500,
+    "precio_redondeado": 30000,
+    "ratio_util": 0.435737704918033
+  },
+  {
+    "id": "C20",
+    "sup_util": 12.15,
+    "sup_zonas_comunes": 15.73,
+    "sup_total": 27.88,
+    "precio_m2": 1000,
+    "precio": 27880,
+    "precio_redondeado": 30000,
+    "ratio_util": 0.435796269727403
+  },
+  {
+    "id": "C21",
+    "sup_util": 14.29,
+    "sup_zonas_comunes": 18.5,
+    "sup_total": 32.79,
+    "precio_m2": 1000,
+    "precio": 32790,
+    "precio_redondeado": 33000,
+    "ratio_util": 0.435803598658127
+  },
+  {
+    "id": "C22",
+    "sup_util": 14.97,
+    "sup_zonas_comunes": 19.38,
+    "sup_total": 34.35,
+    "precio_m2": 1000,
+    "precio": 34350,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.435807860262009
+  },
+  {
+    "id": "C23",
+    "sup_util": 15.51,
+    "sup_zonas_comunes": 20.08,
+    "sup_total": 35.59,
+    "precio_m2": 1000,
+    "precio": 35590,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.435796572070806
+  },
+  {
+    "id": "C24",
+    "sup_util": 14.47,
+    "sup_zonas_comunes": 18.74,
+    "sup_total": 33.21,
+    "precio_m2": 1000,
+    "precio": 33210,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.435712134899127
+  },
+  {
+    "id": "C25",
+    "sup_util": 14.56,
+    "sup_zonas_comunes": 18.85,
+    "sup_total": 33.41,
+    "precio_m2": 1000,
+    "precio": 33410,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.43579766536965
+  },
+  {
+    "id": "C26",
+    "sup_util": 14.8,
+    "sup_zonas_comunes": 19.16,
+    "sup_total": 33.96,
+    "precio_m2": 1000,
+    "precio": 33960,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.435806831566549
+  },
+  {
+    "id": "C27",
+    "sup_util": 15.04,
+    "sup_zonas_comunes": 19.48,
+    "sup_total": 34.52,
+    "precio_m2": 1000,
+    "precio": 34520,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.435689455388181
+  },
+  {
+    "id": "C28",
+    "sup_util": 15.06,
+    "sup_zonas_comunes": 19.5,
+    "sup_total": 34.56,
+    "precio_m2": 1000,
+    "precio": 34560,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.435763888888889
+  },
+  {
+    "id": "C29",
+    "sup_util": 14.16,
+    "sup_zonas_comunes": 18.34,
+    "sup_total": 32.5,
+    "precio_m2": 1000,
+    "precio": 32500,
+    "precio_redondeado": 33000,
+    "ratio_util": 0.435692307692308
+  },
+  {
+    "id": "C30",
+    "sup_util": 14.06,
+    "sup_zonas_comunes": 18.21,
+    "sup_total": 32.27,
+    "precio_m2": 1000,
+    "precio": 32270,
+    "precio_redondeado": 33000,
+    "ratio_util": 0.435698791447165
+  },
+  {
+    "id": "C31",
+    "sup_util": 14.09,
+    "sup_zonas_comunes": 18.24,
+    "sup_total": 32.33,
+    "precio_m2": 1000,
+    "precio": 32330,
+    "precio_redondeado": 33000,
+    "ratio_util": 0.435818125579957
+  },
+  {
+    "id": "C32",
+    "sup_util": 15.15,
+    "sup_zonas_comunes": 19.62,
+    "sup_total": 34.77,
+    "precio_m2": 1000,
+    "precio": 34770,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.43572044866264
+  },
+  {
+    "id": "C33",
+    "sup_util": 14.74,
+    "sup_zonas_comunes": 19.09,
+    "sup_total": 33.83,
+    "precio_m2": 1000,
+    "precio": 33830,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.435707951522318
+  },
+  {
+    "id": "C34",
+    "sup_util": 15.55,
+    "sup_zonas_comunes": 20.14,
+    "sup_total": 35.69,
+    "precio_m2": 1000,
+    "precio": 35690,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.435696273465957
+  },
+  {
+    "id": "C35",
+    "sup_util": 15.58,
+    "sup_zonas_comunes": 20.17,
+    "sup_total": 35.75,
+    "precio_m2": 1000,
+    "precio": 35750,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.435804195804196
+  },
+  {
+    "id": "C36",
+    "sup_util": 15.06,
+    "sup_zonas_comunes": 19.5,
+    "sup_total": 34.56,
+    "precio_m2": 1000,
+    "precio": 34560,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.435763888888889
+  },
+  {
+    "id": "C37",
+    "sup_util": 10.33,
+    "sup_zonas_comunes": 13.38,
+    "sup_total": 23.71,
+    "precio_m2": 1000,
+    "precio": 23710,
+    "precio_redondeado": 25000,
+    "ratio_util": 0.435681147195276
+  },
+  {
+    "id": "C38",
+    "sup_util": 12.4,
+    "sup_zonas_comunes": 16.06,
+    "sup_total": 28.46,
+    "precio_m2": 1000,
+    "precio": 28460,
+    "precio_redondeado": 30000,
+    "ratio_util": 0.435699226985242
+  },
+  {
+    "id": "C39",
+    "sup_util": 16.07,
+    "sup_zonas_comunes": 20.81,
+    "sup_total": 36.88,
+    "precio_m2": 1000,
+    "precio": 36880,
+    "precio_redondeado": 37000,
+    "ratio_util": 0.435737527114967
+  },
+  {
+    "id": "C40",
+    "sup_util": 13.29,
+    "sup_zonas_comunes": 17.21,
+    "sup_total": 30.5,
+    "precio_m2": 1000,
+    "precio": 30500,
+    "precio_redondeado": 30000,
+    "ratio_util": 0.435737704918033
+  },
+  {
+    "id": "C41",
+    "sup_util": 12.15,
+    "sup_zonas_comunes": 15.73,
+    "sup_total": 27.88,
+    "precio_m2": 1000,
+    "precio": 27880,
+    "precio_redondeado": 30000,
+    "ratio_util": 0.435796269727403
+  },
+  {
+    "id": "C42",
+    "sup_util": 14.29,
+    "sup_zonas_comunes": 18.5,
+    "sup_total": 32.79,
+    "precio_m2": 1000,
+    "precio": 32790,
+    "precio_redondeado": 33000,
+    "ratio_util": 0.435803598658127
+  },
+  {
+    "id": "C43",
+    "sup_util": 14.63,
+    "sup_zonas_comunes": 18.94,
+    "sup_total": 33.57,
+    "precio_m2": 1000,
+    "precio": 33570,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.435805778969318
+  }
+]

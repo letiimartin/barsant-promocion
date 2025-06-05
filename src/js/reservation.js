@@ -124,7 +124,7 @@ async function loadPropertyData() {
     if (summaryContainer) {
       summaryContainer.innerHTML = `
         <div class="error-message">
-          <p>No se ha podido cargar la información de la propiedad. <a href="/viviendas/">Volver a viviendas</a></p>
+          <p>No se ha podido cargar la información de la propiedad. <a href="/index.html#properties">Volver a viviendas</a></p>
         </div>
       `;
     }

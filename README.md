@@ -78,3 +78,18 @@ Los servicios para interactuar con APIs y manejar lógica de negocio:
 - **base/**: Contiene reset.css, variables.css para consistencia visual
 - **components/**: Estilos específicos de componentes
 - **pages/**: Estilos específicos de páginas
+
+## Importar datos a Firestore
+
+La carpeta `data/` debe contener los archivos `viviendas.json`, `cocheras.json` y `trasteros.json`, que no se incluyen en el repositorio. Crea estos archivos localmente para cargarlos en Firestore.
+
+- `FIREBASE_PROJECT_ID`
+- `FIREBASE_CLIENT_EMAIL`
+- `FIREBASE_PRIVATE_KEY`
+
+Una vez definidas, ejecutar:
+
+```bash
+node scripts/importData.js
+```
+

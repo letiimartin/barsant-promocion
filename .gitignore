@@ -31,3 +31,5 @@ Thumbs.db
 # Archivos de utilidad
 src/js/generate-hash.js
 
+# Local Firestore data files
+data/*.json

@@ -13,7 +13,8 @@ module.exports = (env, argv) => {
     entry: {
       main: './src/js/main.js',
       reservation: './src/js/reservation.js',
-      auth: './src/js/auth.js'
+      auth: './src/js/auth.js',
+      property: './src/js/property.js'
     },
     output: {
       path: path.resolve(__dirname, 'dist'),

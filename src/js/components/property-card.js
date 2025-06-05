@@ -11,7 +11,7 @@ export function getPropertyCard(property) {
       <h3>${property.title}</h3>
       <p>${property.specs}</p>
       <div class="property-price">${formatCurrency(property.price)}</div>
-      <a href="/viviendas/${property.url}" class="cta-button">Ver Detalles</a>
+      <a href="/viviendas/property.html?slug=${property.url}" class="cta-button">Ver Detalles</a>
     </div>
   </div>`;
 }

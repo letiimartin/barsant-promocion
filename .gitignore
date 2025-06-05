@@ -33,3 +33,8 @@ src/js/generate-hash.js
 
 # Local Firestore data files
 data/*.json
+
+# Prueba plano de ventas 4B
+Prueba plano de ventas 4B.pdf
+
+CUADROS_DE_SUPERFICIES.xlsx

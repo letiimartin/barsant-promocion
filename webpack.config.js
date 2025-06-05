@@ -13,16 +13,17 @@ module.exports = (env, argv) => {
     entry: {
       main: './src/js/main.js',
       reservation: './src/js/reservation.js',
+      auth: './src/js/auth.js'
     },
     output: {
       path: path.resolve(__dirname, 'dist'),
-      filename: 'assets/js/[name].[contenthash].js',
+      filename: 'assets/js/[name].js',
       publicPath: '/'
     },
     devtool: isProduction ? false : 'source-map',
     devServer: {
       static: {
-        directory: path.join(__dirname, 'public'),
+        directory: path.join(__dirname, 'dist'),
       },
       hot: true,
       port: 8080,
@@ -70,13 +71,13 @@ module.exports = (env, argv) => {
     plugins: [
       new CleanWebpackPlugin(),
       new MiniCssExtractPlugin({
-        filename: isProduction ? 'assets/css/[name].[contenthash].css' : 'assets/css/[name].css'
+        filename: 'assets/css/[name].css'
       }),
       // Página principal
       new HtmlWebpackPlugin({
-        template: './public/index.html',
+        template: './index.html',
         filename: 'index.html',
-        chunks: ['main'],
+        chunks: ['auth', 'main'],
         minify: isProduction ? {
           removeAttributeQuotes: true,
           collapseWhitespace: true,
@@ -85,7 +86,7 @@ module.exports = (env, argv) => {
       }),
       // Página de reserva
       new HtmlWebpackPlugin({
-        template: './public/reserva/index.html',
+        template: './reserva/index.html',
         filename: 'reserva/index.html',
         chunks: ['reservation'],
         minify: isProduction ? {
@@ -97,18 +98,11 @@ module.exports = (env, argv) => {
       // Copiar assets estáticos
       new CopyPlugin({
         patterns: [
-          { 
-            from: "public/assets/images", 
-            to: "assets/images" 
-          },
-          { 
-            from: "public/legal", 
-            to: "legal" 
-          },
-          { 
-            from: "public/viviendas", 
-            to: "viviendas" 
-          }
+          { from: 'assets', to: 'assets' },
+          { from: 'legal', to: 'legal' },
+          { from: 'viviendas', to: 'viviendas' },
+          { from: 'login.html', to: 'login.html' },
+          { from: '_headers', to: '_headers' }
         ],
       }),
     ],

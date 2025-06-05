@@ -6,24 +6,23 @@ Este proyecto es una versión optimizada y modularizada del sitio web de Barsant
 
 ```
 proyecto-barsant/
+├── assets/              # Recursos estáticos (imágenes, estilos sin compilar)
 ├── src/                 # Código fuente
 │   ├── js/              # JavaScript modular
 │   │   ├── components/  # Componentes reutilizables
 │   │   ├── utils/       # Utilidades
 │   │   ├── services/    # Servicios (API, reservas)
-│   │   ├── main.js      # Punto de entrada para la página principal
-│   │   └── reservation.js # Punto de entrada para la página de reserva
+│   │   ├── main.js      # Entrada página principal
+│   │   ├── reservation.js # Entrada página de reserva
+│   │   └── auth.js      # Lógica de autenticación
 │   └── css/             # Estilos CSS modularizados
 │       ├── base/        # Estilos base (reset, variables)
-│       ├── components/  # Estilos de componentes
-│       └── pages/       # Estilos específicos de página
-├── public/              # Archivos públicos estáticos
-│   ├── index.html       # Página principal
-│   ├── reserva/         # Página de reserva
-│   ├── viviendas/       # Páginas de viviendas
-│   ├── legal/           # Páginas legales
-│   └── assets/          # Recursos (imágenes, fuentes)
-├── dist/                # Carpeta generada por Webpack (producción)
+│       └── components/  # Estilos de componentes
+├── index.html           # Plantilla principal
+├── reserva/             # Plantillas de reserva
+├── viviendas/           # Páginas de viviendas
+├── legal/               # Páginas legales
+├── dist/                # Salida generada por Webpack
 ├── webpack.config.js    # Configuración de Webpack
 └── package.json         # Dependencias y scripts
 ```
@@ -54,6 +53,8 @@ npm run dev
 ```bash
 npm run build
 ```
+
+El directorio `dist/` generado es el que se publica en Netlify.
 
 ## Componentes
 

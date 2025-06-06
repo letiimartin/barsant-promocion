@@ -5,6 +5,7 @@
 
 // Importar los estilos principales
 import '../css/styles.css';
+import { fetchAllViviendas } from '../../loadVivienda.js';
 
 // Importar componentes
 import './components/index.js';
@@ -19,55 +20,18 @@ import {
 // Importar funcionalidades específicas
 import './main.js';
 
-// Datos de viviendas (copiados del original)
-window.viviendas = [
-    // Bloque A (9 viviendas)
-    { bloque: 'A', piso: 'Primero A', dormitorios: 2, baños: 2, supUtil: 54.35, supConst: 79.60, precio: 274620, estado: 'Disponible' },
-    { bloque: 'A', piso: 'Primero B', dormitorios: 1, baños: 1, supUtil: 36.78, supConst: 50.58, precio: 187146, estado: 'Disponible' },
-    { bloque: 'A', piso: 'Primero C', dormitorios: 1, baños: 1, supUtil: 36.91, supConst: 51.34, precio: 189958, estado: 'Disponible' },
-    { bloque: 'A', piso: 'Segundo A', dormitorios: 2, baños: 2, supUtil: 68.65, supConst: 98.71, precio: 365227, estado: 'Disponible' },
-    { bloque: 'A', piso: 'Segundo B', dormitorios: 2, baños: 2, supUtil: 76.16, supConst: 103.73, precio: 394174, estado: 'Disponible' },
-    { bloque: 'A', piso: 'Tercero A', dormitorios: 2, baños: 2, supUtil: 68.65, supConst: 98.71, precio: 375098, estado: 'Disponible' },
-    { bloque: 'A', piso: 'Tercero B', dormitorios: 2, baños: 2, supUtil: 76.01, supConst: 103.73, precio: 404547, estado: 'Disponible' },
-    { bloque: 'A', piso: 'Cuarto A', dormitorios: 2, baños: 2, supUtil: 68.61, supConst: 98.71, precio: 394840, estado: 'Disponible' },
-    { bloque: 'A', piso: 'Cuarto B', dormitorios: 2, baños: 2, supUtil: 75.97, supConst: 103.73, precio: 425293, estado: 'Disponible' },
-    
-    // Bloque B (10 viviendas)
-    { bloque: 'B', piso: 'Primero A', dormitorios: 1, baños: 1, supUtil: 36.85, supConst: 49.71, precio: 186412.5, estado: 'Disponible' },
-    { bloque: 'B', piso: 'Primero B', dormitorios: 1, baños: 1, supUtil: 36.39, supConst: 49.23, precio: 184612.5, estado: 'Disponible' },
-    { bloque: 'B', piso: 'Primero C', dormitorios: 1, baños: 1, supUtil: 36.92, supConst: 50.64, precio: 189900, estado: 'Disponible' },
-    { bloque: 'B', piso: 'Primero D', dormitorios: 1, baños: 1, supUtil: 37.03, supConst: 50.64, precio: 189900, estado: 'Disponible' },
-    { bloque: 'B', piso: 'Segundo A', dormitorios: 3, baños: 2, supUtil: 87.58, supConst: 117.84, precio: 447792, estado: 'Disponible' },
-    { bloque: 'B', piso: 'Segundo B', dormitorios: 2, baños: 2, supUtil: 76.54, supConst: 103.51, precio: 393338, estado: 'Disponible' },
-    { bloque: 'B', piso: 'Tercero A', dormitorios: 3, baños: 2, supUtil: 87.59, supConst: 117.84, precio: 459576, estado: 'Disponible' },
-    { bloque: 'B', piso: 'Tercero B', dormitorios: 2, baños: 2, supUtil: 76.45, supConst: 103.51, precio: 403689, estado: 'Disponible' },
-    { bloque: 'B', piso: 'Cuarto A', dormitorios: 3, baños: 2, supUtil: 87.60, supConst: 117.84, precio: 483144, estado: 'Disponible' },
-    { bloque: 'B', piso: 'Cuarto B', dormitorios: 2, baños: 2, supUtil: 76.34, supConst: 103.51, precio: 424391, estado: 'Disponible' },
-    
-    // Bloque C (4 viviendas)
-    { bloque: 'C', piso: 'Primero A', dormitorios: 2, baños: 2, supUtil: 50.83, supConst: 82.72, precio: 281248, estado: 'Disponible' },
-    { bloque: 'C', piso: 'Segundo A', dormitorios: 2, baños: 2, supUtil: 60.49, supConst: 98.17, precio: 343595, estado: 'Disponible' },
-    { bloque: 'C', piso: 'Tercero A', dormitorios: 2, baños: 2, supUtil: 60.49, supConst: 98.17, precio: 353412, estado: 'Disponible' },
-    { bloque: 'C', piso: 'Cuarto A', dormitorios: 2, baños: 2, supUtil: 58.90, supConst: 98.17, precio: 392680, estado: 'Disponible' },
-    
-    // Bloque D (8 viviendas)
-    { bloque: 'D', piso: 'Primero A', dormitorios: 2, baños: 2, supUtil: 63.87, supConst: 98.14, precio: 318955, estado: 'Disponible' },
-    { bloque: 'D', piso: 'Primero B', dormitorios: 1, baños: 1, supUtil: 38.55, supConst: 57.80, precio: 202300, estado: 'Disponible' },
-    { bloque: 'D', piso: 'Segundo A', dormitorios: 1, baños: 1, supUtil: 36.96, supConst: 58.35, precio: 210060, estado: 'Disponible' },
-    { bloque: 'D', piso: 'Segundo B', dormitorios: 1, baños: 1, supUtil: 34.46, supConst: 52.61, precio: 189396, estado: 'Disponible' },
-    { bloque: 'D', piso: 'Segundo C', dormitorios: 1, baños: 1, supUtil: 35.99, supConst: 54.95, precio: 197820, estado: 'Disponible' },
-    { bloque: 'D', piso: 'Tercero A', dormitorios: 1, baños: 1, supUtil: 36.96, supConst: 58.35, precio: 215895, estado: 'Disponible' },
-    { bloque: 'D', piso: 'Tercero B', dormitorios: 1, baños: 1, supUtil: 34.46, supConst: 52.61, precio: 194657, estado: 'Disponible' },
-    { bloque: 'D', piso: 'Tercero C', dormitorios: 1, baños: 1, supUtil: 35.99, supConst: 54.95, precio: 203315, estado: 'Disponible' },
-    
-    // Bloque E (2 viviendas)
-    { bloque: 'E', piso: 'Primero A', dormitorios: 2, baños: 2, supUtil: 64.65, supConst: 105.69, precio: 338208, estado: 'Disponible' },
-    { bloque: 'E', piso: 'Segundo A', dormitorios: 2, baños: 2, supUtil: 72.18, supConst: 119.16, precio: 428976, estado: 'Disponible' }
-];
+// Lista de viviendas obtenidas desde Firebase
+window.viviendas = [];
 
 // Inicialización cuando el DOM esté cargado
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   console.log('Aplicación Barsant Ventanilla inicializada correctamente');
+
+  try {
+    window.viviendas = await fetchAllViviendas();
+  } catch (err) {
+    console.error('Error al cargar viviendas desde Firebase:', err);
+  }
   
   // Inicializar scripts específicos para el header
   initHeader();
@@ -150,8 +114,7 @@ function initPropertiesTable() {
     dormitoriosFilter.addEventListener('change', filterViviendas);
   }
   
-  // Carga inicial de viviendas
-  if (window.viviendas) {
+  if (window.viviendas && window.viviendas.length) {
     displayViviendas(window.viviendas);
   }
 }
@@ -248,14 +211,15 @@ function displayViviendas(viviendas) {
     const row = document.createElement('tr');
     row.className = 'vivienda-row';
     const estadoClass = v.estado === 'Reservado' ? 'estado-reservado' : 'estado-disponible';
-    const viviendaId = `${v.bloque}-${v.piso.replace(' ', '-')}`.toLowerCase();
+    const viviendaId = v.id || `${v.bloque}-${v.planta || v.piso}`.toLowerCase().replace(/\s+/g, '-');
+    const pisoLabel = v.piso || `${v.planta} ${v.letra}`;
     
     row.innerHTML = `
-      <td><a href="viviendas/${viviendaId}.html" class="vivienda-link">${v.bloque}</a></td>
-      <td><a href="viviendas/${viviendaId}.html" class="vivienda-link">${v.piso}</a></td>
+      <td><a href="viviendas/template-viviendas.html?id=${viviendaId}" class="vivienda-link">${v.bloque}</a></td>
+      <td><a href="viviendas/template-viviendas.html?id=${viviendaId}" class="vivienda-link">${pisoLabel}</a></td>
       <td>${v.dormitorios}</td>
       <td>${v.baños}</td>
-      <td>${v.supConst.toFixed(2)} m²</td>
+      <td>${(v.supConst || v.sup_construida || v.sup_total).toFixed(2)} m²</td>
       <td>€${v.precio.toLocaleString()}</td>
       <td class="${estadoClass}">${v.estado}</td>
       <td>
@@ -266,7 +230,7 @@ function displayViviendas(viviendas) {
 
     row.addEventListener('click', (e) => {
       if (!e.target.classList.contains('plano-icon')) {
-        window.location.href = `viviendas/${viviendaId}.html`;
+        window.location.href = `viviendas/template-viviendas.html?id=${viviendaId}`;
       }
     });
     

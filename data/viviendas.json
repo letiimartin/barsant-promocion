@@ -13,144 +13,19 @@
     "dormitorios": 2,
     "baños": 2,
     "precio_m2": 3450,
-    "precio": 274620.0,
-    "ratio_util": 0.682788944723618
-  },
-  {
-    "id": "V2",
-    "bloque": "A",
-    "planta": 1,
-    "letra": "B",
-    "sup_util": 36.78,
-    "sup_construida": 43.01,
-    "sup_zonas_comunes": 7.57,
-    "sup_total": 50.58,
-    "participacion": 0.0641,
-    "terraza": 7.44,
-    "dormitorios": 1,
-    "baños": 1,
-    "precio_m2": 3700,
-    "precio": 187146.0,
-    "ratio_util": 0.727164887307236
-  },
-  {
-    "id": "V3",
-    "bloque": "A",
-    "planta": 1,
-    "letra": "C",
-    "sup_util": 36.91,
-    "sup_construida": 43.65,
-    "sup_zonas_comunes": 7.69,
-    "sup_total": 51.34,
-    "participacion": 0.0651,
-    "terraza": 7.88,
-    "dormitorios": 1,
-    "baños": 1,
-    "precio_m2": 3700,
-    "precio": 189958.0,
-    "ratio_util": 0.718932606155045
-  },
-  {
-    "id": "V4",
-    "bloque": "A",
-    "planta": 2,
-    "letra": "A",
-    "sup_util": 68.65,
-    "sup_construida": 83.93,
-    "sup_zonas_comunes": 14.78,
-    "sup_total": 98.71,
-    "participacion": 0.1251,
-    "terraza": null,
-    "dormitorios": 2,
-    "baños": 2,
-    "precio_m2": 3700,
-    "precio": 365227.0,
-    "ratio_util": 0.695471583426198
-  },
-  {
-    "id": "V5",
-    "bloque": "A",
-    "planta": 2,
-    "letra": "B",
-    "sup_util": 76.16,
-    "sup_construida": 88.2,
-    "sup_zonas_comunes": 15.53,
-    "sup_total": 103.73,
-    "participacion": 0.1315,
-    "terraza": null,
-    "dormitorios": 2,
-    "baños": 2,
-    "precio_m2": 3800,
-    "precio": 394174.0,
-    "ratio_util": 0.734213824351682
-  },
-  {
-    "id": "V6",
-    "bloque": "A",
-    "planta": 3,
-    "letra": "A",
-    "sup_util": 68.65,
-    "sup_construida": 83.93,
-    "sup_zonas_comunes": 14.78,
-    "sup_total": 98.71,
-    "participacion": 0.1251,
-    "terraza": null,
-    "dormitorios": 2,
-    "baños": 2,
-    "precio_m2": 3800,
-    "precio": 375098.0,
-    "ratio_util": 0.695471583426198
-  },
-  {
-    "id": "V7",
-    "bloque": "A",
-    "planta": 3,
-    "letra": "B",
-    "sup_util": 76.01,
-    "sup_construida": 88.2,
-    "sup_zonas_comunes": 15.53,
-    "sup_total": 103.73,
-    "participacion": 0.1315,
-    "terraza": null,
-    "dormitorios": 2,
-    "baños": 2,
-    "precio_m2": 3900,
-    "precio": 404547.0,
-    "ratio_util": 0.732767762460233
-  },
-  {
-    "id": "V8",
-    "bloque": "A",
-    "planta": 4,
-    "letra": "A",
-    "sup_util": 68.61,
-    "sup_construida": 83.93,
-    "sup_zonas_comunes": 14.78,
-    "sup_total": 98.71,
-    "participacion": 0.1251,
-    "terraza": null,
-    "dormitorios": 2,
-    "baños": 2,
-    "precio_m2": 4000,
-    "precio": 394840.0,
-    "ratio_util": 0.695066355992301
-  },
-  {
-    "id": "V9",
-    "bloque": "A",
-    "planta": 4,
-    "letra": "B",
-    "sup_util": 75.97,
-    "sup_construida": 88.2,
-    "sup_zonas_comunes": 15.53,
-    "sup_total": 103.73,
-    "participacion": 0.1315,
-    "terraza": null,
-    "dormitorios": 2,
-    "baños": 2,
-    "precio_m2": 4100,
-    "precio": 425293.0,
-    "ratio_util": 0.732382145955847
+    "precio": 274620,
+    "ratio_util": 0.682788944723618,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "exterior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "sur-oeste",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
   },
   {
     "id": "V10",
@@ -167,7 +42,18 @@
     "baños": 1,
     "precio_m2": 3750,
     "precio": 186412.5,
-    "ratio_util": 0.741299537316435
+    "ratio_util": 0.741299537316435,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "exterior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "por-determinar",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
   },
   {
     "id": "V11",
@@ -184,7 +70,18 @@
     "baños": 1,
     "precio_m2": 3750,
     "precio": 184612.5,
-    "ratio_util": 0.739183424741012
+    "ratio_util": 0.739183424741012,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "exterior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "por-determinar",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
   },
   {
     "id": "V12",
@@ -200,8 +97,19 @@
     "dormitorios": 1,
     "baños": 1,
     "precio_m2": 3750,
-    "precio": 189900.0,
-    "ratio_util": 0.729067930489732
+    "precio": 189900,
+    "ratio_util": 0.729067930489732,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "exterior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "por-determinar",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
   },
   {
     "id": "V13",
@@ -217,8 +125,19 @@
     "dormitorios": 1,
     "baños": 1,
     "precio_m2": 3750,
-    "precio": 189900.0,
-    "ratio_util": 0.731240126382307
+    "precio": 189900,
+    "ratio_util": 0.731240126382307,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "exterior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "por-determinar",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
   },
   {
     "id": "V14",
@@ -234,8 +153,19 @@
     "dormitorios": 3,
     "baños": 2,
     "precio_m2": 3800,
-    "precio": 447792.0,
-    "ratio_util": 0.743211133740665
+    "precio": 447792,
+    "ratio_util": 0.743211133740665,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "exterior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "por-determinar",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
   },
   {
     "id": "V15",
@@ -251,8 +181,19 @@
     "dormitorios": 2,
     "baños": 2,
     "precio_m2": 3800,
-    "precio": 393338.0,
-    "ratio_util": 0.739445464206357
+    "precio": 393338,
+    "ratio_util": 0.739445464206357,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "exterior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "por-determinar",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
   },
   {
     "id": "V16",
@@ -268,8 +209,19 @@
     "dormitorios": 3,
     "baños": 2,
     "precio_m2": 3900,
-    "precio": 459576.0,
-    "ratio_util": 0.743295994568907
+    "precio": 459576,
+    "ratio_util": 0.743295994568907,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "exterior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "por-determinar",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
   },
   {
     "id": "V17",
@@ -285,8 +237,19 @@
     "dormitorios": 2,
     "baños": 2,
     "precio_m2": 3900,
-    "precio": 403689.0,
-    "ratio_util": 0.738575982996812
+    "precio": 403689,
+    "ratio_util": 0.738575982996812,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "exterior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "por-determinar",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
   },
   {
     "id": "V18",
@@ -302,8 +265,19 @@
     "dormitorios": 3,
     "baños": 2,
     "precio_m2": 4100,
-    "precio": 483144.0,
-    "ratio_util": 0.743380855397149
+    "precio": 483144,
+    "ratio_util": 0.743380855397149,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "exterior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "por-determinar",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
   },
   {
     "id": "V19",
@@ -319,8 +293,47 @@
     "dormitorios": 2,
     "baños": 2,
     "precio_m2": 4100,
-    "precio": 424391.0,
-    "ratio_util": 0.737513283740701
+    "precio": 424391,
+    "ratio_util": 0.737513283740701,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "exterior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "por-determinar",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
+  },
+  {
+    "id": "V2",
+    "bloque": "A",
+    "planta": 1,
+    "letra": "B",
+    "sup_util": 36.78,
+    "sup_construida": 43.01,
+    "sup_zonas_comunes": 7.57,
+    "sup_total": 50.58,
+    "participacion": 0.0641,
+    "terraza": 7.44,
+    "dormitorios": 1,
+    "baños": 1,
+    "precio_m2": 3700,
+    "precio": 187146,
+    "ratio_util": 0.727164887307236,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "exterior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "norte",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
   },
   {
     "id": "V20",
@@ -336,8 +349,19 @@
     "dormitorios": 2,
     "baños": 2,
     "precio_m2": 3400,
-    "precio": 281248.0,
-    "ratio_util": 0.614482591876209
+    "precio": 281248,
+    "ratio_util": 0.614482591876209,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "exterior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "sur",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
   },
   {
     "id": "V21",
@@ -353,8 +377,19 @@
     "dormitorios": 2,
     "baños": 2,
     "precio_m2": 3500,
-    "precio": 343595.0,
-    "ratio_util": 0.616176021187736
+    "precio": 343595,
+    "ratio_util": 0.616176021187736,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "exterior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "sur",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
   },
   {
     "id": "V22",
@@ -370,8 +405,19 @@
     "dormitorios": 2,
     "baños": 2,
     "precio_m2": 3600,
-    "precio": 353412.0,
-    "ratio_util": 0.616176021187736
+    "precio": 353412,
+    "ratio_util": 0.616176021187736,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "exterior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "sur",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
   },
   {
     "id": "V23",
@@ -387,8 +433,19 @@
     "dormitorios": 2,
     "baños": 2,
     "precio_m2": 4000,
-    "precio": 392680.0,
-    "ratio_util": 0.599979627177345
+    "precio": 392680,
+    "ratio_util": 0.599979627177345,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "exterior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "sur",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
   },
   {
     "id": "V24",
@@ -404,8 +461,19 @@
     "dormitorios": 2,
     "baños": 2,
     "precio_m2": 3250,
-    "precio": 318955.0,
-    "ratio_util": 0.650804972488282
+    "precio": 318955,
+    "ratio_util": 0.650804972488282,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "interior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "patio-interior",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
   },
   {
     "id": "V25",
@@ -421,8 +489,19 @@
     "dormitorios": 1,
     "baños": 1,
     "precio_m2": 3500,
-    "precio": 202300.0,
-    "ratio_util": 0.666955017301038
+    "precio": 202300,
+    "ratio_util": 0.666955017301038,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "interior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "patio-interior",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
   },
   {
     "id": "V26",
@@ -438,8 +517,19 @@
     "dormitorios": 1,
     "baños": 1,
     "precio_m2": 3600,
-    "precio": 210060.0,
-    "ratio_util": 0.633419023136247
+    "precio": 210060,
+    "ratio_util": 0.633419023136247,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "interior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "patio-interior",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
   },
   {
     "id": "V27",
@@ -455,8 +545,19 @@
     "dormitorios": 1,
     "baños": 1,
     "precio_m2": 3600,
-    "precio": 189396.0,
-    "ratio_util": 0.655008553506938
+    "precio": 189396,
+    "ratio_util": 0.655008553506938,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "interior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "patio-interior",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
   },
   {
     "id": "V28",
@@ -472,8 +573,19 @@
     "dormitorios": 1,
     "baños": 1,
     "precio_m2": 3600,
-    "precio": 197820.0,
-    "ratio_util": 0.654959053685168
+    "precio": 197820,
+    "ratio_util": 0.654959053685168,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "interior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "patio-interior",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
   },
   {
     "id": "V29",
@@ -489,8 +601,47 @@
     "dormitorios": 1,
     "baños": 1,
     "precio_m2": 3700,
-    "precio": 215895.0,
-    "ratio_util": 0.633419023136247
+    "precio": 215895,
+    "ratio_util": 0.633419023136247,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "interior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "patio-interior",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
+  },
+  {
+    "id": "V3",
+    "bloque": "A",
+    "planta": 1,
+    "letra": "C",
+    "sup_util": 36.91,
+    "sup_construida": 43.65,
+    "sup_zonas_comunes": 7.69,
+    "sup_total": 51.34,
+    "participacion": 0.0651,
+    "terraza": 7.88,
+    "dormitorios": 1,
+    "baños": 1,
+    "precio_m2": 3700,
+    "precio": 189958,
+    "ratio_util": 0.718932606155045,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "exterior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "por-determinar",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
   },
   {
     "id": "V30",
@@ -506,8 +657,19 @@
     "dormitorios": 1,
     "baños": 1,
     "precio_m2": 3700,
-    "precio": 194657.0,
-    "ratio_util": 0.655008553506938
+    "precio": 194657,
+    "ratio_util": 0.655008553506938,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "interior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "patio-interior",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
   },
   {
     "id": "V31",
@@ -523,8 +685,19 @@
     "dormitorios": 1,
     "baños": 1,
     "precio_m2": 3700,
-    "precio": 203315.0,
-    "ratio_util": 0.654959053685168
+    "precio": 203315,
+    "ratio_util": 0.654959053685168,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "interior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "patio-interior",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
   },
   {
     "id": "V32",
@@ -540,8 +713,19 @@
     "dormitorios": 2,
     "baños": 2,
     "precio_m2": 3200,
-    "precio": 338208.0,
-    "ratio_util": 0.611694578484247
+    "precio": 338208,
+    "ratio_util": 0.611694578484247,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "interior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "patio-interior",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
   },
   {
     "id": "V33",
@@ -557,7 +741,186 @@
     "dormitorios": 2,
     "baños": 2,
     "precio_m2": 3600,
-    "precio": 428976.0,
-    "ratio_util": 0.605740181268882
+    "precio": 428976,
+    "ratio_util": 0.605740181268882,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "exterior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "patio-interior",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
+  },
+  {
+    "id": "V4",
+    "bloque": "A",
+    "planta": 2,
+    "letra": "A",
+    "sup_util": 68.65,
+    "sup_construida": 83.93,
+    "sup_zonas_comunes": 14.78,
+    "sup_total": 98.71,
+    "participacion": 0.1251,
+    "terraza": null,
+    "dormitorios": 2,
+    "baños": 2,
+    "precio_m2": 3700,
+    "precio": 365227,
+    "ratio_util": 0.695471583426198,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "exterior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "sur-oeste",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
+  },
+  {
+    "id": "V5",
+    "bloque": "A",
+    "planta": 2,
+    "letra": "B",
+    "sup_util": 76.16,
+    "sup_construida": 88.2,
+    "sup_zonas_comunes": 15.53,
+    "sup_total": 103.73,
+    "participacion": 0.1315,
+    "terraza": null,
+    "dormitorios": 2,
+    "baños": 2,
+    "precio_m2": 3800,
+    "precio": 394174,
+    "ratio_util": 0.734213824351682,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "exterior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "norte",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
+  },
+  {
+    "id": "V6",
+    "bloque": "A",
+    "planta": 3,
+    "letra": "A",
+    "sup_util": 68.65,
+    "sup_construida": 83.93,
+    "sup_zonas_comunes": 14.78,
+    "sup_total": 98.71,
+    "participacion": 0.1251,
+    "terraza": null,
+    "dormitorios": 2,
+    "baños": 2,
+    "precio_m2": 3800,
+    "precio": 375098,
+    "ratio_util": 0.695471583426198,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "exterior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "sur-oeste",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
+  },
+  {
+    "id": "V7",
+    "bloque": "A",
+    "planta": 3,
+    "letra": "B",
+    "sup_util": 76.01,
+    "sup_construida": 88.2,
+    "sup_zonas_comunes": 15.53,
+    "sup_total": 103.73,
+    "participacion": 0.1315,
+    "terraza": null,
+    "dormitorios": 2,
+    "baños": 2,
+    "precio_m2": 3900,
+    "precio": 404547,
+    "ratio_util": 0.732767762460233,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "exterior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "norte",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
+  },
+  {
+    "id": "V8",
+    "bloque": "A",
+    "planta": 4,
+    "letra": "A",
+    "sup_util": 68.61,
+    "sup_construida": 83.93,
+    "sup_zonas_comunes": 14.78,
+    "sup_total": 98.71,
+    "participacion": 0.1251,
+    "terraza": null,
+    "dormitorios": 2,
+    "baños": 2,
+    "precio_m2": 4000,
+    "precio": 394840,
+    "ratio_util": 0.695066355992301,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "exterior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "sur-oeste",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
+  },
+  {
+    "id": "V9",
+    "bloque": "A",
+    "planta": 4,
+    "letra": "B",
+    "sup_util": 75.97,
+    "sup_construida": 88.2,
+    "sup_zonas_comunes": 15.53,
+    "sup_total": 103.73,
+    "participacion": 0.1315,
+    "terraza": null,
+    "dormitorios": 2,
+    "baños": 2,
+    "precio_m2": 4100,
+    "precio": 425293,
+    "ratio_util": 0.732382145955847,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tipo_vivienda": "exterior",
+    "reserva_id": null,
+    "trastero_asignado": null,
+    "orientacion": "norte",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 554000000
+    },
+    "cliente_id": null
   }
 ]

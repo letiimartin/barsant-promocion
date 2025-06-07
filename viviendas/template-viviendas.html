@@ -98,6 +98,10 @@
             justify-content: center;
             color: var(--primary-color);
             font-size: 1.2rem;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         .thumbnail-grid {
@@ -112,15 +116,26 @@
             background-color: var(--light-bg);
             border-radius: var(--border-radius);
             cursor: pointer;
-            transition: opacity 0.3s;
+            transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--primary-color);
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border: 2px solid transparent;
         }
 
         .thumbnail:hover {
-            opacity: 0.8;
+            border-color: var(--secondary-color);
+            transform: scale(1.05);
+        }
+
+        .thumbnail.active {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 10px rgba(224, 200, 140, 0.5);
         }
 
         .vivienda-info {
@@ -161,6 +176,7 @@
             font-size: 2rem;
             color: var(--primary-color);
             margin-bottom: 20px;
+            font-weight: 700;
         }
 
         .estado {
@@ -194,84 +210,156 @@
             text-align: center;
             margin-top: 20px;
             cursor: pointer;
+            border: none;
         }
 
         .cta-button:hover {
             background-color: var(--primary-color);
             color: var(--light-text);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
         }
 
         .plano-section {
             margin-top: 40px;
         }
 
+        .plano-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .plano-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: white;
+            color: var(--primary-color);
+            border: 2px solid var(--secondary-color);
+            padding: 8px 16px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+        }
+
+        .plano-container {
+            position: relative;
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
         .plano-image {
             width: 100%;
             height: 300px;
             background-color: var(--light-bg);
-            border-radius: var(--border-radius);
-            margin-top: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--primary-color);
             font-size: 1.2rem;
+            overflow: hidden;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
         }
 
-        /* Modal de Reserva */
-        .modal {
+        .plano-image:hover {
+            transform: scale(1.02);
+        }
+
+        .plano-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0);
+            transition: all 0.3s;
+            pointer-events: none;
+        }
+
+        .plano-image:hover::after {
+            background: rgba(0,0,0,0.1);
+        }
+
+        .plano-image:hover::before {
+            content: '🔍 Click para ampliar';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px 16px;
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+            z-index: 1;
+            white-space: nowrap;
+        }
+
+        .plano-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .fullscreen-overlay {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.8);
+            background-color: rgba(0, 0, 0, 0.9);
             z-index: 1000;
-            align-items: center;
-            justify-content: center;
+            cursor: pointer;
         }
 
-        .modal-content {
-            background-color: white;
-            padding: 40px;
-            border-radius: var(--border-radius);
-            max-width: 500px;
-            width: 90%;
-            position: relative;
+        .fullscreen-image {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 95%;
+            max-height: 95%;
+            object-fit: contain;
         }
 
-        .close-modal {
+        .close-fullscreen {
             position: absolute;
             top: 20px;
             right: 20px;
-            font-size: 24px;
+            color: white;
+            font-size: 2rem;
             cursor: pointer;
-            color: var(--primary-color);
+            z-index: 1001;
         }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: var(--border-radius);
-            font-size: 1em;
-        }
-
-        .form-group textarea {
-            height: 100px;
-            resize: vertical;
+        /* Sección de Calidades */
+        .info-section.calidades {
+            border-top: 2px solid var(--secondary-color);
+            padding-top: 20px;
         }
 
         @media (max-width: 992px) {
@@ -282,6 +370,21 @@
             .thumbnail-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
+
+            .plano-image {
+                height: 250px;
+            }
+
+            .plano-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .plano-actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
         }
 
         @media (max-width: 768px) {
@@ -291,6 +394,56 @@
 
             .thumbnail-grid {
                 grid-template-columns: repeat(2, 1fr);
+            }
+
+            .plano-image {
+                height: 220px;
+                margin-top: 15px;
+            }
+
+            .plano-section h3 {
+                font-size: 1.3rem;
+            }
+
+            .plano-actions {
+                flex-direction: column;
+            }
+
+            .btn-secondary {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .vivienda-content {
+                padding: 30px 0;
+            }
+
+            .vivienda-info {
+                padding: 20px;
+            }
+
+            .plano-image {
+                height: 200px;
+                margin-top: 10px;
+            }
+
+            .thumbnail-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .thumbnail {
+                height: 80px;
+            }
+
+            .main-image {
+                height: 300px;
+                margin-bottom: 15px;
+            }
+
+            .price {
+                font-size: 1.7rem;
             }
         }
     </style>
@@ -312,45 +465,193 @@
   <div class="container" id="contenido">
     <div class="vivienda-content">
       <div class="vivienda-gallery">
-        <div class="main-image"><i class="fas fa-image"></i> Imagen principal</div>
+        <div class="main-image" id="main-image">
+          <i class="fas fa-image"></i> Imagen principal
+        </div>
+        <div class="thumbnail-grid" id="thumbnail-grid">
+          <div class="thumbnail active" data-image="1"><i class="fas fa-image"></i></div>
+          <div class="thumbnail" data-image="2"><i class="fas fa-image"></i></div>
+          <div class="thumbnail" data-image="3"><i class="fas fa-image"></i></div>
+          <div class="thumbnail" data-image="4"><i class="fas fa-image"></i></div>
+        </div>
+        
+        <div class="plano-section">
+          <div class="plano-header">
+            <h3>Plano de la vivienda</h3>
+            <div class="plano-actions">
+              <button class="btn-secondary" id="btn-fullscreen">
+                <i class="fas fa-external-link-alt"></i> Ver PDF
+              </button>
+              <a href="#" class="btn-secondary" id="btn-download" download>
+                <i class="fas fa-download"></i> Descargar PDF
+              </a>
+            </div>
+          </div>
+          <div class="plano-container">
+            <div class="plano-image" id="plano-image" style="background-image: url('../assets/images/planoB4B.png');">
+            </div>
+          </div>
+        </div>
       </div>
+
       <div class="vivienda-info">
         <div class="info-section">
           <div class="price" id="precio"></div>
           <div class="estado" id="estado"></div>
         </div>
+
         <div class="info-section">
           <h3>Características</h3>
           <ul class="feature-list">
-            <li id="dormitorios"></li>
-            <li id="baños"></li>
-            <li id="sup_util"></li>
-            <li id="sup_total"></li>
+            <li><i class="fas fa-bed"></i> <span id="dormitorios"></span></li>
+            <li><i class="fas fa-bath"></i> <span id="baños"></span></li>
+            <li><i class="fas fa-ruler-combined"></i> <span id="sup_util"></span></li>
+            <li><i class="fas fa-ruler"></i> <span id="sup_total"></span></li>
+            <li><i class="fas fa-box"></i> Trastero incluido</li>
+            <li><i class="fas fa-parking"></i> Plaza de garaje incluida</li>
           </ul>
         </div>
+
+
         <button class="cta-button" id="reservar-btn">Reservar esta vivienda</button>
       </div>
     </div>
   </div>
 
-  <script type="module">
-    import { loadViviendaFromUrl, fetchVivienda } from '../loadVivienda.js';
+  <!-- Overlay para vista completa del plano -->
+  <div class="fullscreen-overlay" id="fullscreen-overlay">
+    <div class="close-fullscreen" id="close-fullscreen">
+      <i class="fas fa-times"></i>
+    </div>
+    <img class="fullscreen-image" id="fullscreen-image" src="" alt="Plano en pantalla completa">
+  </div>
 
+  <script type="module">
+    import { loadViviendaFromUrl, fetchVivienda } from '../dataService.js';
+  
+    function convertirPlanta(planta) {
+      const mapa = {
+        0: 'Bajo',
+        1: 'Primero',
+        2: 'Segundo',
+        3: 'Tercero',
+        4: 'Cuarto'
+      };
+      return mapa[planta] || planta;
+    }
+
+    // Funcionalidad del plano
+    function initPlanoFunctionality(viviendaData) {
+      const planoImage = document.getElementById('plano-image');
+      const btnFullscreen = document.getElementById('btn-fullscreen');
+      const btnDownload = document.getElementById('btn-download');
+      const fullscreenOverlay = document.getElementById('fullscreen-overlay');
+      const fullscreenImage = document.getElementById('fullscreen-image');
+      const closeFullscreen = document.getElementById('close-fullscreen');
+
+      // Construir ruta del plano PDF basada en los datos de la vivienda
+      const plantaTexto = convertirPlanta(viviendaData.planta).toLowerCase();
+      const planoPdfPath = `../assets/docs/plano-${viviendaData.bloque}-${plantaTexto}-${viviendaData.letra}.pdf`;
+      
+      // Para la imagen de vista previa PNG
+      const planoImagePath = `../assets/images/plano${viviendaData.bloque}${viviendaData.planta}${viviendaData.letra}.png`;
+      
+      // Actualizar imagen del plano
+      planoImage.style.backgroundImage = `url('${planoImagePath}')`;
+      
+      // Configurar descarga del PDF
+      btnDownload.href = planoPdfPath;
+      btnDownload.download = `Plano_Bloque_${viviendaData.bloque}_${convertirPlanta(viviendaData.planta)}_${viviendaData.letra}.pdf`;
+
+      // Vista ampliada de la imagen PNG
+      function showImageFullscreen() {
+        fullscreenImage.src = planoImagePath;
+        fullscreenOverlay.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+      }
+
+      function hideFullscreen() {
+        fullscreenOverlay.style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }
+
+      // Abrir PDF en nueva pestaña
+      function openPDF() {
+        window.open(planoPdfPath, '_blank');
+      }
+
+      // Event listeners
+      btnFullscreen.addEventListener('click', openPDF); // Botón "Ver PDF" abre PDF
+      planoImage.addEventListener('click', showImageFullscreen); // Click en imagen abre vista ampliada
+      closeFullscreen.addEventListener('click', hideFullscreen);
+
+      fullscreenOverlay.addEventListener('click', (e) => {
+        if (e.target === fullscreenOverlay) hideFullscreen();
+      });
+
+      // Cerrar con ESC
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && fullscreenOverlay.style.display === 'block') {
+          hideFullscreen();
+        }
+      });
+    }
+
+    // Funcionalidad de galería de imágenes
+    function initGalleryFunctionality() {
+      const mainImage = document.getElementById('main-image');
+      const thumbnails = document.querySelectorAll('.thumbnail');
+
+      thumbnails.forEach(thumbnail => {
+        thumbnail.addEventListener('click', () => {
+          // Remover clase active de todos los thumbnails
+          thumbnails.forEach(t => t.classList.remove('active'));
+          // Agregar clase active al thumbnail clickeado
+          thumbnail.classList.add('active');
+          
+          // Aquí puedes cambiar la imagen principal
+          // const imageNumber = thumbnail.dataset.image;
+          // mainImage.style.backgroundImage = `url('../assets/images/vivienda${imageNumber}.jpg')`;
+        });
+      });
+    }
+  
     loadViviendaFromUrl().then(async () => {
       const params = new URLSearchParams(window.location.search);
       const id = params.get('id');
       const v = await fetchVivienda(id);
       if (!v) return;
-      document.title = `Vivienda ${v.bloque} ${v.planta} ${v.letra} | Ventanilla Residencial`;
+      
+      console.log('Datos de vivienda:', v);
+  
+      const plantaTexto = convertirPlanta(v.planta);
+      const nombre = `Bloque ${v.bloque} - ${plantaTexto} ${v.letra}`;
+  
+      document.title = `Vivienda ${v.bloque} ${plantaTexto} ${v.letra} | Ventanilla Residencial`;
+      document.getElementById('nombre').textContent = nombre;
+  
       const subtitle = `${v.dormitorios} dormitorios · ${v.baños} baños · ${v.sup_util} m² útiles · ${v.sup_total} m² construidos`;
       document.getElementById('subtitulo').textContent = subtitle;
+
+      // Actualizar precio
+      document.getElementById('precio').textContent = `€${v.precio?.toLocaleString() || 0}`;
+  
+      // Actualizar estado
       document.getElementById('estado').textContent = v.estado;
       document.getElementById('estado').classList.add(v.estado === 'Reservado' ? 'estado-reservado' : 'estado-disponible');
+
+      // Inicializar funcionalidades
+      initPlanoFunctionality(v);
+      initGalleryFunctionality();
+  
+      // Configurar botón de reserva
       document.getElementById('reservar-btn').addEventListener('click', () => {
         const params = new URLSearchParams();
-        params.append('vivienda', document.getElementById('nombre').textContent);
+        params.append('vivienda', nombre);
         params.append('info', subtitle);
         params.append('precio', document.getElementById('precio').textContent);
+        params.append('bloque', v.bloque);
+        params.append('piso', `${plantaTexto} ${v.letra}`);
         window.location.href = `../reserva/index.html?${params.toString()}`;
       });
     });

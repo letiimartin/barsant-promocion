@@ -4,7 +4,7 @@
  */
 
 
-import { fetchAllViviendas, getViviendaId} from '../../loadVivienda.js';
+import { fetchAllViviendas, getViviendaId} from '../../dataService.js';
 
 
 

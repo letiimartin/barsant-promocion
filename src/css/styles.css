@@ -382,6 +382,7 @@ nav ul li a.active {
 /* Gallery */
 .gallery {
     padding: 100px 0;
+    background-color: var(--light-bg);
 }
 
 .gallery-grid {
@@ -407,7 +408,7 @@ nav ul li a.active {
 /* Map Section */
 .map-section {
     padding: 150px 0 100px;
-    background-color: var(--light-bg);
+    background-color: #fff;
     position: relative;
     z-index: 1;
 }
@@ -442,15 +443,165 @@ nav ul li a.active {
     z-index: 1;
 }
 
+/* Documentation */
+.documentation {
+    padding: 100px 0;
+    background-color: #fff;
+}
+
+.documentation .section-subtitle {
+    margin-bottom: 3rem;
+}
+
+.documentation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.doc-card {
+    background-color: var(--light-bg);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.doc-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.doc-icon {
+    font-size: 40px;
+    margin-bottom: 20px;
+    color: var(--secondary-color);
+}
+
+.doc-title {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+}
+
+.doc-description {
+    margin-bottom: 20px;
+    color: #666;
+}
+
+.doc-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.btn-primary,
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-primary {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-color);
+    color: var(--light-text);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
+
+.btn-secondary:hover {
+    background-color: var(--primary-color);
+    color: var(--light-text);
+}
+
+.documentation-info {
+    margin-top: 50px;
+}
+
+.info-box {
+    background-color: var(--light-bg);
+    padding: 20px;
+    border-left: 5px solid var(--secondary-color);
+    border-radius: var(--border-radius);
+}
+
+.info-box h4 {
+    margin-bottom: 15px;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.doc-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    z-index: 1200;
+    align-items: center;
+    justify-content: center;
+}
+
+.doc-modal-content {
+    background-color: #fff;
+    border-radius: var(--border-radius);
+    max-width: 900px;
+    width: 90%;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    position: relative;
+}
+
+.doc-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.doc-modal-close {
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--primary-color);
+}
+
+.pdf-viewer iframe {
+    width: 100%;
+    height: 600px;
+    border: none;
+}
+
+
 /* Contact */
 .contact {
     padding: 100px 0;
+    background-color: var(--light-bg);
 }
 
 .contact-wrapper {
     display: flex;
     justify-content: space-between;
-    gap: 50px;
+    gap: 400px;
 }
 
 .contact-info {
@@ -473,6 +624,7 @@ nav ul li a.active {
     padding: 30px;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
+    
 }
 
 .form-group {

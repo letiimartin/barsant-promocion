@@ -7,87 +7,16 @@
     "precio_m2": 1000,
     "precio": 34350,
     "precio_redondeado": 35000,
-    "ratio_util": 0.435807860262009
-  },
-  {
-    "id": "C2",
-    "sup_util": 15.51,
-    "sup_zonas_comunes": 20.08,
-    "sup_total": 35.59,
-    "precio_m2": 1000,
-    "precio": 35590,
-    "precio_redondeado": 35000,
-    "ratio_util": 0.435796572070806
-  },
-  {
-    "id": "C3",
-    "sup_util": 14.47,
-    "sup_zonas_comunes": 18.74,
-    "sup_total": 33.21,
-    "precio_m2": 1000,
-    "precio": 33210,
-    "precio_redondeado": 35000,
-    "ratio_util": 0.435712134899127
-  },
-  {
-    "id": "C4",
-    "sup_util": 14.56,
-    "sup_zonas_comunes": 18.85,
-    "sup_total": 33.41,
-    "precio_m2": 1000,
-    "precio": 33410,
-    "precio_redondeado": 35000,
-    "ratio_util": 0.43579766536965
-  },
-  {
-    "id": "C5",
-    "sup_util": 14.8,
-    "sup_zonas_comunes": 19.16,
-    "sup_total": 33.96,
-    "precio_m2": 1000,
-    "precio": 33960,
-    "precio_redondeado": 35000,
-    "ratio_util": 0.435806831566549
-  },
-  {
-    "id": "C6",
-    "sup_util": 15.04,
-    "sup_zonas_comunes": 19.48,
-    "sup_total": 34.52,
-    "precio_m2": 1000,
-    "precio": 34520,
-    "precio_redondeado": 35000,
-    "ratio_util": 0.435689455388181
-  },
-  {
-    "id": "C7",
-    "sup_util": 15.06,
-    "sup_zonas_comunes": 19.5,
-    "sup_total": 34.56,
-    "precio_m2": 1000,
-    "precio": 34560,
-    "precio_redondeado": 35000,
-    "ratio_util": 0.435763888888889
-  },
-  {
-    "id": "C8",
-    "sup_util": 14.16,
-    "sup_zonas_comunes": 18.34,
-    "sup_total": 32.5,
-    "precio_m2": 1000,
-    "precio": 32500,
-    "precio_redondeado": 33000,
-    "ratio_util": 0.435692307692308
-  },
-  {
-    "id": "C9",
-    "sup_util": 14.06,
-    "sup_zonas_comunes": 18.21,
-    "sup_total": 32.27,
-    "precio_m2": 1000,
-    "precio": 32270,
-    "precio_redondeado": 33000,
-    "ratio_util": 0.435698791447165
+    "ratio_util": 0.435807860262009,
+    "estado": "disponible",
+    "tamaño": "mediana",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "trastero_asignado": null,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C10",
@@ -97,7 +26,16 @@
     "precio_m2": 1000,
     "precio": 32330,
     "precio_redondeado": 33000,
-    "ratio_util": 0.435818125579957
+    "ratio_util": 0.435818125579957,
+    "estado": "disponible",
+    "tamaño": "mediana",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "trastero_asignado": null,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C11",
@@ -107,7 +45,16 @@
     "precio_m2": 1000,
     "precio": 34770,
     "precio_redondeado": 35000,
-    "ratio_util": 0.43572044866264
+    "ratio_util": 0.43572044866264,
+    "estado": "disponible",
+    "tamaño": "grande",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "trastero_asignado": "T2",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C12",
@@ -117,7 +64,16 @@
     "precio_m2": 1000,
     "precio": 33830,
     "precio_redondeado": 35000,
-    "ratio_util": 0.435707951522318
+    "ratio_util": 0.435707951522318,
+    "estado": "disponible",
+    "tamaño": "mediana",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "trastero_asignado": "T3",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C13",
@@ -127,7 +83,16 @@
     "precio_m2": 1000,
     "precio": 35690,
     "precio_redondeado": 35000,
-    "ratio_util": 0.435696273465957
+    "ratio_util": 0.435696273465957,
+    "estado": "disponible",
+    "tamaño": "grande",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "trastero_asignado": "T4",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C14",
@@ -137,7 +102,16 @@
     "precio_m2": 1000,
     "precio": 35750,
     "precio_redondeado": 35000,
-    "ratio_util": 0.435804195804196
+    "ratio_util": 0.435804195804196,
+    "estado": "disponible",
+    "tamaño": "grande",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "trastero_asignado": "T5",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C15",
@@ -147,7 +121,16 @@
     "precio_m2": 1000,
     "precio": 34560,
     "precio_redondeado": 35000,
-    "ratio_util": 0.435763888888889
+    "ratio_util": 0.435763888888889,
+    "estado": "disponible",
+    "tamaño": "grande",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "trastero_asignado": "T6",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C16",
@@ -157,7 +140,16 @@
     "precio_m2": 1000,
     "precio": 23710,
     "precio_redondeado": 25000,
-    "ratio_util": 0.435681147195276
+    "ratio_util": 0.435681147195276,
+    "estado": "disponible",
+    "tamaño": "pequeña",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "trastero_asignado": null,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C17",
@@ -167,7 +159,16 @@
     "precio_m2": 1000,
     "precio": 28460,
     "precio_redondeado": 30000,
-    "ratio_util": 0.435699226985242
+    "ratio_util": 0.435699226985242,
+    "estado": "disponible",
+    "tamaño": "pequeña",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "trastero_asignado": "T7",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C18",
@@ -177,7 +178,16 @@
     "precio_m2": 1000,
     "precio": 36880,
     "precio_redondeado": 37000,
-    "ratio_util": 0.435737527114967
+    "ratio_util": 0.435737527114967,
+    "estado": "disponible",
+    "tamaño": "grande",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "trastero_asignado": "T8",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C19",
@@ -187,7 +197,35 @@
     "precio_m2": 1000,
     "precio": 30500,
     "precio_redondeado": 30000,
-    "ratio_util": 0.435737704918033
+    "ratio_util": 0.435737704918033,
+    "estado": "disponible",
+    "tamaño": "mediana",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "trastero_asignado": "T9",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
+  },
+  {
+    "id": "C2",
+    "sup_util": 15.51,
+    "sup_zonas_comunes": 20.08,
+    "sup_total": 35.59,
+    "precio_m2": 1000,
+    "precio": 35590,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.435796572070806,
+    "estado": "disponible",
+    "tamaño": "grande",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "trastero_asignado": null,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C20",
@@ -197,7 +235,16 @@
     "precio_m2": 1000,
     "precio": 27880,
     "precio_redondeado": 30000,
-    "ratio_util": 0.435796269727403
+    "ratio_util": 0.435796269727403,
+    "estado": "disponible",
+    "tamaño": "pequeña",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "trastero_asignado": "T10",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C21",
@@ -207,7 +254,16 @@
     "precio_m2": 1000,
     "precio": 32790,
     "precio_redondeado": 33000,
-    "ratio_util": 0.435803598658127
+    "ratio_util": 0.435803598658127,
+    "estado": "disponible",
+    "tamaño": "mediana",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "trastero_asignado": "T11",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C22",
@@ -217,7 +273,16 @@
     "precio_m2": 1000,
     "precio": 34350,
     "precio_redondeado": 35000,
-    "ratio_util": 0.435807860262009
+    "ratio_util": 0.435807860262009,
+    "estado": "disponible",
+    "tamaño": "mediana",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "trastero_asignado": null,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C23",
@@ -227,7 +292,16 @@
     "precio_m2": 1000,
     "precio": 35590,
     "precio_redondeado": 35000,
-    "ratio_util": 0.435796572070806
+    "ratio_util": 0.435796572070806,
+    "estado": "disponible",
+    "tamaño": "grande",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "trastero_asignado": null,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C24",
@@ -237,7 +311,16 @@
     "precio_m2": 1000,
     "precio": 33210,
     "precio_redondeado": 35000,
-    "ratio_util": 0.435712134899127
+    "ratio_util": 0.435712134899127,
+    "estado": "disponible",
+    "tamaño": "mediana",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "trastero_asignado": null,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C25",
@@ -247,7 +330,16 @@
     "precio_m2": 1000,
     "precio": 33410,
     "precio_redondeado": 35000,
-    "ratio_util": 0.43579766536965
+    "ratio_util": 0.43579766536965,
+    "estado": "disponible",
+    "tamaño": "mediana",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "trastero_asignado": null,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C26",
@@ -257,7 +349,16 @@
     "precio_m2": 1000,
     "precio": 33960,
     "precio_redondeado": 35000,
-    "ratio_util": 0.435806831566549
+    "ratio_util": 0.435806831566549,
+    "estado": "disponible",
+    "tamaño": "mediana",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "trastero_asignado": null,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C27",
@@ -267,7 +368,16 @@
     "precio_m2": 1000,
     "precio": 34520,
     "precio_redondeado": 35000,
-    "ratio_util": 0.435689455388181
+    "ratio_util": 0.435689455388181,
+    "estado": "disponible",
+    "tamaño": "grande",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "trastero_asignado": null,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C28",
@@ -277,7 +387,16 @@
     "precio_m2": 1000,
     "precio": 34560,
     "precio_redondeado": 35000,
-    "ratio_util": 0.435763888888889
+    "ratio_util": 0.435763888888889,
+    "estado": "disponible",
+    "tamaño": "grande",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "trastero_asignado": null,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C29",
@@ -287,7 +406,35 @@
     "precio_m2": 1000,
     "precio": 32500,
     "precio_redondeado": 33000,
-    "ratio_util": 0.435692307692308
+    "ratio_util": 0.435692307692308,
+    "estado": "disponible",
+    "tamaño": "mediana",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "trastero_asignado": null,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
+  },
+  {
+    "id": "C3",
+    "sup_util": 14.47,
+    "sup_zonas_comunes": 18.74,
+    "sup_total": 33.21,
+    "precio_m2": 1000,
+    "precio": 33210,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.435712134899127,
+    "estado": "disponible",
+    "tamaño": "mediana",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "trastero_asignado": null,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C30",
@@ -297,7 +444,16 @@
     "precio_m2": 1000,
     "precio": 32270,
     "precio_redondeado": 33000,
-    "ratio_util": 0.435698791447165
+    "ratio_util": 0.435698791447165,
+    "estado": "disponible",
+    "tamaño": "mediana",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "trastero_asignado": null,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C31",
@@ -307,7 +463,16 @@
     "precio_m2": 1000,
     "precio": 32330,
     "precio_redondeado": 33000,
-    "ratio_util": 0.435818125579957
+    "ratio_util": 0.435818125579957,
+    "estado": "disponible",
+    "tamaño": "mediana",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "trastero_asignado": null,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C32",
@@ -317,7 +482,16 @@
     "precio_m2": 1000,
     "precio": 34770,
     "precio_redondeado": 35000,
-    "ratio_util": 0.43572044866264
+    "ratio_util": 0.43572044866264,
+    "estado": "disponible",
+    "tamaño": "grande",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "trastero_asignado": "T12",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C33",
@@ -327,7 +501,16 @@
     "precio_m2": 1000,
     "precio": 33830,
     "precio_redondeado": 35000,
-    "ratio_util": 0.435707951522318
+    "ratio_util": 0.435707951522318,
+    "estado": "disponible",
+    "tamaño": "mediana",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "trastero_asignado": "T14",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C34",
@@ -337,7 +520,16 @@
     "precio_m2": 1000,
     "precio": 35690,
     "precio_redondeado": 35000,
-    "ratio_util": 0.435696273465957
+    "ratio_util": 0.435696273465957,
+    "estado": "disponible",
+    "tamaño": "grande",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "trastero_asignado": "T15",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C35",
@@ -347,7 +539,16 @@
     "precio_m2": 1000,
     "precio": 35750,
     "precio_redondeado": 35000,
-    "ratio_util": 0.435804195804196
+    "ratio_util": 0.435804195804196,
+    "estado": "disponible",
+    "tamaño": "grande",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "trastero_asignado": null,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C36",
@@ -357,7 +558,16 @@
     "precio_m2": 1000,
     "precio": 34560,
     "precio_redondeado": 35000,
-    "ratio_util": 0.435763888888889
+    "ratio_util": 0.435763888888889,
+    "estado": "disponible",
+    "tamaño": "grande",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "trastero_asignado": "T17",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C37",
@@ -367,7 +577,16 @@
     "precio_m2": 1000,
     "precio": 23710,
     "precio_redondeado": 25000,
-    "ratio_util": 0.435681147195276
+    "ratio_util": 0.435681147195276,
+    "estado": "disponible",
+    "tamaño": "pequeña",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "trastero_asignado": null,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C38",
@@ -377,7 +596,16 @@
     "precio_m2": 1000,
     "precio": 28460,
     "precio_redondeado": 30000,
-    "ratio_util": 0.435699226985242
+    "ratio_util": 0.435699226985242,
+    "estado": "disponible",
+    "tamaño": "pequeña",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "trastero_asignado": "T20",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C39",
@@ -387,7 +615,35 @@
     "precio_m2": 1000,
     "precio": 36880,
     "precio_redondeado": 37000,
-    "ratio_util": 0.435737527114967
+    "ratio_util": 0.435737527114967,
+    "estado": "disponible",
+    "tamaño": "grande",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "trastero_asignado": "T22",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
+  },
+  {
+    "id": "C4",
+    "sup_util": 14.56,
+    "sup_zonas_comunes": 18.85,
+    "sup_total": 33.41,
+    "precio_m2": 1000,
+    "precio": 33410,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.43579766536965,
+    "estado": "disponible",
+    "tamaño": "mediana",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "trastero_asignado": null,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C40",
@@ -397,7 +653,16 @@
     "precio_m2": 1000,
     "precio": 30500,
     "precio_redondeado": 30000,
-    "ratio_util": 0.435737704918033
+    "ratio_util": 0.435737704918033,
+    "estado": "disponible",
+    "tamaño": "mediana",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "trastero_asignado": "T23",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C41",
@@ -407,7 +672,16 @@
     "precio_m2": 1000,
     "precio": 27880,
     "precio_redondeado": 30000,
-    "ratio_util": 0.435796269727403
+    "ratio_util": 0.435796269727403,
+    "estado": "disponible",
+    "tamaño": "pequeña",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "trastero_asignado": "T24",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C42",
@@ -417,7 +691,16 @@
     "precio_m2": 1000,
     "precio": 32790,
     "precio_redondeado": 33000,
-    "ratio_util": 0.435803598658127
+    "ratio_util": 0.435803598658127,
+    "estado": "disponible",
+    "tamaño": "mediana",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "trastero_asignado": "T25",
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   },
   {
     "id": "C43",
@@ -427,6 +710,110 @@
     "precio_m2": 1000,
     "precio": 33570,
     "precio_redondeado": 35000,
-    "ratio_util": 0.435805778969318
+    "ratio_util": 0.435805778969318,
+    "estado": "disponible",
+    "tamaño": "mediana",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "trastero_asignado": null,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
+  },
+  {
+    "id": "C5",
+    "sup_util": 14.8,
+    "sup_zonas_comunes": 19.16,
+    "sup_total": 33.96,
+    "precio_m2": 1000,
+    "precio": 33960,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.435806831566549,
+    "estado": "disponible",
+    "tamaño": "mediana",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "trastero_asignado": null,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
+  },
+  {
+    "id": "C6",
+    "sup_util": 15.04,
+    "sup_zonas_comunes": 19.48,
+    "sup_total": 34.52,
+    "precio_m2": 1000,
+    "precio": 34520,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.435689455388181,
+    "estado": "disponible",
+    "tamaño": "grande",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "trastero_asignado": null,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
+  },
+  {
+    "id": "C7",
+    "sup_util": 15.06,
+    "sup_zonas_comunes": 19.5,
+    "sup_total": 34.56,
+    "precio_m2": 1000,
+    "precio": 34560,
+    "precio_redondeado": 35000,
+    "ratio_util": 0.435763888888889,
+    "estado": "disponible",
+    "tamaño": "grande",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "trastero_asignado": null,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
+  },
+  {
+    "id": "C8",
+    "sup_util": 14.16,
+    "sup_zonas_comunes": 18.34,
+    "sup_total": 32.5,
+    "precio_m2": 1000,
+    "precio": 32500,
+    "precio_redondeado": 33000,
+    "ratio_util": 0.435692307692308,
+    "estado": "disponible",
+    "tamaño": "mediana",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "trastero_asignado": null,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
+  },
+  {
+    "id": "C9",
+    "sup_util": 14.06,
+    "sup_zonas_comunes": 18.21,
+    "sup_total": 32.27,
+    "precio_m2": 1000,
+    "precio": 32270,
+    "precio_redondeado": 33000,
+    "ratio_util": 0.435698791447165,
+    "estado": "disponible",
+    "tamaño": "mediana",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "trastero_asignado": null,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 229000000
+    }
   }
 ]

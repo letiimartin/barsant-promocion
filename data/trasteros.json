@@ -6,79 +6,16 @@
     "sup_total": 21.2,
     "precio_m2": 800,
     "precio": 16960,
-    "ratio_util": 0.435849056603774
-  },
-  {
-    "id": "T2",
-    "sup_util": 16.02,
-    "sup_zonas_comunes": 20.74,
-    "sup_total": 36.76,
-    "precio_m2": 400,
-    "precio": 14704,
-    "ratio_util": 0.435799782372144
-  },
-  {
-    "id": "T3",
-    "sup_util": 4.7,
-    "sup_zonas_comunes": 6.09,
-    "sup_total": 10.79,
-    "precio_m2": 800,
-    "precio": 8632,
-    "ratio_util": 0.435588507877665
-  },
-  {
-    "id": "T4",
-    "sup_util": 4.68,
-    "sup_zonas_comunes": 6.06,
-    "sup_total": 10.74,
-    "precio_m2": 800,
-    "precio": 8592,
-    "ratio_util": 0.435754189944134
-  },
-  {
-    "id": "T5",
-    "sup_util": 4.64,
-    "sup_zonas_comunes": 6.01,
-    "sup_total": 10.65,
-    "precio_m2": 800,
-    "precio": 8520,
-    "ratio_util": 0.435680751173709
-  },
-  {
-    "id": "T6",
-    "sup_util": 4.79,
-    "sup_zonas_comunes": 6.2,
-    "sup_total": 10.99,
-    "precio_m2": 800,
-    "precio": 8792,
-    "ratio_util": 0.435850773430391
-  },
-  {
-    "id": "T7",
-    "sup_util": 2.65,
-    "sup_zonas_comunes": 3.43,
-    "sup_total": 6.08,
-    "precio_m2": 800,
-    "precio": 4864,
-    "ratio_util": 0.435855263157895
-  },
-  {
-    "id": "T8",
-    "sup_util": 5.19,
-    "sup_zonas_comunes": 6.72,
-    "sup_total": 11.91,
-    "precio_m2": 800,
-    "precio": 9528,
-    "ratio_util": 0.435768261964736
-  },
-  {
-    "id": "T9",
-    "sup_util": 3.87,
-    "sup_zonas_comunes": 5.01,
-    "sup_total": 8.88,
-    "precio_m2": 800,
-    "precio": 7104,
-    "ratio_util": 0.435810810810811
+    "ratio_util": 0.435849056603774,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tamaño": "mediano",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 412000000
+    }
   },
   {
     "id": "T10",
@@ -87,7 +24,16 @@
     "sup_total": 9.98,
     "precio_m2": 800,
     "precio": 7984,
-    "ratio_util": 0.435871743486974
+    "ratio_util": 0.435871743486974,
+    "cochera_asignada": "C20",
+    "estado": "disponible",
+    "tamaño": "pequeño",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 412000000
+    }
   },
   {
     "id": "T11",
@@ -96,7 +42,16 @@
     "sup_total": 9.32,
     "precio_m2": 800,
     "precio": 7456,
-    "ratio_util": 0.435622317596566
+    "ratio_util": 0.435622317596566,
+    "cochera_asignada": "C21",
+    "estado": "disponible",
+    "tamaño": "pequeño",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 412000000
+    }
   },
   {
     "id": "T12",
@@ -105,7 +60,16 @@
     "sup_total": 36.76,
     "precio_m2": 400,
     "precio": 14704,
-    "ratio_util": 0.435799782372144
+    "ratio_util": 0.435799782372144,
+    "cochera_asignada": "C32",
+    "estado": "disponible",
+    "tamaño": "grande",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 412000000
+    }
   },
   {
     "id": "T13",
@@ -114,7 +78,16 @@
     "sup_total": 21.92,
     "precio_m2": 800,
     "precio": 17536,
-    "ratio_util": 0.435675182481752
+    "ratio_util": 0.435675182481752,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tamaño": "mediano",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 412000000
+    }
   },
   {
     "id": "T14",
@@ -123,7 +96,16 @@
     "sup_total": 10.79,
     "precio_m2": 800,
     "precio": 8632,
-    "ratio_util": 0.435588507877665
+    "ratio_util": 0.435588507877665,
+    "cochera_asignada": "C33",
+    "estado": "disponible",
+    "tamaño": "pequeño",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 412000000
+    }
   },
   {
     "id": "T15",
@@ -132,7 +114,16 @@
     "sup_total": 10.74,
     "precio_m2": 800,
     "precio": 8592,
-    "ratio_util": 0.435754189944134
+    "ratio_util": 0.435754189944134,
+    "cochera_asignada": "C34",
+    "estado": "disponible",
+    "tamaño": "pequeño",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 412000000
+    }
   },
   {
     "id": "T16",
@@ -141,7 +132,16 @@
     "sup_total": 10.65,
     "precio_m2": 800,
     "precio": 8520,
-    "ratio_util": 0.435680751173709
+    "ratio_util": 0.435680751173709,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tamaño": "pequeño",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 412000000
+    }
   },
   {
     "id": "T17",
@@ -150,7 +150,16 @@
     "sup_total": 10.99,
     "precio_m2": 800,
     "precio": 8792,
-    "ratio_util": 0.435850773430391
+    "ratio_util": 0.435850773430391,
+    "cochera_asignada": "C36",
+    "estado": "disponible",
+    "tamaño": "pequeño",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 412000000
+    }
   },
   {
     "id": "T18",
@@ -159,7 +168,16 @@
     "sup_total": 12.85,
     "precio_m2": 800,
     "precio": 10280,
-    "ratio_util": 0.43579766536965
+    "ratio_util": 0.43579766536965,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tamaño": "mediano",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 412000000
+    }
   },
   {
     "id": "T19",
@@ -168,7 +186,34 @@
     "sup_total": 9.89,
     "precio_m2": 800,
     "precio": 7912,
-    "ratio_util": 0.435793731041456
+    "ratio_util": 0.435793731041456,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tamaño": "pequeño",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 412000000
+    }
+  },
+  {
+    "id": "T2",
+    "sup_util": 16.02,
+    "sup_zonas_comunes": 20.74,
+    "sup_total": 36.76,
+    "precio_m2": 400,
+    "precio": 14704,
+    "ratio_util": 0.435799782372144,
+    "cochera_asignada": "C11",
+    "estado": "disponible",
+    "tamaño": "grande",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 412000000
+    }
   },
   {
     "id": "T20",
@@ -177,7 +222,16 @@
     "sup_total": 12.46,
     "precio_m2": 800,
     "precio": 9968,
-    "ratio_util": 0.435794542536116
+    "ratio_util": 0.435794542536116,
+    "cochera_asignada": "C38",
+    "estado": "disponible",
+    "tamaño": "mediano",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 412000000
+    }
   },
   {
     "id": "T21",
@@ -186,7 +240,16 @@
     "sup_total": 13.63,
     "precio_m2": 800,
     "precio": 10904,
-    "ratio_util": 0.435803374908291
+    "ratio_util": 0.435803374908291,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tamaño": "mediano",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 412000000
+    }
   },
   {
     "id": "T22",
@@ -195,7 +258,16 @@
     "sup_total": 11.38,
     "precio_m2": 800,
     "precio": 9104,
-    "ratio_util": 0.43585237258348
+    "ratio_util": 0.43585237258348,
+    "cochera_asignada": "C39",
+    "estado": "disponible",
+    "tamaño": "pequeño",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 412000000
+    }
   },
   {
     "id": "T23",
@@ -204,7 +276,16 @@
     "sup_total": 8.88,
     "precio_m2": 800,
     "precio": 7104,
-    "ratio_util": 0.435810810810811
+    "ratio_util": 0.435810810810811,
+    "cochera_asignada": "C40",
+    "estado": "disponible",
+    "tamaño": "pequeño",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 412000000
+    }
   },
   {
     "id": "T24",
@@ -213,7 +294,16 @@
     "sup_total": 9.98,
     "precio_m2": 800,
     "precio": 7984,
-    "ratio_util": 0.435871743486974
+    "ratio_util": 0.435871743486974,
+    "cochera_asignada": "C41",
+    "estado": "disponible",
+    "tamaño": "pequeño",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 412000000
+    }
   },
   {
     "id": "T25",
@@ -222,7 +312,16 @@
     "sup_total": 9.32,
     "precio_m2": 800,
     "precio": 7456,
-    "ratio_util": 0.435622317596566
+    "ratio_util": 0.435622317596566,
+    "cochera_asignada": "C42",
+    "estado": "disponible",
+    "tamaño": "pequeño",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 412000000
+    }
   },
   {
     "id": "T26",
@@ -231,7 +330,16 @@
     "sup_total": 5.23,
     "precio_m2": 800,
     "precio": 4184,
-    "ratio_util": 0.435946462715105
+    "ratio_util": 0.435946462715105,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tamaño": "muy_pequeño",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 412000000
+    }
   },
   {
     "id": "T27",
@@ -240,6 +348,141 @@
     "sup_total": 3.93,
     "precio_m2": 800,
     "precio": 3144,
-    "ratio_util": 0.577608142493639
+    "ratio_util": 0.577608142493639,
+    "cochera_asignada": null,
+    "estado": "disponible",
+    "tamaño": "muy_pequeño",
+    "tipo_asignacion": "individual",
+    "planta": -1,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 412000000
+    }
+  },
+  {
+    "id": "T3",
+    "sup_util": 4.7,
+    "sup_zonas_comunes": 6.09,
+    "sup_total": 10.79,
+    "precio_m2": 800,
+    "precio": 8632,
+    "ratio_util": 0.435588507877665,
+    "cochera_asignada": "C12",
+    "estado": "disponible",
+    "tamaño": "pequeño",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 412000000
+    }
+  },
+  {
+    "id": "T4",
+    "sup_util": 4.68,
+    "sup_zonas_comunes": 6.06,
+    "sup_total": 10.74,
+    "precio_m2": 800,
+    "precio": 8592,
+    "ratio_util": 0.435754189944134,
+    "cochera_asignada": "C13",
+    "estado": "disponible",
+    "tamaño": "pequeño",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 412000000
+    }
+  },
+  {
+    "id": "T5",
+    "sup_util": 4.64,
+    "sup_zonas_comunes": 6.01,
+    "sup_total": 10.65,
+    "precio_m2": 800,
+    "precio": 8520,
+    "ratio_util": 0.435680751173709,
+    "cochera_asignada": "C14",
+    "estado": "disponible",
+    "tamaño": "pequeño",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 412000000
+    }
+  },
+  {
+    "id": "T6",
+    "sup_util": 4.79,
+    "sup_zonas_comunes": 6.2,
+    "sup_total": 10.99,
+    "precio_m2": 800,
+    "precio": 8792,
+    "ratio_util": 0.435850773430391,
+    "cochera_asignada": "C15",
+    "estado": "disponible",
+    "tamaño": "pequeño",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 412000000
+    }
+  },
+  {
+    "id": "T7",
+    "sup_util": 2.65,
+    "sup_zonas_comunes": 3.43,
+    "sup_total": 6.08,
+    "precio_m2": 800,
+    "precio": 4864,
+    "ratio_util": 0.435855263157895,
+    "cochera_asignada": "C17",
+    "estado": "disponible",
+    "tamaño": "muy_pequeño",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 412000000
+    }
+  },
+  {
+    "id": "T8",
+    "sup_util": 5.19,
+    "sup_zonas_comunes": 6.72,
+    "sup_total": 11.91,
+    "precio_m2": 800,
+    "precio": 9528,
+    "ratio_util": 0.435768261964736,
+    "cochera_asignada": "C18",
+    "estado": "disponible",
+    "tamaño": "mediano",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 412000000
+    }
+  },
+  {
+    "id": "T9",
+    "sup_util": 3.87,
+    "sup_zonas_comunes": 5.01,
+    "sup_total": 8.88,
+    "precio_m2": 800,
+    "precio": 7104,
+    "ratio_util": 0.435810810810811,
+    "cochera_asignada": "C19",
+    "estado": "disponible",
+    "tamaño": "pequeño",
+    "tipo_asignacion": "par_fijo",
+    "planta": -1,
+    "fecha_actualizacion": {
+      "_seconds": 1749331491,
+      "_nanoseconds": 412000000
+    }
   }
 ]

@@ -23,7 +23,9 @@ class BarsantComponents {
               <li><a href="../index.html" class="${activePage === 'home' ? 'active' : ''}">Inicio</a></li>
               <li><a href="../index.html#about" class="${activePage === 'about' ? 'active' : ''}">Sobre Nosotros</a></li>
               <li><a href="../index.html#properties" class="${activePage === 'properties' ? 'active' : ''}">Viviendas</a></li>
+              <li><a href="../index.html#location" class="${activePage === 'location' ? 'active' : ''}">Ubicación</a></li>
               <li><a href="../index.html#gallery" class="${activePage === 'gallery' ? 'active' : ''}">Galería</a></li>
+              <li><a href="../index.html#documentation" class="${activePage === 'documentation' ? 'active' : ''}">Documentación</a></li>
               <li><a href="../index.html#contact" class="${activePage === 'contact' ? 'active' : ''}">Contacto</a></li>
             </ul>
           </nav>

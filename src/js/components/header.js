@@ -17,6 +17,7 @@ export function getHeader(activePage = '') {
                   <li><a href="#properties">Viviendas</a></li>
                   <li><a href="#location">Ubicación</a></li>
                   <li><a href="#gallery">Galería</a></li>
+                  <li><a href="#documentation">Documentación</a></li>
                   <li><a href="#contact">Contacto</a></li>
               </ul>
           </nav>

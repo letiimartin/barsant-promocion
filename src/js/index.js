@@ -179,7 +179,10 @@ function filterViviendas() {
   let filtered = [...window.viviendas];
 
   if (planta) {
-    filtered = filtered.filter(v => v.piso.includes(planta));
+    filtered = filtered.filter(v => {
+      const text = (v.piso || v.planta || '').toString().toLowerCase();
+      return text.includes(planta.toLowerCase());
+    });
   }
   
   if (dormitorios) {

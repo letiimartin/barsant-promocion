@@ -33,6 +33,7 @@
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
+    "firebase": "^11.9.0",
     "firebase-admin": "^13.4.0"
   }
 }

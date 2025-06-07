@@ -3,12 +3,10 @@
  * Punto de entrada que importa todos los módulos necesarios
  */
 
-// Importar los estilos principales
-import '../css/styles.css';
-import { fetchAllViviendas } from '../../loadVivienda.js';
 
-// Importar componentes
-import './components/index.js';
+import { fetchAllViviendas, getViviendaId} from '../../loadVivienda.js';
+
+
 
 // Importar utilidades
 import { 
@@ -17,9 +15,22 @@ import {
   handleFormSubmit 
 } from './utils/index.js';
 
-// Importar funcionalidades específicas
-import './main.js';
 
+async function waitForElement(selector, timeout = 2000) {
+  return new Promise((resolve, reject) => {
+    const start = Date.now();
+    const interval = setInterval(() => {
+      const element = document.querySelector(selector);
+      if (element) {
+        clearInterval(interval);
+        resolve(element);
+      } else if (Date.now() - start > timeout) {
+        clearInterval(interval);
+        reject(new Error(`Elemento ${selector} no encontrado a tiempo`));
+      }
+    }, 100);
+  });
+}
 // Lista de viviendas obtenidas desde Firebase
 window.viviendas = [];
 
@@ -28,6 +39,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   console.log('Aplicación Barsant Ventanilla inicializada correctamente');
 
   try {
+    await waitForElement('#viviendas-table');
     window.viviendas = await fetchAllViviendas();
   } catch (err) {
     console.error('Error al cargar viviendas desde Firebase:', err);
@@ -164,83 +176,61 @@ function initMap() {
   }
 }
 
-/**
- * Filtra viviendas según los criterios seleccionados
- */
+
 function filterViviendas() {
-  const plantaFilter = document.getElementById('planta-filter');
-  const dormitoriosFilter = document.getElementById('dormitorios-filter');
-  
-  if (!plantaFilter || !dormitoriosFilter || !window.viviendas) return;
-  
-  const planta = plantaFilter.value;
-  const dormitorios = dormitoriosFilter.value;
+  const plantaFilter = document.getElementById('planta-filter')?.value;
+  const dormitoriosFilter = document.getElementById('dormitorios-filter')?.value;
 
   let filtered = [...window.viviendas];
 
-  if (planta) {
-    filtered = filtered.filter(v => {
-      const text = (v.piso || v.planta || '').toString().toLowerCase();
-      return text.includes(planta.toLowerCase());
-    });
+  if (plantaFilter) {
+    filtered = filtered.filter(v => mapPlantaNumeroALetra(v.planta) === plantaFilter);
   }
-  
-  if (dormitorios) {
-    filtered = filtered.filter(v => v.dormitorios == dormitorios);
+  if (dormitoriosFilter) {
+    filtered = filtered.filter(v => String(v.dormitorios) === dormitoriosFilter);
   }
 
   displayViviendas(filtered);
 }
 
-/**
- * Muestra las viviendas filtradas en la tabla
- */
-function displayViviendas(viviendas) {
-  // Cambiamos la forma de obtener la tabla
-  const viviendasTable = document.getElementById('viviendas-table');
-  
-  if (!viviendasTable) {
-    console.error('No se encontró la tabla de viviendas con ID "viviendas-table"');
-    return;
-  }
-  
-  console.log('Mostrando', viviendas.length, 'viviendas en la tabla');
-  
-  // Limpiar tabla
-  viviendasTable.innerHTML = '';
-  
-  // Insertar filas
-  viviendas.forEach(v => {
+
+function displayViviendas(vivs) {
+  const tabla = document.getElementById('viviendas-table');
+  if (!tabla) return;
+
+  tabla.innerHTML = '';
+  vivs.forEach(v => {
     const row = document.createElement('tr');
-    row.className = 'vivienda-row';
     const estadoClass = v.estado === 'Reservado' ? 'estado-reservado' : 'estado-disponible';
-    const viviendaId = v.id || `${v.bloque}-${v.planta || v.piso}`.toLowerCase().replace(/\s+/g, '-');
-    const pisoLabel = v.piso || `${v.planta} ${v.letra}`;
-    
+    const id = getViviendaId(v);
+    const plantaTexto = mapPlantaNumeroALetra(v.planta);
+    const pisoLabel = `${plantaTexto} ${v.letra || ''}`.trim();
+    const planoLink = v.link_plano ? `<a href="${v.link_plano}" target="_blank">Ver plano</a>` : '-';
+
     row.innerHTML = `
-      <td><a href="viviendas/template-viviendas.html?id=${viviendaId}" class="vivienda-link">${v.bloque}</a></td>
-      <td><a href="viviendas/template-viviendas.html?id=${viviendaId}" class="vivienda-link">${pisoLabel}</a></td>
+      <td>${v.bloque}</td>
+      <td>${pisoLabel}</td>
       <td>${v.dormitorios}</td>
       <td>${v.baños}</td>
-      <td>${(v.supConst || v.sup_construida || v.sup_total).toFixed(2)} m²</td>
-      <td>€${v.precio.toLocaleString()}</td>
+      <td>${(v.sup_construida || v.sup_total || 0).toFixed(2)} m²</td>
+      <td>€${v.precio?.toLocaleString() || ''}</td>
+      <td>${planoLink}</td>
       <td class="${estadoClass}">${v.estado}</td>
-      <td>
-        <i class="fas fa-download plano-icon" title="Descargar plano"></i>
-        <i class="fas fa-eye plano-icon" title="Ver plano"></i>
-      </td>
-    `;
-
-    row.addEventListener('click', (e) => {
-      if (!e.target.classList.contains('plano-icon')) {
-        window.location.href = `viviendas/template-viviendas.html?id=${viviendaId}`;
-      }
-    });
+      <td><a href="viviendas/template-viviendas.html?id=${id}" class="vivienda-link">Más información</a></td>`;
     
-    viviendasTable.appendChild(row);
+    tabla.appendChild(row);
   });
 }
 
+function mapPlantaNumeroALetra(num) {
+  switch (parseInt(num)) {
+    case 1: return 'Primero';
+    case 2: return 'Segundo';
+    case 3: return 'Tercero';
+    case 4: return 'Cuarto';
+    default: return num;
+  }
+}
 /**
  * Configura el formulario de contacto
  */

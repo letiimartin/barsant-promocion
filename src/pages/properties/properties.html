@@ -1,0 +1,41 @@
+<section class="properties" id="properties">
+    <div class="container">
+        <h2 class="section-title">Planos y Precios</h2>
+        <div class="filters">
+            <select id="planta-filter">
+                <option value="">Todas las Plantas</option>
+                <option value="Primero">Primera</option>
+                <option value="Segundo">Segunda</option>
+                <option value="Tercero">Tercera</option>
+                <option value="Cuarto">Cuarta</option>
+            </select>
+            <select id="dormitorios-filter">
+                <option value="">Todos los Dormitorios</option>
+                <option value="1">1 Dormitorio</option>
+                <option value="2">2 Dormitorios</option>
+                <option value="3">3 Dormitorios</option>
+            </select>
+        </div>
+        <div class="table-responsive">
+            <table class="properties-table">
+                <thead>
+                    <tr>
+                        <th>Bloque</th>
+                        <th>Planta</th>
+                        <th>Dormitorios</th>
+                        <th>Baños</th>
+                        <th>Superficie Construida</th>
+                        <th>Precio</th>
+                        <th>Planos</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="viviendas-table">
+                    <!-- Las viviendas se cargarán dinámicamente -->
+                </tbody>
+            </table>
+            <p class="price-note">*A estos precios debe añadirse el IVA al tipo vigente en cada momento en que se produzca el devengo. El tipo actual es el 10%</p>
+        </div>
+    </div>
+</section>

@@ -1,7 +1,8 @@
 [
   {
+    "id": "V1",
     "bloque": "A",
-    "planta": "PRIMERO",
+    "planta": 1,
     "letra": "A",
     "sup_util": 54.35,
     "sup_construida": 67.68,
@@ -16,8 +17,9 @@
     "ratio_util": 0.682788944723618
   },
   {
+    "id": "V2",
     "bloque": "A",
-    "planta": "PRIMERO",
+    "planta": 1,
     "letra": "B",
     "sup_util": 36.78,
     "sup_construida": 43.01,
@@ -32,8 +34,9 @@
     "ratio_util": 0.727164887307236
   },
   {
+    "id": "V3",
     "bloque": "A",
-    "planta": "PRIMERO",
+    "planta": 1,
     "letra": "C",
     "sup_util": 36.91,
     "sup_construida": 43.65,
@@ -48,8 +51,9 @@
     "ratio_util": 0.718932606155045
   },
   {
+    "id": "V4",
     "bloque": "A",
-    "planta": "SEGUNDO",
+    "planta": 2,
     "letra": "A",
     "sup_util": 68.65,
     "sup_construida": 83.93,
@@ -64,8 +68,9 @@
     "ratio_util": 0.695471583426198
   },
   {
+    "id": "V5",
     "bloque": "A",
-    "planta": "SEGUNDO",
+    "planta": 2,
     "letra": "B",
     "sup_util": 76.16,
     "sup_construida": 88.2,
@@ -80,8 +85,9 @@
     "ratio_util": 0.734213824351682
   },
   {
+    "id": "V6",
     "bloque": "A",
-    "planta": "TERCERO",
+    "planta": 3,
     "letra": "A",
     "sup_util": 68.65,
     "sup_construida": 83.93,
@@ -96,8 +102,9 @@
     "ratio_util": 0.695471583426198
   },
   {
+    "id": "V7",
     "bloque": "A",
-    "planta": "TERCERO",
+    "planta": 3,
     "letra": "B",
     "sup_util": 76.01,
     "sup_construida": 88.2,
@@ -112,8 +119,9 @@
     "ratio_util": 0.732767762460233
   },
   {
+    "id": "V8",
     "bloque": "A",
-    "planta": "CUARTO",
+    "planta": 4,
     "letra": "A",
     "sup_util": 68.61,
     "sup_construida": 83.93,
@@ -128,8 +136,9 @@
     "ratio_util": 0.695066355992301
   },
   {
+    "id": "V9",
     "bloque": "A",
-    "planta": "CUARTO",
+    "planta": 4,
     "letra": "B",
     "sup_util": 75.97,
     "sup_construida": 88.2,
@@ -144,8 +153,9 @@
     "ratio_util": 0.732382145955847
   },
   {
+    "id": "V10",
     "bloque": "B",
-    "planta": "PRIMERO",
+    "planta": 1,
     "letra": "A",
     "sup_util": 36.85,
     "sup_construida": 42.72,
@@ -160,8 +170,9 @@
     "ratio_util": 0.741299537316435
   },
   {
+    "id": "V11",
     "bloque": "B",
-    "planta": "PRIMERO",
+    "planta": 1,
     "letra": "B",
     "sup_util": 36.39,
     "sup_construida": 42.3,
@@ -176,8 +187,9 @@
     "ratio_util": 0.739183424741012
   },
   {
+    "id": "V12",
     "bloque": "B",
-    "planta": "PRIMERO",
+    "planta": 1,
     "letra": "C",
     "sup_util": 36.92,
     "sup_construida": 43.52,
@@ -192,8 +204,9 @@
     "ratio_util": 0.729067930489732
   },
   {
+    "id": "V13",
     "bloque": "B",
-    "planta": "PRIMERO",
+    "planta": 1,
     "letra": "D",
     "sup_util": 37.03,
     "sup_construida": 43.52,
@@ -208,8 +221,9 @@
     "ratio_util": 0.731240126382307
   },
   {
+    "id": "V14",
     "bloque": "B",
-    "planta": "SEGUNDO",
+    "planta": 2,
     "letra": "A",
     "sup_util": 87.58,
     "sup_construida": 101.26,
@@ -224,8 +238,9 @@
     "ratio_util": 0.743211133740665
   },
   {
+    "id": "V15",
     "bloque": "B",
-    "planta": "SEGUNDO",
+    "planta": 2,
     "letra": "B",
     "sup_util": 76.54,
     "sup_construida": 88.95,
@@ -240,8 +255,9 @@
     "ratio_util": 0.739445464206357
   },
   {
+    "id": "V16",
     "bloque": "B",
-    "planta": "TERCERO",
+    "planta": 3,
     "letra": "A",
     "sup_util": 87.59,
     "sup_construida": 101.26,
@@ -256,8 +272,9 @@
     "ratio_util": 0.743295994568907
   },
   {
+    "id": "V17",
     "bloque": "B",
-    "planta": "TERCERO",
+    "planta": 3,
     "letra": "B",
     "sup_util": 76.45,
     "sup_construida": 88.95,
@@ -272,8 +289,9 @@
     "ratio_util": 0.738575982996812
   },
   {
+    "id": "V18",
     "bloque": "B",
-    "planta": "CUARTO",
+    "planta": 4,
     "letra": "A",
     "sup_util": 87.6,
     "sup_construida": 101.26,
@@ -288,8 +306,9 @@
     "ratio_util": 0.743380855397149
   },
   {
+    "id": "V19",
     "bloque": "B",
-    "planta": "CUARTO",
+    "planta": 4,
     "letra": "B",
     "sup_util": 76.34,
     "sup_construida": 88.95,
@@ -304,8 +323,9 @@
     "ratio_util": 0.737513283740701
   },
   {
+    "id": "V20",
     "bloque": "C",
-    "planta": "PRIMERO",
+    "planta": 1,
     "letra": "A",
     "sup_util": 50.83,
     "sup_construida": 60.64,
@@ -320,8 +340,9 @@
     "ratio_util": 0.614482591876209
   },
   {
+    "id": "V21",
     "bloque": "C",
-    "planta": "SEGUNDO",
+    "planta": 2,
     "letra": "A",
     "sup_util": 60.49,
     "sup_construida": 71.97,
@@ -336,8 +357,9 @@
     "ratio_util": 0.616176021187736
   },
   {
+    "id": "V22",
     "bloque": "C",
-    "planta": "TERCERO",
+    "planta": 3,
     "letra": "A",
     "sup_util": 60.49,
     "sup_construida": 71.97,
@@ -352,8 +374,9 @@
     "ratio_util": 0.616176021187736
   },
   {
+    "id": "V23",
     "bloque": "C",
-    "planta": "CUARTO",
+    "planta": 4,
     "letra": "A",
     "sup_util": 58.9,
     "sup_construida": 71.97,
@@ -368,8 +391,9 @@
     "ratio_util": 0.599979627177345
   },
   {
+    "id": "V24",
     "bloque": "D",
-    "planta": "PRIMERO",
+    "planta": 1,
     "letra": "A",
     "sup_util": 63.87,
     "sup_construida": 75.23,
@@ -384,8 +408,9 @@
     "ratio_util": 0.650804972488282
   },
   {
+    "id": "V25",
     "bloque": "D",
-    "planta": "PRIMERO",
+    "planta": 1,
     "letra": "B",
     "sup_util": 38.55,
     "sup_construida": 44.31,
@@ -400,8 +425,9 @@
     "ratio_util": 0.666955017301038
   },
   {
+    "id": "V26",
     "bloque": "D",
-    "planta": "SEGUNDO",
+    "planta": 2,
     "letra": "A",
     "sup_util": 36.96,
     "sup_construida": 44.73,
@@ -416,8 +442,9 @@
     "ratio_util": 0.633419023136247
   },
   {
+    "id": "V27",
     "bloque": "D",
-    "planta": "SEGUNDO",
+    "planta": 2,
     "letra": "B",
     "sup_util": 34.46,
     "sup_construida": 40.33,
@@ -432,8 +459,9 @@
     "ratio_util": 0.655008553506938
   },
   {
+    "id": "V28",
     "bloque": "D",
-    "planta": "SEGUNDO",
+    "planta": 2,
     "letra": "C",
     "sup_util": 35.99,
     "sup_construida": 42.12,
@@ -448,8 +476,9 @@
     "ratio_util": 0.654959053685168
   },
   {
+    "id": "V29",
     "bloque": "D",
-    "planta": "TERCERO",
+    "planta": 3,
     "letra": "A",
     "sup_util": 36.96,
     "sup_construida": 44.73,
@@ -464,8 +493,9 @@
     "ratio_util": 0.633419023136247
   },
   {
+    "id": "V30",
     "bloque": "D",
-    "planta": "TERCERO",
+    "planta": 3,
     "letra": "B",
     "sup_util": 34.46,
     "sup_construida": 40.33,
@@ -480,8 +510,9 @@
     "ratio_util": 0.655008553506938
   },
   {
+    "id": "V31",
     "bloque": "D",
-    "planta": "TERCERO",
+    "planta": 3,
     "letra": "C",
     "sup_util": 35.99,
     "sup_construida": 42.12,
@@ -496,8 +527,9 @@
     "ratio_util": 0.654959053685168
   },
   {
+    "id": "V32",
     "bloque": "E",
-    "planta": "PRIMERO",
+    "planta": 1,
     "letra": "A",
     "sup_util": 64.65,
     "sup_construida": 78.75,
@@ -512,8 +544,9 @@
     "ratio_util": 0.611694578484247
   },
   {
+    "id": "V33",
     "bloque": "E",
-    "planta": "SEGUNDO",
+    "planta": 2,
     "letra": "A",
     "sup_util": 72.18,
     "sup_construida": 88.78,

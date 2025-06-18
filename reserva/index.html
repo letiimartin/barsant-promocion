@@ -249,9 +249,46 @@
             <div class="process-container">
                 <div id="steps-container"></div>
 
-                <!-- Step 1: Information -->
+                <!-- Step 1: Configuración -->
                 <div class="step-content" id="step1-content">
-                    <h2 class="step-title">Información y Datos Personales</h2>
+                    <h2 class="step-title">Configuración de Reserva</h2>
+                    <p class="step-description">Personaliza tu compra seleccionando cochera y trastero antes de facilitarnos tus datos.</p>
+
+                    <form id="reservation-step2-form">
+                        <div class="form-group">
+                            <label for="cochera">Selección de Cochera</label>
+                            <select id="cochera" name="cochera">
+                                <option value="incluida">Cochera Incluida - Gratis</option>
+                                <option value="premium">Upgrade a Cochera Premium +25.000€</option>
+                                <option value="cambiar">Cambiar Cochera (sin coste)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="trastero">Selección de Trastero</label>
+                            <select id="trastero" name="trastero">
+                                <option value="ninguno">Sin Trastero - 0€</option>
+                                <option value="muy_pequeno">Muy Pequeño (2-3m²) - 8.000€</option>
+                                <option value="pequeno">Pequeño (3-5m²) - 12.000€</option>
+                                <option value="mediano">Mediano (5-10m²) - 18.000€</option>
+                                <option value="grande">Grande (10m²+) - 25.000€</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <h4>Calculadora de Precio Total</h4>
+                            <pre id="price-summary"></pre>
+                        </div>
+
+                        <div class="actions">
+                            <button type="submit" class="cta-button" id="to-step2">Continuar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Step 2: Datos personales -->
+                <div class="step-content" id="step2-content" style="display: none;">
+                    <h2 class="step-title">Datos Personales y Financieros</h2>
                     <p class="step-description">Cuéntanos un poco sobre ti para comenzar el proceso de reserva de la vivienda seleccionada.</p>
                     
                     <div class="security-notice">
@@ -309,6 +346,39 @@
                             <textarea id="comentarios" name="comentarios" rows="4"></textarea>
                         </div>
                         
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="profesion">Profesión</label>
+                                <input type="text" id="profesion" name="profesion" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="ingresos">Ingresos anuales aproximados</label>
+                                <input type="number" id="ingresos" name="ingresos" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="financiacion">¿Necesita financiación?</label>
+                                <select id="financiacion" name="financiacion" required>
+                                    <option value="Si">Sí</option>
+                                    <option value="No">No</option>
+                                    <option value="Pendiente">Pendiente de confirmar</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="entidad">Entidad bancaria preferida (opcional)</label>
+                                <input type="text" id="entidad" name="entidad">
+                            </div>
+                        </div>
+
+                        <div class="form-group checkbox-group">
+                            <label>Confirmo que tengo disponible:</label>
+                            <div><input type="checkbox" id="doc_dni"> <label for="doc_dni">DNI/NIE en vigor</label></div>
+                            <div><input type="checkbox" id="doc_ingresos"> <label for="doc_ingresos">Justificantes de ingresos</label></div>
+                            <div><input type="checkbox" id="doc_capacidad"> <label for="doc_capacidad">Capacidad financiera para €6.000 de reserva</label></div>
+                        </div>
+
                         <div class="form-group checkbox-group">
                             <input type="checkbox" id="terms" name="terms" required>
                             <label for="terms">He leído y acepto los <a href="/legal/politica-privacidad.html" target="_blank">términos y condiciones</a> *</label>
@@ -318,75 +388,24 @@
 
                         <div class="actions">
                             <a href="javascript:history.back()" class="btn-back">Cancelar</a>
-                            <button type="submit" class="cta-button" id="go-to-step2">Continuar</button>
+                            <button type="submit" class="cta-button" id="go-to-step3">Continuar</button>
                         </div>
                     </form>
                 </div>
 
-                <!-- Step 2: Contrato y Firma -->
-                <div class="step-content" id="step2-content" style="display: none;">
-                    <h2 class="step-title">Contrato de Reserva y Firma</h2>
-                    <p class="step-description">Revisa y firma el contrato de reserva para la vivienda seleccionada.</p>
-                    
-                    <div class="contract-preview">
-                        <h3>Contrato de Reserva</h3>
-                        <p>El contrato de reserva será generado con tus datos y enviado a través de DocuSign para su firma electrónica.</p>
-                        
-                        <div class="docusign-info">
-                            <div class="docusign-logo">
-                                <i class="fas fa-file-signature"></i>
-                            </div>
-                            <div class="docusign-text">
-                                <h4>Firma Electrónica con DocuSign</h4>
-                                <p>Utilizamos DocuSign para la firma electrónica de documentos, garantizando la validez legal y la seguridad de todo el proceso.</p>
-                                <p>Recibirás un email con el enlace para revisar y firmar el contrato de reserva.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="contract-summary">
-                            <h4>Resumen del Contrato</h4>
-                            <ul>
-                                <li><strong>Vivienda:</strong> <span id="contract-property">Vivienda A Cuarto A</span></li>
-                                <li><strong>Precio:</strong> <span id="contract-price">€394.840</span></li>
-                                <li><strong>Importe de reserva:</strong> €6.000</li>
-                                <li><strong>Plazo de firma:</strong> 3 días hábiles</li>
-                            </ul>
-                        </div>
-                        
-                        <!-- Botón para ver el contrato -->
-                        <div style="margin-top: 20px;">
-                            <button type="button" class="cta-button" id="view-contract-btn">
-                                <i class="fas fa-file-pdf"></i> Ver Contrato de Reserva
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- Modal para mostrar el contrato -->
-                    <div id="contract-modal" class="modal" style="display:none;">
-                        <div class="modal-content">
-                            <span class="close-modal" id="close-contract-modal">&times;</span>
-                            <h2>Ejemplo de Contrato de Reserva</h2>
-                            <p>Este es un ejemplo del contrato de reserva. El documento final se personalizará con tus datos y se enviará para firma electrónica.</p>
-                            <ul>
-                                <li><b>Promotora:</b> Barsant Promociones Inmobiliarias, S.L.</li>
-                                <li><b>Comprador:</b> [Tus datos]</li>
-                                <li><b>Vivienda:</b> <span id="modal-contract-property"></span></li>
-                                <li><b>Precio:</b> <span id="modal-contract-price"></span></li>
-                                <li><b>Importe de reserva:</b> €6.000</li>
-                                <li><b>Condiciones:</b> La reserva está sujeta a la firma del contrato definitivo y la aprobación de la financiación.</li>
-                            </ul>
-                            <p>Para más detalles, contacta con nuestro equipo comercial.</p>
-                        </div>
-                    </div>
-                    
+
+                <!-- Step 3: Confirmación y Resumen -->
+                <div class="step-content" id="step3-content" style="display: none;">
+                    <h2 class="step-title">Confirmación y Resumen</h2>
+                    <pre id="resume-details"></pre>
                     <div class="actions">
-                        <a href="#" class="btn-back" id="back-to-step1"><i class="fas fa-arrow-left"></i> Volver</a>
-                        <button type="button" class="cta-button" id="go-to-step3">Continuar a Pago</button>
+                        <a href="#" class="btn-back" id="back-to-step3"><i class="fas fa-arrow-left"></i> Volver</a>
+                        <button type="button" class="cta-button" id="go-to-step4">Ir a Pago</button>
                     </div>
                 </div>
 
-                <!-- Step 3: Pago -->
-                <div class="step-content" id="step3-content" style="display: none;">
+                <!-- Step 4: Pago -->
+                <div class="step-content" id="step4-content" style="display: none;">
                     <h2 class="step-title">Pago de la Reserva</h2>
                     <p class="step-description">Realiza el pago de la reserva mediante transferencia bancaria y sube el justificante.</p>
                     
@@ -421,12 +440,72 @@
                     
                     <div class="actions">
                         <a href="#" class="btn-back" id="back-to-step2"><i class="fas fa-arrow-left"></i> Volver</a>
-                        <button type="button" class="cta-button" id="go-to-step4">Finalizar Reserva</button>
+                        <button type="button" class="cta-button" id="go-to-step5">Continuar a Firma</button>
                     </div>
                 </div>
 
-                <!-- Step 4: Confirmación -->
-                <div class="step-content" id="step4-content" style="display: none;">
+                <!-- Step 5: Firma Digital -->
+                <div class="step-content" id="step5-content" style="display: none;">
+                    <h2 class="step-title">Contrato de Reserva y Firma</h2>
+                    <p class="step-description">Revisa y firma el contrato de reserva para la vivienda seleccionada.</p>
+
+                    <div class="contract-preview">
+                        <h3>Contrato de Reserva</h3>
+                        <p>El contrato de reserva será generado con tus datos y enviado a través de DocuSign para su firma electrónica.</p>
+
+                        <div class="docusign-info">
+                            <div class="docusign-logo">
+                                <i class="fas fa-file-signature"></i>
+                            </div>
+                            <div class="docusign-text">
+                                <h4>Firma Electrónica con DocuSign</h4>
+                                <p>Utilizamos DocuSign para la firma electrónica de documentos, garantizando la validez legal y la seguridad de todo el proceso.</p>
+                                <p>Recibirás un email con el enlace para revisar y firmar el contrato de reserva.</p>
+                            </div>
+                        </div>
+
+                        <div class="contract-summary">
+                            <h4>Resumen del Contrato</h4>
+                            <ul>
+                                <li><strong>Vivienda:</strong> <span id="contract-property">Vivienda A Cuarto A</span></li>
+                                <li><strong>Precio:</strong> <span id="contract-price">€394.840</span></li>
+                                <li><strong>Importe de reserva:</strong> €6.000</li>
+                                <li><strong>Plazo de firma:</strong> 3 días hábiles</li>
+                            </ul>
+                        </div>
+
+                        <div style="margin-top: 20px;">
+                            <button type="button" class="cta-button" id="view-contract-btn">
+                                <i class="fas fa-file-pdf"></i> Ver Contrato de Reserva
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="contract-modal" class="modal" style="display:none;">
+                        <div class="modal-content">
+                            <span class="close-modal" id="close-contract-modal">&times;</span>
+                            <h2>Ejemplo de Contrato de Reserva</h2>
+                            <p>Este es un ejemplo del contrato de reserva. El documento final se personalizará con tus datos y se enviará para firma electrónica.</p>
+                            <ul>
+                                <li><b>Promotora:</b> Barsant Promociones Inmobiliarias, S.L.</li>
+                                <li><b>Comprador:</b> [Tus datos]</li>
+                                <li><b>Vivienda:</b> <span id="modal-contract-property"></span></li>
+                                <li><b>Precio:</b> <span id="modal-contract-price"></span></li>
+                                <li><b>Importe de reserva:</b> €6.000</li>
+                                <li><b>Condiciones:</b> La reserva está sujeta a la firma del contrato definitivo y la aprobación de la financiación.</li>
+                            </ul>
+                            <p>Para más detalles, contacta con nuestro equipo comercial.</p>
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                        <a href="#" class="btn-back" id="back-to-step4"><i class="fas fa-arrow-left"></i> Volver</a>
+                        <button type="button" class="cta-button" id="go-to-step6">Finalizar</button>
+                    </div>
+                </div>
+
+                <!-- Step 6: Confirmación -->
+                <div class="step-content" id="step6-content" style="display: none;">
                     <div class="confirmation-message">
                         <div class="confirmation-icon">
                             <i class="fas fa-check-circle"></i>
@@ -467,6 +546,7 @@
             const propertyTitle = window.barsantUtils.getUrlParameter('vivienda') || 'Vivienda A Cuarto A';
             const propertyPrice = window.barsantUtils.getUrlParameter('precio') || '394.840';
             const propertySpecs = window.barsantUtils.getUrlParameter('info') || '2 dormitorios · 2 baños · 68.61 m² útiles · 98.71 m² construidos';
+            const basePrice = parseFloat(propertyPrice.replace(/\./g, '').replace(',', '.'));
             
             // Mostrar resumen de la propiedad
             document.getElementById('property-summary-container').innerHTML = 
@@ -476,13 +556,32 @@
             document.getElementById('contract-property').textContent = propertyTitle;
             document.getElementById('contract-price').textContent = propertyPrice;
             document.getElementById('payment-property').textContent = propertyTitle;
+
+            function updateTotals() {
+                const cochera = document.getElementById('cochera').value;
+                const trastero = document.getElementById('trastero').value;
+                let cocheraPrice = cochera === 'premium' ? 25000 : 0;
+                let trasteroPrice = 0;
+                const prices = { 'muy_pequeno': 8000, 'pequeno': 12000, 'mediano': 18000, 'grande': 25000 };
+                if (prices[trastero]) trasteroPrice = prices[trastero];
+                const total = basePrice + cocheraPrice + trasteroPrice;
+                document.getElementById('price-summary').textContent =
+`Vivienda: €${basePrice.toLocaleString('es-ES')}\nCochera: €${cocheraPrice.toLocaleString('es-ES')}\nTrastero: €${trasteroPrice.toLocaleString('es-ES')}\nTOTAL: €${total.toLocaleString('es-ES')}\nImporte Reserva: €6.000`;
+            }
+
+            document.getElementById('cochera').addEventListener('change', updateTotals);
+            document.getElementById('trastero').addEventListener('change', updateTotals);
+            updateTotals();
             
             // Navegación entre pasos
             const step1Form = document.getElementById('reservation-step1-form');
+            const step2Form = document.getElementById('reservation-step2-form');
             const step1Content = document.getElementById('step1-content');
             const step2Content = document.getElementById('step2-content');
             const step3Content = document.getElementById('step3-content');
             const step4Content = document.getElementById('step4-content');
+            const step5Content = document.getElementById('step5-content');
+            const step6Content = document.getElementById('step6-content');
             
             // Paso 1 a Paso 2
             step1Form.addEventListener('submit', function(e) {
@@ -525,10 +624,12 @@
             });
             
             // Paso 2 a Paso 3
-            document.getElementById('go-to-step3').addEventListener('click', function() {
+            step2Form.addEventListener('submit', function(e) {
+                e.preventDefault();
                 step2Content.style.display = 'none';
                 step3Content.style.display = 'block';
                 document.getElementById('steps-container').innerHTML = BarsantComponents.getReservationSteps(3);
+                document.getElementById('resume-details').textContent = `Vivienda: ${propertyTitle}\nCochera: ${document.getElementById('cochera').value}\nTrastero: ${document.getElementById('trastero').value}`;
                 window.scrollTo(0, 0);
             });
             
@@ -540,12 +641,34 @@
                 document.getElementById('steps-container').innerHTML = BarsantComponents.getReservationSteps(2);
                 window.scrollTo(0, 0);
             });
+
+            document.getElementById('back-to-step3').addEventListener('click', function(e) {
+                e.preventDefault();
+                step4Content.style.display = 'none';
+                step3Content.style.display = 'block';
+                document.getElementById('steps-container').innerHTML = BarsantComponents.getReservationSteps(3);
+                window.scrollTo(0, 0);
+            });
             
             // Paso 3 a Paso 4
             document.getElementById('go-to-step4').addEventListener('click', function() {
                 step3Content.style.display = 'none';
                 step4Content.style.display = 'block';
                 document.getElementById('steps-container').innerHTML = BarsantComponents.getReservationSteps(4);
+                window.scrollTo(0, 0);
+            });
+
+            document.getElementById('go-to-step5').addEventListener('click', function() {
+                step4Content.style.display = 'none';
+                step5Content.style.display = 'block';
+                document.getElementById('steps-container').innerHTML = BarsantComponents.getReservationSteps(5);
+                window.scrollTo(0, 0);
+            });
+
+            document.getElementById('go-to-step6').addEventListener('click', function() {
+                step5Content.style.display = 'none';
+                step6Content.style.display = 'block';
+                document.getElementById('steps-container').innerHTML = BarsantComponents.getReservationSteps(6);
                 window.scrollTo(0, 0);
             });
             

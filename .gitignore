@@ -34,7 +34,7 @@ src/js/generate-hash.js
 
 
 data/*.json
-
+firebase-credentials.json
 
 backend/contratos_firmados/
 backend/contratos_locales/

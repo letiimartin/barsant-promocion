@@ -17,6 +17,113 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .catch(error => console.error(error));
 });
+
+// Funciones simplificadas para manejar los modales
+function openDocModal(docType) {
+    const modal = document.getElementById('doc-modal');
+    const modalTitle = document.getElementById('doc-modal-title');
+    const modalBody = document.getElementById('doc-modal-body');
+    
+    // Configurar contenido según el tipo de documento
+    switch(docType) {
+        case 'memoria-calidades':
+            modalTitle.textContent = 'Memoria de Calidades';
+            modalBody.innerHTML = `
+                <div class="doc-unavailable">
+                    <i class="fas fa-eye-slash"></i>
+                    <h4>Vista previa no disponible</h4>
+                    <p>La memoria de calidades no se puede visualizar en el navegador.<br>
+                    Haz clic en <span class="highlight">"Descargar PDF"</span> para consultarla en tu dispositivo.</p>
+                </div>
+            `;
+            break;
+            
+        case 'planos':
+            modalTitle.textContent = 'Planos Arquitectónicos';
+            modalBody.innerHTML = `
+                <div class="doc-unavailable">
+                    <i class="fas fa-eye-slash"></i>
+                    <h4>Vista previa no disponible</h4>
+                    <p>Los planos no se pueden visualizar en el navegador.<br>
+                    Haz clic en <span class="highlight">"Descargar PDF"</span> para consultarlos en tu dispositivo.</p>
+                </div>
+            `;
+            break;
+            
+        case 'guia-compra':
+            modalTitle.textContent = 'Guía de Compra';
+            modalBody.innerHTML = `
+                <div class="coming-soon">
+                    <i class="fas fa-clock"></i>
+                    <h4>Documento en preparación</h4>
+                    <p>La guía de compra estará disponible próximamente.<br>
+                    Mientras tanto, puede contactar con nuestro equipo comercial 
+                    para resolver cualquier duda sobre el proceso de compra.</p>
+                </div>
+            `;
+            break;
+            
+        default:
+            modalTitle.textContent = 'Documento';
+            modalBody.innerHTML = `
+                <div class="doc-unavailable">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h4>Contenido no disponible</h4>
+                    <p>Este documento no está disponible en este momento.</p>
+                </div>
+            `;
+    }
+    
+    // Mostrar el modal
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeDocModal() {
+    const modal = document.getElementById('doc-modal');
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+function initDocumentation() {
+    const modal = document.getElementById('doc-modal');
+    
+    if (modal) {
+        // Cerrar modal al hacer clic fuera
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeDocModal();
+            }
+        });
+        
+        // Cerrar con tecla Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.style.display === 'flex') {
+                closeDocModal();
+            }
+        });
+    }
+}
+/*
+document.addEventListener("DOMContentLoaded", function () {
+    fetch('src/pages/documentation/documentation.html')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("No se pudo cargar la documentación: " + response.status);
+            }
+            return response.text();
+        })
+        .then(data => {
+            const placeholder = document.getElementById('documentation-placeholder');
+            if (placeholder) {
+                placeholder.innerHTML = data;
+                initDocumentation();
+            } else {
+                console.error("No se encontró el div con id 'documentation-placeholder'");
+            }
+        })
+        .catch(error => console.error(error));
+});
 /* // Event listener para cerrar al hacer clic fuera del modal
 document.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById('doc-modal');
@@ -36,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 }); 
-*/
+--
 
 // Funciones para manejar los modales de documentación
 function initDocumentation() {
@@ -133,3 +240,4 @@ function closeDocModal() {
     modal.style.display = 'none';
     document.body.style.overflow = 'auto';
 }
+*/

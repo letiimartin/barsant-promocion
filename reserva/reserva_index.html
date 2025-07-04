@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Proceso de reserva para viviendas de Barsant Promociones. Complete su reserva en 4 sencillos pasos.">
+    <title>Proceso de Reserva | Barsant Promociones</title>
+    
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Estilos -->
+    <link rel="stylesheet" href="reserva-styles.css">
+</head>
+<body>
+    <div class="container" id="main-container">
+        <!-- Loading state -->
+        <div id="loading-state" class="loading">
+            <i class="fas fa-spinner"></i>
+            <p>Cargando datos de la vivienda...</p>
+        </div>
+
+        <!-- Error state -->
+        <div id="error-state" class="error-message" style="display: none;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div>
+                <strong>Error al cargar los datos</strong>
+                <p>No se pudieron cargar los datos necesarios. Por favor, inténtalo de nuevo.</p>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <div id="main-content" style="display: none;">
+            <h2 class="step-title">Configuración de Reserva</h2>
+            <p class="step-description">
+                Personaliza tu compra seleccionando cochera y/o trastero. 
+                Ambos elementos son opcionales y puedes añadirlos según tus necesidades.
+            </p>
+
+            <form id="reservation-step1-form">
+                <!-- Información de la vivienda -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-home"></i>
+                        Vivienda Seleccionada
+                    </h3>
+                    <div id="vivienda-info" style="background-color: #f8f9fa; padding: 20px; border-radius: var(--border-radius); border-left: 4px solid var(--secondary-color);">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h4 id="vivienda-nombre">Cargando...</h4>
+                                <p id="vivienda-specs">Cargando especificaciones...</p>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary-color);" id="vivienda-precio">€0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Avisos especiales -->
+                <div id="pack-notice" class="pack-notice" style="display: none;">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <strong>Oferta especial:</strong> Esta vivienda incluye cochera y trastero vinculados en pack promocional. 
+                        Puedes adquirir el pack completo con descuento o prescindir de ambos.
+                    </div>
+                </div>
+
+                <div id="no-opciones-notice" class="warning-notice" style="display: none;">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <strong>Información:</strong> Esta vivienda no incluye opción de cochera ni trastero.
+                    </div>
+                </div>
+
+                <!-- Pack Vinculado (Caso 3: tiene_asignados=true, vinculada=true) -->
+                <div class="form-section" id="pack-vinculado-section" style="display: none;">
+                    <h3 class="section-title">
+                        <i class="fas fa-gift"></i>
+                        Pack Cochera + Trastero (Incluidos)
+                    </h3>
+                    
+                    <div class="checkbox-group" id="pack-checkbox">
+                        <input type="checkbox" id="incluir_pack" name="incluir_pack">
+                        <label for="incluir_pack" class="checkbox-label">
+                            <strong>Incluir pack completo: Cochera + Trastero</strong>
+                            <div class="option-details" id="pack-details">
+                                Cochera: <span id="cochera-pack-info">Cargando...</span><br>
+                                Trastero: <span id="trastero-pack-info">Cargando...</span>
+                            </div>
+                        </label>
+                        <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 5px;">
+                            <span class="price-tag" id="pack-price-original" style="text-decoration: line-through; background-color: #ccc; font-size: 0.8rem;">€0</span>
+                            <span class="price-tag" id="pack-price-final">€0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Selecciones individuales (Caso 2: tiene_asignados=true, vinculada=false) -->
+                <div id="selecciones-individuales" style="display: none;">
+                    <!-- Selección de Cochera -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-car"></i>
+                            Plaza de Garaje (Opcional)
+                        </h3>
+                        
+                        <div class="checkbox-group" id="cochera-checkbox">
+                            <input type="checkbox" id="incluir_cochera" name="incluir_cochera">
+                            <label for="incluir_cochera" class="checkbox-label">
+                                <strong>Incluir plaza de garaje asignada</strong>
+                                <div class="option-details" id="cochera-details">Cargando información...</div>
+                            </label>
+                            <span class="price-tag" id="cochera-price">Cargando...</span>
+                        </div>
+                    </div>
+
+                    <!-- Selección de Trastero -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-box"></i>
+                            Trastero (Opcional)
+                        </h3>
+                        
+                        <div class="checkbox-group" id="trastero-checkbox">
+                            <input type="checkbox" id="incluir_trastero" name="incluir_trastero">
+                            <label for="incluir_trastero" class="checkbox-label">
+                                <strong>Incluir trastero asignado</strong>
+                                <div class="option-details" id="trastero-details">Cargando información...</div>
+                            </label>
+                            <span class="price-tag" id="trastero-price">Cargando...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resumen de precios -->
+                <div class="price-summary">
+                    <h4><i class="fas fa-calculator"></i> Resumen de Precios</h4>
+                    <div class="price-line">
+                        <span>Vivienda:</span>
+                        <span id="precio-vivienda">€0</span>
+                    </div>
+                    <div class="price-line" id="precio-cochera-line" style="display: none;">
+                        <span>Plaza de garaje:</span>
+                        <span id="precio-cochera">€0</span>
+                    </div>
+                    <div class="price-line" id="precio-trastero-line" style="display: none;">
+                        <span>Trastero:</span>
+                        <span id="precio-trastero">€0</span>
+                    </div>
+                    <div class="price-line" id="descuento-pack-line" style="display: none;">
+                        <span style="color: #28a745;"><i class="fas fa-percent"></i> Descuento pack:</span>
+                        <span style="color: #28a745;" id="descuento-pack">€0</span>
+                    </div>
+                    <div class="price-line total">
+                        <span>TOTAL:</span>
+                        <span id="precio-total">€0</span>
+                    </div>
+                    <div class="price-line reservation">
+                        <span>Importe de reserva:</span>
+                        <span>€6.000</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="cta-button" disabled>
+                    <i class="fas fa-arrow-right"></i> Continuar con mis datos
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module">
+        // Importar y usar la función de inicialización
+        import { inicializarReserva } from './reserva-functions.js';
+        
+        // Inicializar cuando el DOM esté cargado
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Iniciando proceso de reserva...');
+            inicializarReserva().catch(error => {
+                console.error('❌ Error en inicialización:', error);
+                document.getElementById('loading-state').style.display = 'none';
+                document.getElementById('error-state').style.display = 'flex';
+            });
+        });
+    </script>
+</body>
+</html>

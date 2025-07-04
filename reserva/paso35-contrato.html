@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contrato de Reserva - Firma Digital</title>
+    <link rel="stylesheet" href="reserva-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        
+        <div class="progress-bar">
+            <div class="step completed">
+                <div class="step-number">1</div>
+                <span>Configuración</span>
+            </div>
+            <div class="step completed">
+                <div class="step-number">2</div>
+                <span>Datos Personales</span>
+            </div>
+            <div class="step completed">
+                <div class="step-number">3</div>
+                <span>Confirmación</span>
+            </div>
+            <div class="step active">
+                <div class="step-number">4</div>
+                <span>Contrato</span>
+            </div>
+            <div class="step">
+                <div class="step-number">5</div>
+                <span>Pago</span>
+            </div>
+        </div>
+
+        <!-- Container principal del contrato - ANCHO COMPLETO -->
+        <div class="contract-container">
+            <div class="contract-header">
+                <h1 id="contract-title">Contrato de Reserva - Bloque A - Cuarto A</h1>
+                <div class="contract-property" id="contract-property">Vivienda: Bloque A - Cuarto A</div>
+            </div>
+
+            <!-- Estado del contrato -->
+            <div class="status-indicator" id="contract-status">
+                <i class="fas fa-hourglass-half"></i>
+                <span>Preparando su contrato personalizado...</span>
+            </div>
+
+            <!-- Acciones del contrato -->
+            <div class="contract-actions" id="contract-actions" style="display: none;">
+                <button class="btn-view" id="btn-fullscreen-contract">
+                    <i class="fas fa-expand"></i> Ver pantalla completa
+                </button>
+                <!-- Botón de descarga OCULTO hasta después de firmar -->
+                <button class="btn-download" id="btn-download-contract" style="display: none;">
+                    <i class="fas fa-download"></i> Descargar PDF Firmado
+                </button>
+                <!-- Botón de imprimir OCULTO hasta después de firmar -->
+                <button class="btn-download" id="btn-print-contract" style="display: none;">
+                    <i class="fas fa-print"></i> Imprimir PDF Firmado
+                </button>
+            </div>
+
+            <!-- Contenido del contrato - ANCHO COMPLETO -->
+            <div class="contract-content">
+                <!-- Estado de carga inicial -->
+                <div class="loading-contract" id="loading-state">
+                    <i class="fas fa-file-contract"></i>
+                    <h3>Generando su contrato personalizado</h3>
+                    <p>Por favor, espere mientras preparamos su documento...</p>
+                </div>
+
+                <!-- Visualización del contrato - ANCHO COMPLETO -->
+                <div class="contract-display" id="contract-display" style="display: none;">
+                    <iframe id="contract-iframe" class="contract-iframe" 
+                            title="Contrato de Reserva"
+                            style="width: 100%; height: 80vh; border: none;">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección de firma digital -->
+        <div class="signature-section" id="signature-container" style="display: none;">
+            <h2><i class="fas fa-signature"></i> Firma Digital</h2>
+            <p>Complete su firma digital para formalizar el contrato de reserva.</p>
+
+            <!-- Método de firma seleccionado -->
+            <div class="signature-methods">
+                <div class="signature-method active">
+                    <div class="signature-method-icon">
+                        <i class="fas fa-pen-fancy"></i>
+                    </div>
+                    <div class="signature-method-content">
+                        <h3>Firma con Canvas Digital</h3>
+                        <p>Firme directamente en la pantalla usando su mouse o dedo</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Canvas de firma -->
+            <div class="signature-canvas-container">
+                <p><strong>Firme en el área de abajo:</strong></p>
+                <canvas id="signature-canvas" width="600" height="200" class="signature-canvas"></canvas>
+                
+                <div class="signature-controls">
+                    <button class="btn-secondary" id="btn-clear-signature">
+                        <i class="fas fa-eraser"></i> Limpiar
+                    </button>
+                    <button class="cta-button" id="btn-save-signature" disabled>
+                        <i class="fas fa-save"></i> Guardar Firma
+                    </button>
+                </div>
+            </div>
+
+            <!-- Confirmación de firma -->
+            <div class="signature-confirmation" id="signature-confirmation">
+                <i class="fas fa-check-circle"></i>
+                <span>Firma capturada correctamente</span>
+            </div>
+        </div>
+
+        <!-- Términos finales y confirmación -->
+        <div class="final-terms" id="final-terms">
+            <h3><i class="fas fa-gavel"></i> Confirmación Final</h3>
+            <div class="terms-content">
+                <p><strong>Importante:</strong> Al proceder con la firma digital, usted confirma que:</p>
+                <ul>
+                    <li>Ha leído completamente el contrato de reserva</li>
+                    <li>Entiende y acepta todos los términos y condiciones</li>
+                    <li>La información proporcionada es veraz y completa</li>
+                    <li>Autoriza el procesamiento de sus datos según nuestra política de privacidad</li>
+                    <li>Su firma digital tiene la misma validez legal que una firma manuscrita</li>
+                </ul>
+            </div>
+            
+            <div class="final-confirmation">
+                <input type="checkbox" id="final-acceptance" name="final-acceptance">
+                <label for="final-acceptance">
+                    Confirmo que he leído el contrato completo, acepto todos los términos y condiciones, 
+                    y autorizo el procesamiento de mi firma digital para formalizar esta reserva.
+                </label>
+            </div>
+        </div>
+
+        <!-- Botones de navegación -->
+        <div class="form-actions">
+            <button type="button" class="btn-secondary" id="btn-volver">
+                <i class="fas fa-arrow-left"></i> Volver a confirmación
+            </button>
+            <button type="button" class="cta-button disabled" id="btn-finalizar-contrato" disabled>
+                <i class="fas fa-file-signature"></i> Finalizar Contrato y Proceder al Pago
+            </button>
+        </div>
+    </div>
+
+    <!-- Overlay de procesamiento -->
+    <div class="processing-overlay" id="processing-overlay">
+        <div class="processing-content">
+            <div class="processing-icon">
+                <i class="fas fa-cog fa-spin"></i>
+            </div>
+            <div class="processing-text">Procesando Firma Digital</div>
+            <div class="processing-details">
+                Integrando su firma en el contrato y generando el documento final...
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="paso35-contrato.js"></script>
+</body>
+</html>

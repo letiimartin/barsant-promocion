@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Confirmación de datos para completar la reserva de tu vivienda.">
+    <title>Confirmación | Proceso de Reserva</title>
+    
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Estilos -->
+    <link rel="stylesheet" href="reserva-styles.css">
+</head>
+<body>
+    <div class="container" id="main-container">
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="step completed">
+                <div class="step-number">1</div>
+                <span>Configuración</span>
+            </div>
+            <div class="step completed">
+                <div class="step-number">2</div>
+                <span>Datos Personales</span>
+            </div>
+            <div class="step active">
+                <div class="step-number">3</div>
+                <span>Confirmación</span>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <span>Contrato</span>
+            </div>
+            <div class="step">
+                <div class="step-number">5</div>
+                <span>Pago</span>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <div id="main-content">
+            <h2 class="step-title">Confirmación y Resumen</h2>
+            <p class="step-description">
+                Revisa todos los datos antes de proceder al pago. Puedes editar cualquier información si es necesario.
+            </p>
+
+            <!-- Resumen de Vivienda -->
+            <div class="summary-section">
+                <h3 class="section-title">
+                    <i class="fas fa-home"></i>
+                    Vivienda Seleccionada
+                </h3>
+                <div class="summary-card">
+                    <div class="summary-header">
+                        <div>
+                            <h4 id="vivienda-nombre">Cargando...</h4>
+                            <p id="vivienda-especificaciones">Cargando especificaciones...</p>
+                        </div>
+                        <div class="precio-principal" id="vivienda-precio">€0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Configuración de Cochera/Trastero -->
+            <div class="summary-section">
+                <h3 class="section-title">
+                    <i class="fas fa-cog"></i>
+                    Configuración Seleccionada
+                </h3>
+                <div class="summary-card">
+                    <div id="configuracion-contenido">
+                        <div class="config-item">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <span>Cargando configuración...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Datos Personales -->
+            <div class="summary-section">
+                <h3 class="section-title">
+                    <i class="fas fa-user"></i>
+                    Datos Personales
+                    <button class="btn-edit" id="editar-datos">
+                        <i class="fas fa-edit"></i> Editar
+                    </button>
+                </h3>
+                <div class="summary-card">
+                    <div class="datos-grid">
+                        <div class="dato-item">
+                            <strong>Nombre completo:</strong>
+                            <span id="nombre-completo">-</span>
+                        </div>
+                        <div class="dato-item">
+                            <strong>DNI/NIE:</strong>
+                            <span id="dni">-</span>
+                        </div>
+                        <div class="dato-item">
+                            <strong>Email:</strong>
+                            <span id="email">-</span>
+                        </div>
+                        <div class="dato-item">
+                            <strong>Teléfono:</strong>
+                            <span id="telefono">-</span>
+                        </div>
+                        <div class="dato-item">
+                            <strong>Dirección:</strong>
+                            <span id="direccion-completa">-</span>
+                        </div>
+                        <div class="dato-item" id="comentarios-item" style="display: none;">
+                            <strong>Comentarios:</strong>
+                            <span id="comentarios-texto">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resumen Financiero -->
+            <div class="summary-section">
+                <h3 class="section-title">
+                    <i class="fas fa-calculator"></i>
+                    Resumen Financiero
+                </h3>
+                <div class="summary-card">
+                    <div class="precio-desglose">
+                        <div class="precio-linea">
+                            <span>Vivienda:</span>
+                            <span id="precio-vivienda-resumen">€0</span>
+                        </div>
+                        <div class="precio-linea" id="precio-cochera-linea" style="display: none;">
+                            <span>Plaza de garaje:</span>
+                            <span id="precio-cochera-resumen">€0</span>
+                        </div>
+                        <div class="precio-linea" id="precio-trastero-linea" style="display: none;">
+                            <span>Trastero:</span>
+                            <span id="precio-trastero-resumen">€0</span>
+                        </div>
+                        <div class="precio-linea" id="descuento-pack-linea" style="display: none;">
+                            <span class="descuento-text">Descuento pack:</span>
+                            <span class="descuento-text" id="descuento-pack-resumen">-€0</span>
+                        </div>
+                        <div class="precio-linea total-linea">
+                            <span><strong>PRECIO TOTAL:</strong></span>
+                            <span><strong id="precio-total-resumen">€0</strong></span>
+                        </div>
+                    </div>
+                    
+                    <div class="reserva-info">
+                        <div class="reserva-linea">
+                            <span>Importe de reserva:</span>
+                            <span class="precio-reserva">€6.000</span>
+                        </div>
+                        <div class="reserva-linea">
+                            <span>Pendiente de pago:</span>
+                            <span id="precio-pendiente">€0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Términos y Confirmación -->
+            <div class="summary-section">
+                <h3><i class="fas fa-file-contract"></i> Términos de la Reserva</h3>
+                <div class="terminos-reserva">
+                    <div class="alert-info">
+                        <i class="fas fa-info-circle"></i>
+                        <p><strong>Importante:</strong> Al proceder al siguiente paso se generará automáticamente tu contrato personalizado para firma digital.</p>
+                    </div>
+                    
+                    <div class="terminos-lista">
+                        <div class="termino-item">
+                            <i class="fas fa-euro-sign"></i>
+                            <div>
+                                <strong>Importe de reserva:</strong> €6.000 (no reembolsables una vez firmado el contrato de reserva)
+                            </div>
+                        </div>
+                        <div class="termino-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <div>
+                                <strong>Validez:</strong> Esta reserva será válida durante 15 días hábiles para completar la documentación
+                            </div>
+                        </div>
+                        <div class="termino-item">
+                            <i class="fas fa-file-signature"></i>
+                            <div>
+                                <strong>Contrato digital:</strong> Se generará un contrato de reserva personalizado que deberás firmar electrónicamente
+                            </div>
+                        </div>
+                        <div class="termino-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <div>
+                                <strong>Seguridad:</strong> Tu firma digital tendrá plena validez legal según la normativa vigente
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="confirmacion-final">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="confirmo-datos" name="confirmo-datos" required>
+                            <label for="confirmo-datos">
+                                <strong>Confirmo que todos los datos son correctos</strong> y acepto proceder con la generación del contrato de reserva de la vivienda seleccionada
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botones de navegación -->
+            <div class="form-actions">
+                <button type="button" class="btn-secondary" id="btn-volver">
+                    <i class="fas fa-arrow-left"></i> Volver a datos
+                </button>
+                <button type="button" class="cta-button disabled" id="btn-proceder-contrato" disabled>
+                    <i class="fas fa-file-contract"></i> Generar Contrato y Firmar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="paso3-confirmacion.js"></script>
+</body>
+</html>

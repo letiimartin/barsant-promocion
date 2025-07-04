@@ -209,31 +209,31 @@
             async function checkPassword() {
                 const inputPassword = passwordInput.value.trim();
                 
-                // try {
-                //     const response = await fetch('/.netlify/functions/auth', {
-                //         method: 'POST',
-                //         headers: {
-                //             'Content-Type': 'application/json',
-                //         },
-                //         body: JSON.stringify({ password: inputPassword })
-                //     });
+                try {
+                    const response = await fetch('/.netlify/functions/auth', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ password: inputPassword })
+                    });
 
-                //     const data = await response.json();
+                    const data = await response.json();
 
-                //     if (data.success) {
-                //         sessionStorage.setItem('authenticated', 'true');
-                //         window.location.href = '/index.html';
-                //     } else {
-                //         errorMessage.style.display = 'block';
-                //         passwordInput.value = '';
-                //         passwordInput.focus();
-                //     }
-                // } catch (error) {
-                //     console.error('Error:', error);
-                //     errorMessage.textContent = 'Error al verificar la contraseña';
-                //     errorMessage.style.display = 'block';
-                // }
-                // Simulación de verificación de contraseña
+                    if (data.success) {
+                        sessionStorage.setItem('authenticated', 'true');
+                        window.location.href = '/index.html';
+                    } else {
+                        errorMessage.style.display = 'block';
+                        passwordInput.value = '';
+                        passwordInput.focus();
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    errorMessage.textContent = 'Error al verificar la contraseña';
+                    errorMessage.style.display = 'block';
+                }
+               /*  // Simulación de verificación de contraseña
                 const correctPassword = '1234'; // Cambia esto por la contraseña real
                 if (inputPassword === correctPassword) {
                     sessionStorage.setItem('authenticated', 'true');
@@ -242,7 +242,7 @@
                     errorMessage.style.display = 'block';
                     passwordInput.value = '';
                     passwordInput.focus();
-                }
+                } */
                 
             }
             

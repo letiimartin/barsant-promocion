@@ -1,0 +1,24 @@
+{
+  "name": "barsant-contrato-backend",
+  "version": "1.0.0",
+  "description": "Backend para generación y firma de contratos",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "multer": "^1.4.5-lts.1",
+    "pdfkit": "^0.13.0",
+    "canvas": "^2.11.2",
+    "firebase-admin": "^11.10.1",
+    "moment": "^2.29.4",
+    "crypto": "^1.0.1",
+    "body-parser": "^1.20.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

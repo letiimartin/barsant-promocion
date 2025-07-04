@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Pago de la reserva - Finaliza tu reserva de vivienda.">
+    <title>Pago | Proceso de Reserva</title>
+    
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Estilos -->
+    <link rel="stylesheet" href="reserva-styles.css">
+</head>
+<body>
+    <div class="container" id="main-container">
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="step completed">
+                <div class="step-number">1</div>
+                <span>Configuración</span>
+            </div>
+            <div class="step completed">
+                <div class="step-number">2</div>
+                <span>Datos Personales</span>
+            </div>
+            <div class="step completed">
+                <div class="step-number">3</div>
+                <span>Confirmación</span>
+            </div>
+            <div class="step completed">
+                <div class="step-number">4</div>
+                <span>Contrato</span>
+            </div>
+            <div class="step active">
+                <div class="step-number">5</div>
+                <span>Pago</span>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <div id="main-content">
+            <h2 class="step-title">Pago de la Reserva</h2>
+            <p class="step-description">
+                Realiza el pago de €6.000 para confirmar tu reserva. Puedes elegir entre transferencia bancaria o pago con tarjeta.
+            </p>
+
+            <!-- Resumen del pago -->
+            <div class="payment-summary">
+                <h3 class="section-title">
+                    <i class="fas fa-receipt"></i>
+                    Resumen del Pago
+                </h3>
+                <div class="payment-details">
+                    <div class="detail-row">
+                        <span>Vivienda:</span>
+                        <span id="vivienda-resumen">Cargando...</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>Cliente:</span>
+                        <span id="cliente-resumen">Cargando...</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>Precio total de la vivienda:</span>
+                        <span id="precio-total-vivienda">€0</span>
+                    </div>
+                    <div class="detail-row payment-amount">
+                        <span><strong>Importe de reserva a pagar:</strong></span>
+                        <span><strong>€6.000</strong></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Métodos de pago -->
+            <div class="payment-methods">
+                <h3 class="section-title">
+                    <i class="fas fa-credit-card"></i>
+                    Método de Pago
+                </h3>
+                
+                <div class="payment-options">
+                    <!-- Transferencia bancaria -->
+                    <div class="payment-option">
+                        <input type="radio" id="transfer" name="payment-method" value="transfer" checked>
+                        <label for="transfer" class="payment-option-content">
+                            <div class="payment-icon">
+                                <i class="fas fa-university"></i>
+                            </div>
+                            <div class="payment-info">
+                                <h4>Transferencia Bancaria</h4>
+                                <p>Realiza una transferencia y sube el justificante</p>
+                                <p class="payment-time">Procesamiento: 1-2 días hábiles</p>
+                            </div>
+                            <div class="payment-badge recommended">
+                                <i class="fas fa-star"></i>
+                                Recomendado
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Pago con tarjeta -->
+                    <div class="payment-option">
+                        <input type="radio" id="card" name="payment-method" value="card">
+                        <label for="card" class="payment-option-content">
+                            <div class="payment-icon">
+                                <i class="fas fa-credit-card"></i>
+                            </div>
+                            <div class="payment-info">
+                                <h4>Pago con Tarjeta</h4>
+                                <p>Visa, MasterCard, American Express</p>
+                                <p class="payment-time">Procesamiento: Inmediato</p>
+                            </div>
+                            <div class="payment-badge instant">
+                                <i class="fas fa-bolt"></i>
+                                Instantáneo
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formulario de transferencia -->
+            <div class="payment-form" id="transfer-form">
+                <h3 class="section-title">
+                    <i class="fas fa-university"></i>
+                    Datos para Transferencia Bancaria
+                </h3>
+                
+                <div class="bank-details-card">
+                    <div class="bank-info">
+                        <h4>Datos Bancarios del Destinatario</h4>
+                        <div class="bank-data">
+                            <div class="bank-row important">
+                                <span class="bank-label">Beneficiario:</span>
+                                <span class="bank-value">Barsant Promociones Inmobiliarias, S.L.</span>
+                                <button type="button" class="copy-btn" data-copy="Barsant Promociones Inmobiliarias, S.L.">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="bank-row important">
+                                <span class="bank-label">IBAN:</span>
+                                <span class="bank-value">ES21 2100 0418 4502 0005 1332</span>
+                                <button type="button" class="copy-btn" data-copy="ES21 2100 0418 4502 0005 1332">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="bank-row">
+                                <span class="bank-label">BIC/SWIFT:</span>
+                                <span class="bank-value">CAIXESBBXXX</span>
+                                <button type="button" class="copy-btn" data-copy="CAIXESBBXXX">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="bank-row important">
+                                <span class="bank-label">Importe:</span>
+                                <span class="bank-value">€6.000,00</span>
+                                <button type="button" class="copy-btn" data-copy="6000">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="bank-row important">
+                                <span class="bank-label">Concepto:</span>
+                                <span class="bank-value" id="transfer-concept">Cargando concepto...</span>
+                                <button type="button" class="copy-btn" id="copy-concept" data-copy="">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="transfer-instructions">
+                        <h4>Instrucciones Importantes</h4>
+                        <ul>
+                            <li>
+                                <i class="fas fa-exclamation-triangle"></i>
+                                El pago debe realizarse desde una cuenta bancaria a nombre del titular de la reserva
+                            </li>
+                            <li>
+                                <i class="fas fa-clock"></i>
+                                Una vez realizada la transferencia, sube el justificante en la sección inferior
+                            </li>
+                            <li>
+                                <i class="fas fa-shield-alt"></i>
+                                Tu reserva se confirmará una vez verifiquemos el pago (1-2 días hábiles)
+                            </li>
+                            <li>
+                                <i class="fas fa-phone"></i>
+                                Para cualquier duda, contacta con nosotros en el 958 123 456
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Upload del justificante -->
+                <div class="upload-section">
+                    <h4>Subir Justificante de Pago</h4>
+                    <p>Una vez realizada la transferencia, sube aquí el justificante bancario:</p>
+                    
+                    <div class="file-upload-area" id="file-upload-area">
+                        <input type="file" id="file-input" accept=".pdf,.jpg,.jpeg,.png" hidden>
+                        <div class="upload-content">
+                            <div class="upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <div class="upload-text">
+                                <strong>Haz clic aquí o arrastra el archivo</strong>
+                                <p>Sube el justificante de tu transferencia</p>
+                                <small>Formatos aceptados: PDF, JPG, PNG (máx. 5MB)</small>
+                            </div>
+                        </div>
+                        <div class="file-preview" id="file-preview" style="display: none;">
+                            <div class="file-info">
+                                <i class="fas fa-file-alt"></i>
+                                <span id="file-name">archivo.pdf</span>
+                            </div>
+                            <button type="button" class="remove-file" id="remove-file">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formulario de tarjeta -->
+            <div class="payment-form" id="card-form" style="display: none;">
+                <h3 class="section-title">
+                    <i class="fas fa-credit-card"></i>
+                    Datos de la Tarjeta
+                </h3>
+                
+                <div class="card-form-container">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="card-number">Número de Tarjeta *</label>
+                            <input type="text" id="card-number" name="card-number" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="card-name">Nombre del Titular *</label>
+                            <input type="text" id="card-name" name="card-name" placeholder="Como aparece en la tarjeta" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="card-expiry">Fecha de Caducidad *</label>
+                            <input type="text" id="card-expiry" name="card-expiry" placeholder="MM/AA" maxlength="5" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="card-cvv">CVV *</label>
+                            <input type="text" id="card-cvv" name="card-cvv" placeholder="123" maxlength="3" required>
+                        </div>
+                    </div>
+                    
+                    <div class="security-notice">
+                        <i class="fas fa-shield-alt"></i>
+                        <div>
+                            <strong>Pago 100% seguro:</strong> Utilizamos cifrado SSL de 256 bits y no almacenamos datos de tarjetas.
+                        </div>
+                    </div>
+                    
+                    <div class="card-brands">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCA0MCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iIzAwNTFBNSIvPgo8dGV4dCB4PSI1IiB5PSIxNiIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEwIiBmaWxsPSJ3aGl0ZSI+VklTQTwvdGV4dD4KPC9zdmc+" alt="Visa">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCA0MCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iI0VCMDAxQiIvPgo8Y2lyY2xlIGN4PSIxNSIgY3k9IjEyIiByPSI2IiBmaWxsPSIjRkY1RjAwIiBmaWxsLW9wYWNpdHk9IjAuOCIvPgo8Y2lyY2xlIGN4PSIyNSIgY3k9IjEyIiByPSI2IiBmaWxsPSIjRkY1RjAwIiBmaWxsLW9wYWNpdHk9IjAuOCIvPgo8L3N2Zz4=" alt="MasterCard">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botones de navegación -->
+            <div class="form-actions">
+                <button type="button" class="btn-secondary" id="btn-volver">
+                    <i class="fas fa-arrow-left"></i> Volver al contrato
+                </button>
+                <button type="button" class="cta-button disabled" id="btn-finalizar" disabled>
+                    <i class="fas fa-check"></i> Finalizar Reserva
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de éxito -->
+    <div class="modal-overlay" id="success-modal" style="display: none;">
+        <div class="modal-content success-modal">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>¡Reserva Completada!</h3>
+            <p>
+                Hemos recibido tu solicitud de reserva. Te enviaremos un email de confirmación en los próximos minutos 
+                con todos los detalles y el contrato de reserva.
+            </p>
+            <p>
+                <strong>Número de reserva:</strong> <span id="numero-reserva">#REV-2024-001</span>
+            </p>
+            <div class="modal-actions">
+                <button type="button" class="cta-button" id="btn-ir-inicio">
+                    <i class="fas fa-home"></i> Ir al Inicio
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="paso4-pago.js"></script>
+</body>
+</html>

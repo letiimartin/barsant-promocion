@@ -21,7 +21,7 @@ coverage/
 .vscode/
 .idea/
 
-# System files
+# System file
 .DS_Store
 Thumbs.db
 
@@ -31,8 +31,10 @@ Thumbs.db
 # Archivos de utilidad
 src/js/generate-hash.js
 
-CUADROS_DE_SUPERFICIES.xlsx
-Prueba plano de ventas 4B.pdf
+
 
 data/*.json
 firebase-credentials.json
+
+backend/contratos_firmados/
+backend/contratos_locales/

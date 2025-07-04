@@ -613,43 +613,370 @@ function mapPlantaNumeroALetra(num) {
   }
 }
 /**
- * Configura el formulario de contacto
+ * Configura el formulario de contacto con envío real de emails
  */
 function setupContactForm() {
   const contactForm = document.getElementById('contact-form');
   if (!contactForm) return;
   
+  // Inicializar EmailJS cuando se carga la página
+  initEmailJS();
+  
   contactForm.addEventListener('submit', function(e) {
     e.preventDefault();
-    alert('Formulario enviado. Nos pondremos en contacto contigo pronto.');
-    this.reset();
+    
+    // Validar formulario
+    if (!validarFormularioContacto()) {
+      return;
+    }
+    
+    // Mostrar loading
+    mostrarEstadoEnvio('enviando');
+    
+    // Enviar email
+    enviarEmailContacto(contactForm);
   });
+}
+
+/**
+ * Inicializa EmailJS con tu User ID público
+ */
+function initEmailJS() {
+  // Reemplaza 'TU_USER_ID' con tu User ID de EmailJS
+  emailjs.init("ATPsbq4KNK2UyMIMW");
+}
+
+/**
+ * Valida el formulario de contacto
+ */
+function validarFormularioContacto() {
+  const form = document.getElementById('contact-form');
+  const nombre = form.querySelector('#name').value.trim();
+  const email = form.querySelector('#email').value.trim();
+  const telefono = form.querySelector('#phone').value.trim();
+  
+  // Validar campos obligatorios
+  if (!nombre) {
+    mostrarErrorValidacion('name', 'El nombre es obligatorio');
+    return false;
+  }
+  
+  if (!email) {
+    mostrarErrorValidacion('email', 'El email es obligatorio');
+    return false;
+  }
+  
+  if (!validarEmail(email)) {
+    mostrarErrorValidacion('email', 'Ingrese un email válido');
+    return false;
+  }
+  
+  if (!telefono) {
+    mostrarErrorValidacion('phone', 'El teléfono es obligatorio');
+    return false;
+  }
+  
+  if (!validarTelefono(telefono)) {
+    mostrarErrorValidacion('phone', 'Ingrese un teléfono válido');
+    return false;
+  }
+  
+  // Limpiar errores anteriores
+  limpiarErroresValidacion();
+  return true;
+}
+
+/**
+ * Envía el email usando EmailJS
+ */
+function enviarEmailContacto(form) {
+  // Obtener datos del formulario
+  const formData = new FormData(form);
+  const templateParams = {
+    from_name: formData.get('name') || document.getElementById('name').value,
+    from_email: formData.get('email') || document.getElementById('email').value,
+    phone: formData.get('phone') || document.getElementById('phone').value,
+    message: formData.get('message') || document.getElementById('message').value || 'Sin mensaje adicional',
+    to_email: 'info@barsant.es'
+  };
+  
+  // Enviar usando EmailJS
+  emailjs.send('service_md1c3ua', 'template_08agbvf', templateParams)
+    .then(function(response) {
+      console.log('✅ Email enviado exitosamente:', response);
+      mostrarEstadoEnvio('exito');
+      
+      // Resetear formulario después de 2 segundos
+      setTimeout(() => {
+        form.reset();
+        ocultarEstadoEnvio();
+      }, 2000);
+      
+    }, function(error) {
+      console.error('❌ Error enviando email:', error);
+      mostrarEstadoEnvio('error');
+      
+      // Ocultar mensaje de error después de 5 segundos
+      setTimeout(() => {
+        ocultarEstadoEnvio();
+      }, 5000);
+    });
+}
+
+/**
+ * Muestra el estado del envío del formulario
+ */
+function mostrarEstadoEnvio(estado) {
+  const form = document.getElementById('contact-form');
+  const submitButton = form.querySelector('button[type="submit"]');
+  
+  // Eliminar notificación anterior si existe
+  const notificacionAnterior = document.querySelector('.form-notification');
+  if (notificacionAnterior) {
+    notificacionAnterior.remove();
+  }
+  
+  // Crear notificación
+  const notificacion = document.createElement('div');
+  notificacion.className = 'form-notification';
+  
+  switch (estado) {
+    case 'enviando':
+      notificacion.innerHTML = `
+        <div class="notification sending">
+          <i class="fas fa-spinner fa-spin"></i>
+          <span>Enviando mensaje...</span>
+        </div>
+      `;
+      submitButton.disabled = true;
+      submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+      break;
+      
+    case 'exito':
+      notificacion.innerHTML = `
+        <div class="notification success">
+          <i class="fas fa-check-circle"></i>
+          <span>¡Mensaje enviado correctamente! Nos pondremos en contacto contigo pronto.</span>
+        </div>
+      `;
+      submitButton.disabled = false;
+      submitButton.innerHTML = '<i class="fas fa-check"></i> Enviado';
+      break;
+      
+    case 'error':
+      notificacion.innerHTML = `
+        <div class="notification error">
+          <i class="fas fa-exclamation-triangle"></i>
+          <span>Error al enviar el mensaje. Por favor, inténtalo de nuevo o contacta directamente a info@barsant.es</span>
+        </div>
+      `;
+      submitButton.disabled = false;
+      submitButton.innerHTML = 'Enviar Solicitud';
+      break;
+  }
+  
+  // Insertar notificación antes del botón
+  form.insertBefore(notificacion, submitButton.closest('.form-group'));
+}
+
+/**
+ * Oculta el estado del envío
+ */
+function ocultarEstadoEnvio() {
+  const notificacion = document.querySelector('.form-notification');
+  if (notificacion) {
+    notificacion.remove();
+  }
+  
+  const submitButton = document.querySelector('#contact-form button[type="submit"]');
+  if (submitButton) {
+    submitButton.disabled = false;
+    submitButton.innerHTML = 'Enviar Solicitud';
+  }
+}
+
+/**
+ * Muestra error de validación en un campo específico
+ */
+function mostrarErrorValidacion(fieldId, mensaje) {
+  const field = document.getElementById(fieldId);
+  if (!field) return;
+  
+  // Limpiar error anterior
+  limpiarErrorValidacion(fieldId);
+  
+  // Agregar clase de error
+  field.classList.add('error');
+  
+  // Crear mensaje de error
+  const errorDiv = document.createElement('div');
+  errorDiv.className = 'field-error';
+  errorDiv.textContent = mensaje;
+  
+  // Insertar después del campo
+  field.parentNode.insertBefore(errorDiv, field.nextSibling);
+  
+  // Hacer scroll al campo con error
+  field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  field.focus();
+}
+
+/**
+ * Limpia error de validación de un campo específico
+ */
+function limpiarErrorValidacion(fieldId) {
+  const field = document.getElementById(fieldId);
+  if (!field) return;
+  
+  field.classList.remove('error');
+  const errorDiv = field.parentNode.querySelector('.field-error');
+  if (errorDiv) {
+    errorDiv.remove();
+  }
+}
+
+/**
+ * Limpia todos los errores de validación
+ */
+function limpiarErroresValidacion() {
+  const errores = document.querySelectorAll('.field-error');
+  errores.forEach(error => error.remove());
+  
+  const camposConError = document.querySelectorAll('.error');
+  camposConError.forEach(campo => campo.classList.remove('error'));
+}
+
+/**
+ * Valida formato de email
+ */
+function validarEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+/**
+ * Valida formato de teléfono español
+ */
+function validarTelefono(telefono) {
+  // Eliminar espacios, guiones y paréntesis
+  const telefonoLimpio = telefono.replace(/[\s\-\(\)]/g, '');
+  
+  // Validar teléfonos españoles (móvil y fijo)
+  const telefonoRegex = /^(\+34|0034|34)?[679][0-9]{8}$/;
+  return telefonoRegex.test(telefonoLimpio);
 }
 
 /**
  * Configura la navegación activa
  */
 function setupNavigation() {
-  const navLinks = document.querySelectorAll('nav a');
+  console.log('🔧 Configurando navegación...');
   
-  window.addEventListener('scroll', () => {
-    let current = '';
-    const sections = document.querySelectorAll('section');
+  // Esperar a que se carguen todas las secciones
+  setTimeout(() => {
+    const navLinks = document.querySelectorAll('nav a');
+    console.log('📍 Enlaces de navegación encontrados:', navLinks.length);
     
-    sections.forEach(section => {
-      const sectionTop = section.offsetTop;
-      if (pageYOffset >= sectionTop - 60) {
-        current = section.getAttribute('id');
-      }
-    });
-
+    // 🆕 NUEVA FUNCIONALIDAD: Manejar clicks en enlaces
     navLinks.forEach(link => {
-      link.classList.remove('active');
-      if (link.getAttribute('href').includes(current)) {
-        link.classList.add('active');
-      }
+      link.addEventListener('click', function(e) {
+        e.preventDefault(); // Prevenir comportamiento por defecto
+        
+        const href = this.getAttribute('href');
+        
+        // Solo procesar enlaces que empiecen con #
+        if (!href || !href.startsWith('#')) {
+          return;
+        }
+        
+        const targetId = href.substring(1);
+        console.log('🎯 Navegando a:', targetId);
+        
+        // Mapeo de IDs del header a IDs reales de las secciones
+        const sectionMapping = {
+          'home': 'inicio-placeholder',
+          'inicio': 'inicio-placeholder',
+          'about': 'about-placeholder', 
+          'properties': 'properties-placeholder',
+          'location': 'map-placeholder',
+          'map': 'map-placeholder',
+          'gallery': 'gallery-placeholder',
+          'documentation': 'documentation-placeholder',
+          'contact': 'contact-placeholder'
+        };
+        
+        // Buscar el elemento objetivo
+        let targetElement = document.getElementById(targetId);
+        
+        // Si no se encuentra, buscar con el mapeo
+        if (!targetElement && sectionMapping[targetId]) {
+          targetElement = document.getElementById(sectionMapping[targetId]);
+        }
+        
+        // Si aún no se encuentra, buscar la sección dentro del placeholder
+        if (!targetElement) {
+          const placeholder = document.getElementById(targetId + '-placeholder');
+          if (placeholder) {
+            const section = placeholder.querySelector('section');
+            targetElement = section || placeholder;
+          }
+        }
+        
+        if (targetElement) {
+          console.log('✅ Elemento encontrado, haciendo scroll suave');
+          
+          // Scroll suave a la sección
+          targetElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+          
+          // Actualizar clase active
+          navLinks.forEach(l => l.classList.remove('active'));
+          this.classList.add('active');
+        } else {
+          console.warn(`❌ Sección con ID "${targetId}" no encontrada`);
+        }
+      });
     });
-  });
+    
+    // 📜 FUNCIONALIDAD EXISTENTE: Detectar sección activa al hacer scroll (mejorada)
+    window.addEventListener('scroll', () => {
+      let current = '';
+      
+      // Buscar todas las secciones posibles (no solo <section>)
+      const sections = document.querySelectorAll('section, [id*="placeholder"]');
+      
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        
+        // Verificar si estamos en esta sección
+        if (pageYOffset >= (sectionTop - 100) && pageYOffset < (sectionTop + sectionHeight - 100)) {
+          let sectionId = section.getAttribute('id');
+          
+          // Limpiar el ID para matching
+          if (sectionId) {
+            sectionId = sectionId.replace('-placeholder', '');
+            current = sectionId;
+          }
+        }
+      });
+
+      // Actualizar enlaces activos
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        const linkHref = link.getAttribute('href');
+        
+        if (linkHref && linkHref.includes(current) && current !== '') {
+          link.classList.add('active');
+        }
+      });
+    });
+    
+    console.log('✅ Navegación configurada correctamente');
+    
+  }, 1000); // Esperar 1 segundo para que se carguen las secciones
 }
 
 // Exportar funciones para que Google Maps pueda acceder a initMap globalmente

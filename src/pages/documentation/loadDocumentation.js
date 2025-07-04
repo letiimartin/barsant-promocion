@@ -17,6 +17,26 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .catch(error => console.error(error));
 });
+/* // Event listener para cerrar al hacer clic fuera del modal
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('doc-modal');
+    
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeDocModal();
+            }
+        });
+        
+        // Cerrar con tecla Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.style.display === 'flex') {
+                closeDocModal();
+            }
+        });
+    }
+}); 
+*/
 
 // Funciones para manejar los modales de documentación
 function initDocumentation() {
@@ -92,9 +112,21 @@ function openDocModal(docType) {
             modalBody.innerHTML = '<p>Contenido no disponible</p>';
     }
     
-    modal.style.display = 'block';
+    // Mostrar el modal usando flexbox para centrar
+    modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
+    
+    // Añadir animación suave (opcional)
+    modal.style.opacity = '0';
+    setTimeout(() => {
+        modal.style.opacity = '1';
+        modal.style.transition = 'opacity 0.3s ease';
+    }, 10);
 }
+
+
+
+
 
 function closeDocModal() {
     const modal = document.getElementById('doc-modal');

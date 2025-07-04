@@ -273,6 +273,45 @@
             border-radius: var(--border-radius);
         }
 
+        .plano-message {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 300px;
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px dashed #dee2e6;
+            margin: 20px;
+            border-radius: 8px;
+        }
+
+        .plano-message i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #6c757d;
+        }
+
+        .plano-message h4 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .plano-message p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 0;
+            font-size: 1rem;
+        }
+
+        .plano-message .highlight {
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+
         .pdf-loading {
             position: absolute;
             top: 50%;
@@ -436,6 +475,7 @@
             .price {
                 font-size: 1.7rem;
             }
+            
         }
     </style>
 </head>
@@ -456,6 +496,7 @@
   <div class="container" id="contenido">
     <div class="vivienda-content">
       <div class="vivienda-gallery">
+        <!-- Esto es para añadir imagenes en cada vivienda -->
         <!-- <div class="main-image" id="main-image">
           <i class="fas fa-image"></i> Imagen principal
         </div>
@@ -478,7 +519,8 @@
               </a>
             </div>
           </div>
-          <div class="plano-container">
+          <!-- ARREGLA CARGAR PDFS DESDE LOCAR (cUANDO SE COMPRE UN STORAGE) -->
+          <!-- <div class="plano-container">
             <div class="pdf-loading" id="pdf-loading">
               <i class="fas fa-file-pdf"></i>
               <span>Cargando plano...</span>
@@ -488,7 +530,15 @@
               <span>No se pudo cargar el plano PDF.<br>Use el botón "Descargar PDF" para verlo.</span>
             </div>
             <iframe id="plano-pdf" class="plano-pdf" title="Plano de la vivienda"></iframe>
-          </div>
+          </div> -->
+          <div class="plano-container">
+            <div class="plano-message">
+                <i class="fas fa-eye-slash"></i>
+                <h4>Vista previa no disponible</h4>
+                <p>Actualmente no se puede visualizar el plano en el navegador.<br>
+                Haz clic en <span class="highlight">"Descargar PDF"</span> para visualizarlo en tu dispositivo.</p>
+            </div>
+        </div>
         </div>
       </div>
 

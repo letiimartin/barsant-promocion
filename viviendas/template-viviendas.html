@@ -576,312 +576,170 @@
   <script type="module">
     import { loadViviendaFromUrl, fetchVivienda } from '../dataService.js';
   
-    function convertirPlanta(planta) {
-      const mapa = {
-        0: 'Bajo',
-        1: 'Primero',
-        2: 'Segundo',
-        3: 'Tercero',
-        4: 'Cuarto'
-      };
-      return mapa[planta] || planta;
-    }
-
-    // Funcionalidad del plano PDF
-    function initPlanoFunctionality(viviendaData) {
-      const planoPdf = document.getElementById('plano-pdf');
-      const btnFullscreen = document.getElementById('btn-fullscreen');
-      const btnDownload = document.getElementById('btn-download');
-      const fullscreenOverlay = document.getElementById('fullscreen-overlay');
-      const fullscreenPdf = document.getElementById('fullscreen-pdf');
-      const closeFullscreen = document.getElementById('close-fullscreen');
-      const pdfLoading = document.getElementById('pdf-loading');
-      const pdfError = document.getElementById('pdf-error');
-
-      // Construir ruta del plano PDF basada en los datos de la vivienda
-      const plantaTexto = convertirPlanta(viviendaData.planta);
-      const planoPdfPath = `../assets/docs/plano-${viviendaData.bloque}-${plantaTexto}-${viviendaData.letra}.pdf`;
+  // FUNCIONES DEL MODAL - FUERA DEL SCOPE PRINCIPAL
+  function mostrarModalContacto() {
+      const modal = document.createElement('div');
+      modal.id = 'modal-contacto';
+      modal.style.cssText = `
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.7);
+          z-index: 10000;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      `;
       
-      console.log('Cargando PDF:', planoPdfPath);
-      
-      // Configurar descarga del PDF
-      btnDownload.href = planoPdfPath;
-      btnDownload.download = `Plano_Bloque_${viviendaData.bloque}_${convertirPlanta(viviendaData.planta)}_${viviendaData.letra}.pdf`;
-
-      // Función para mostrar error
-      function showPdfError() {
-        pdfLoading.style.display = 'none';
-        pdfError.style.display = 'block';
-        planoPdf.style.display = 'none';
-      }
-
-      // Función para mostrar PDF cargado
-      function showPdfLoaded() {
-        pdfLoading.style.display = 'none';
-        pdfError.style.display = 'none';
-        planoPdf.style.display = 'block';
-      }
-
-      // Cargar PDF en iframe principal
-      planoPdf.onload = function() {
-        console.log('PDF cargado correctamente');
-        setTimeout(showPdfLoaded, 500); // Pequeño delay para mejorar UX
-      };
-
-      planoPdf.onerror = function() {
-        console.error('Error cargando PDF');
-        showPdfError();
-      };
-
-      // Verificar si el PDF existe antes de cargarlo
-      fetch(planoPdfPath, { method: 'HEAD' })
-        .then(response => {
-          if (response.ok) {
-            planoPdf.src = planoPdfPath;
-          } else {
-            throw new Error('PDF no encontrado');
-          }
-        })
-        .catch(error => {
-          console.error('PDF no encontrado:', error);
-          showPdfError();
-        });
-
-      // Pantalla completa
-      function showPdfFullscreen() {
-        if (planoPdf.src) {
-          fullscreenPdf.src = planoPdf.src;
-          fullscreenOverlay.style.display = 'block';
-          document.body.style.overflow = 'hidden';
-        } else {
-          // Si no hay PDF cargado, abrir en nueva ventana
-          window.open(planoPdfPath, '_blank');
-        }
-      }
-
-      function hideFullscreen() {
-        fullscreenOverlay.style.display = 'none';
-        document.body.style.overflow = 'auto';
-        fullscreenPdf.src = ''; // Limpiar src para liberar recursos
-      }
-
-      // Event listeners
-      btnFullscreen.addEventListener('click', showPdfFullscreen);
-      closeFullscreen.addEventListener('click', hideFullscreen);
-
-      fullscreenOverlay.addEventListener('click', (e) => {
-        if (e.target === fullscreenOverlay) hideFullscreen();
-      });
-
-      // Cerrar con ESC
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && fullscreenOverlay.style.display === 'block') {
-          hideFullscreen();
-        }
-      });
-    }
-
-    // Funcionalidad de galería de imágenes
-    function initGalleryFunctionality() {
-      const mainImage = document.getElementById('main-image');
-      const thumbnails = document.querySelectorAll('.thumbnail');
-
-      thumbnails.forEach(thumbnail => {
-        thumbnail.addEventListener('click', () => {
-          // Remover clase active de todos los thumbnails
-          thumbnails.forEach(t => t.classList.remove('active'));
-          // Agregar clase active al thumbnail clickeado
-          thumbnail.classList.add('active');
-          
-          // Aquí puedes cambiar la imagen principal
-          // const imageNumber = thumbnail.dataset.image;
-          // mainImage.style.backgroundImage = `url('../assets/images/vivienda${imageNumber}.jpg')`;
-        });
-      });
-    }
-  
-    loadViviendaFromUrl().then(async () => {
-      const params = new URLSearchParams(window.location.search);
-      const id = params.get('id');
-      const v = await fetchVivienda(id);
-      if (!v) return;
-      
-      console.log('Datos de vivienda:', v);
-  
-      const plantaTexto = convertirPlanta(v.planta);
-      const nombre = `Bloque ${v.bloque} - ${plantaTexto} ${v.letra}`;
-  
-      document.title = `Vivienda ${v.bloque} ${plantaTexto} ${v.letra} | Ventanilla Residencial`;
-      document.getElementById('nombre').textContent = nombre;
-  
-      const subtitle = `${v.dormitorios} dormitorios · ${v.baños} baños · ${v.sup_util} m² útiles · ${v.sup_total} m² construidos`;
-      document.getElementById('subtitulo').textContent = subtitle;
-
-      // Actualizar precio
-      document.getElementById('precio').textContent = `€${v.precio_final?.toLocaleString() || 0}`;
-  
-      // Actualizar estado
-      document.getElementById('estado').textContent = v.estado;
-      document.getElementById('estado').classList.add(v.estado === 'Reservado' ? 'estado-reservado' : 'estado-disponible');
-
-      // Inicializar funcionalidades
-      initPlanoFunctionality(v);
-      initGalleryFunctionality();
-      function mostrarModalContacto() {
-          // Crear modal
-          const modal = document.createElement('div');
-          modal.id = 'modal-contacto';
-          modal.style.cssText = `
-              position: fixed;
-              top: 0;
-              left: 0;
-              width: 100%;
-              height: 100%;
-              background-color: rgba(0, 0, 0, 0.7);
-              z-index: 10000;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-          `;
-          
-          modal.innerHTML = `
-              <div style="
-                  background: white;
-                  border-radius: 8px;
-                  max-width: 400px;
-                  width: 90%;
-                  padding: 30px;
-                  text-align: center;
-                  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-                  font-family: 'Montserrat', sans-serif;
-              ">
-                  <i class="fas fa-tools" style="font-size: 2.5rem; color: #e0c88c; margin-bottom: 15px;"></i>
-                  <p style="color: #666; line-height: 1.6; margin-bottom: 20px; font-size: 16px;">
-                      El sistema de reservas estará disponible próximamente.<br><br>Para consultas contacta con nosotros.
-                  </p>
-                  <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-                      <button onclick="irAContacto()" style="
-                          background-color: #e0c88c;
-                          color: #3a3a3a;
-                          border: none;
-                          padding: 12px 20px;
-                          border-radius: 4px;
-                          cursor: pointer;
-                          font-weight: 500;
-                          font-size: 14px;
-                      ">
-                          <i class="fas fa-envelope"></i> Contactar
-                      </button>
-                      <button onclick="cerrarModal()" style="
-                          background-color: #6c757d;
-                          color: white;
-                          border: none;
-                          padding: 12px 20px;
-                          border-radius: 4px;
-                          cursor: pointer;
-                          font-size: 14px;
-                      ">
-                          Cerrar
-                      </button>
-                  </div>
+      modal.innerHTML = `
+          <div style="
+              background: white;
+              border-radius: 8px;
+              max-width: 400px;
+              width: 90%;
+              padding: 30px;
+              text-align: center;
+              box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+              font-family: 'Montserrat', sans-serif;
+          ">
+              <i class="fas fa-tools" style="font-size: 2.5rem; color: #e0c88c; margin-bottom: 15px;"></i>
+              <p style="color: #666; line-height: 1.6; margin-bottom: 20px; font-size: 16px;">
+                  El sistema de reservas estará disponible próximamente.<br><br>Para consultas contacta con nosotros.
+              </p>
+              <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                  <button onclick="irAContacto()" style="
+                      background-color: #e0c88c;
+                      color: #3a3a3a;
+                      border: none;
+                      padding: 12px 20px;
+                      border-radius: 4px;
+                      cursor: pointer;
+                      font-weight: 500;
+                      font-size: 14px;
+                  ">
+                      <i class="fas fa-envelope"></i> Contactar
+                  </button>
+                  <button onclick="cerrarModal()" style="
+                      background-color: #6c757d;
+                      color: white;
+                      border: none;
+                      padding: 12px 20px;
+                      border-radius: 4px;
+                      cursor: pointer;
+                      font-size: 14px;
+                  ">
+                      Cerrar
+                  </button>
               </div>
-          `;
-          
-          document.body.appendChild(modal);
-          
-          // Cerrar modal al hacer click fuera
-          modal.addEventListener('click', function(e) {
-              if (e.target === modal) {
-                  cerrarModal();
-              }
+          </div>
+      `;
+      
+      document.body.appendChild(modal);
+      
+      modal.addEventListener('click', function(e) {
+          if (e.target === modal) {
+              cerrarModal();
+          }
+      });
+  }
+
+  function irAContacto() {
+      cerrarModal();
+      window.location.href = '../index.html#contact';
+  }
+
+  function cerrarModal() {
+      const modal = document.getElementById('modal-contacto');
+      if (modal) {
+          modal.remove();
+      }
+  }
+
+  // Hacer las funciones globales INMEDIATAMENTE
+  window.mostrarModalContacto = mostrarModalContacto;
+  window.irAContacto = irAContacto;
+  window.cerrarModal = cerrarModal;
+
+  function convertirPlanta(planta) {
+    const mapa = {
+      0: 'Bajo',
+      1: 'Primero',
+      2: 'Segundo',
+      3: 'Tercero',
+      4: 'Cuarto'
+    };
+    return mapa[planta] || planta;
+  }
+
+  // Funcionalidad del plano PDF - SIMPLIFICADA PARA EVITAR ERRORES
+  function initPlanoFunctionality(viviendaData) {
+    const btnFullscreen = document.getElementById('btn-fullscreen');
+    const btnDownload = document.getElementById('btn-download');
+
+    if (!viviendaData) return;
+
+    const plantaTexto = convertirPlanta(viviendaData.planta);
+    const planoPdfPath = `../assets/docs/plano-${viviendaData.bloque}-${plantaTexto}-${viviendaData.letra}.pdf`;
+    
+    // Configurar descarga del PDF
+    if (btnDownload) {
+      btnDownload.href = planoPdfPath;
+      btnDownload.download = `Plano_Bloque_${viviendaData.bloque}_${plantaTexto}_${viviendaData.letra}.pdf`;
+    }
+
+    // Pantalla completa - abre el PDF en nueva ventana
+    if (btnFullscreen) {
+      btnFullscreen.addEventListener('click', () => {
+        window.open(planoPdfPath, '_blank');
+      });
+    }
+  }
+
+  // CONFIGURAR EL BOTÓN DE RESERVA INMEDIATAMENTE
+  document.addEventListener('DOMContentLoaded', () => {
+      const btnReservar = document.getElementById('reservar-btn');
+      if (btnReservar) {
+          btnReservar.addEventListener('click', () => {
+              console.log('Click en botón reservar - mostrando modal');
+              mostrarModalContacto();
           });
       }
+  });
 
-      function irAContacto() {
-          cerrarModal();
-          // Ir a la página principal con anchor a contacto
-          window.location.href = '../index.html#contact';
-      }
+  // Cargar datos de la vivienda
+  loadViviendaFromUrl().then(async () => {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    const v = await fetchVivienda(id);
+    if (!v) return;
+    
+    console.log('Datos de vivienda:', v);
 
-      function cerrarModal() {
-          const modal = document.getElementById('modal-contacto');
-          if (modal) {
-              modal.remove();
-          }
-      }
+    const plantaTexto = convertirPlanta(v.planta);
+    const nombre = `Bloque ${v.bloque} - ${plantaTexto} ${v.letra}`;
 
-      // Hacer las funciones globales
-      window.irAContacto = irAContacto;
-      window.cerrarModal = cerrarModal;
+    document.title = `Vivienda ${v.bloque} ${plantaTexto} ${v.letra} | Ventanilla Residencial`;
+    document.getElementById('nombre').textContent = nombre;
 
-      // Configurar botón de reserva
-      // Funciones helper
-      function convertirPlantaNumeroATexto(planta) {
-          const mapa = {
-              1: 'PRIMERO',
-              2: 'SEGUNDO', 
-              3: 'TERCERO',
-              4: 'CUARTO'
-          };
-          return mapa[parseInt(planta)] || 'PRIMERO';
-      }
+    const subtitle = `${v.dormitorios} dormitorios · ${v.baños} baños · ${v.sup_util} m² útiles · ${v.sup_total} m² construidos`;
+    document.getElementById('subtitulo').textContent = subtitle;
 
-      function extraerIdDesdeNombre(nombreVivienda) {
-          const match = nombreVivienda.match(/Bloque ([A-E]) - (\w+) ([A-D])/i);
-          if (match) {
-              const bloque = match[1].toUpperCase();
-              const planta = match[2].toUpperCase();
-              const letra = match[3].toUpperCase();
-              return `${bloque}_${planta}_${letra}`;
-          }
-          return null;
-      }
-      /*
-      // Configurar botón de reserva
-      document.getElementById('reservar-btn').addEventListener('click', () => {
-          // Construir ID desde los datos de la vivienda
-          let viviendaId = null;
-          
-          if (typeof v !== 'undefined' && v.bloque && v.planta && v.letra) {
-              const bloque = v.bloque;
-              const planta = convertirPlantaNumeroATexto(v.planta);
-              const letra = v.letra;
-              viviendaId = `${bloque}_${planta}_${letra}`;
-          }
-          
-          // Fallback: extraer desde el nombre en el DOM
-          if (!viviendaId) {
-              const nombreVivienda = document.getElementById('nombre').textContent;
-              viviendaId = extraerIdDesdeNombre(nombreVivienda);
-          }
-          
-          if (viviendaId) {
-              console.log('🎯 Redirigiendo a reserva con ID:', viviendaId);
-              window.location.href = `../reserva/reserva_index.html?id=${viviendaId}`;
-          } else {
-              console.error('❌ No se pudo determinar el ID de la vivienda');
-              alert('Error: No se pudo determinar la vivienda. Inténtelo de nuevo.');
-          }
-      });*/
-      document.getElementById('reservar-btn').addEventListener('click', () => {
-          mostrarModalContacto();
-      });
-  
-      // Actualizar imágenes de la galería
-      const imagenes = [
-        `../assets/images/01_ALZ_1_CULT_R.png`,
-        `../assets/images/02_ALZ_2_CULT_R.png`,
-        `../assets/images/03_ALZ_3_CULT_R.png`,
-        `../assets/images/04_ALZ_4_CULT_R.png`
-      ];
-  
-      mainImage.style.backgroundImage = `url('${imagenes[0]}')`;
-      thumbnails.forEach((thumbnail, index) => {
-        thumbnail.style.backgroundImage = `url('${imagenes[index]}')`;
-      });
-    }).catch(error => {
-      console.error('Error cargando la vivienda:', error);
-    });
+    // Actualizar precio
+    document.getElementById('precio').textContent = `€${v.precio_final?.toLocaleString() || 0}`;
+
+    // Actualizar estado
+    document.getElementById('estado').textContent = v.estado;
+    document.getElementById('estado').classList.add(v.estado === 'Reservado' ? 'estado-reservado' : 'estado-disponible');
+
+    // Inicializar funcionalidades
+    initPlanoFunctionality(v);
+    
+  }).catch(error => {
+    console.error('Error cargando la vivienda:', error);
+    // Aunque haya error cargando datos, el botón de reserva debe funcionar
+  });
   </script>
 </body>
 </html>

@@ -1430,14 +1430,20 @@ function guardarCacheFirebase() {
     }
 }
 async function initGallery() {
-  console.log('🖼️ Inicializando galería...');
-  try {
-    await waitForElement('.gallery-grid', 3000);
-    await window.cargarGaleriaFirebaseOptimizada();
-    console.log('✅ Galería inicializada correctamente');
-  } catch (error) {
-    console.error('❌ Error inicializando galería:', error);
+  console.log('🖼️ Verificando galería...');
+  
+  // Esperar a que loadGallery.js haga su trabajo
+  let intentos = 0;
+  while (intentos < 10) {
+      if (typeof window.cargarGaleriaFirebaseOptimizada === 'function') {
+          console.log('✅ Galería ya disponible - inicializada por loadGallery.js');
+          return;
+      }
+      intentos++;
+      await new Promise(resolve => setTimeout(resolve, 500));
   }
+  
+  console.warn('⚠️ Galería no disponible después de 5 segundos');
 }
 
 // Hacer función global para el botón de reintentar

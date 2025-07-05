@@ -24,33 +24,22 @@ document.addEventListener("DOMContentLoaded", function () {
 // Función para inicializar galería con Firebase
 async function inicializarGaleriaFirebase() {
     try {
-        // Cargar CSS específico para Firebase
         cargarCSSFirebase();
         
-        // Esperar un poco para que el DOM se estabilice
         setTimeout(async () => {
             try {
-                // ✅ RUTA CORREGIDA: desde gallery/ hacia dataService.js
                 const { cargarGaleriaFirebaseOptimizada } = await import('../../../dataService.js');
                 
-                // Inicializar galería optimizada
+                // ✅ HACER LA FUNCIÓN GLOBAL
+                window.cargarGaleriaFirebaseOptimizada = cargarGaleriaFirebaseOptimizada;
+                
                 await cargarGaleriaFirebaseOptimizada();
                 
-                console.log('✅ Galería Firebase inicializada');
+                console.log('✅ Galería Firebase inicializada y función exportada globalmente');
                 
             } catch (importError) {
                 console.error('Error importando dataService:', importError);
-                
-                // Fallback: Mostrar mensaje de error en lugar de galería vacía
-                const galleryGrid = document.querySelector('.gallery-grid');
-                if (galleryGrid) {
-                    galleryGrid.innerHTML = `
-                        <div class="gallery-error-fallback">
-                            <p>⚠️ Error cargando galería desde Firebase</p>
-                            <p>Las imágenes se cargarán próximamente</p>
-                        </div>
-                    `;
-                }
+                // ... resto del código de error
             }
         }, 100);
         

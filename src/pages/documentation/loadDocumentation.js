@@ -1,6 +1,6 @@
 // ========================
-// LOAD DOCUMENTATION - SOLO FIREBASE
-// Sin referencias a archivos locales o carpeta assets
+// LOAD DOCUMENTATION - SIN PROBLEMAS MIME
+// URLs públicas directas sin autenticación
 // ========================
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -34,7 +34,7 @@ function initDocumentation() {
     }
 }
 
-// SOLO FIREBASE: Función para crear visualizador PDF con múltiples fallbacks
+// Función para crear visualizador PDF con URLs públicas
 function createPDFViewer(url, filename) {
     return `
         <div class="pdf-viewer-container">
@@ -75,7 +75,7 @@ function createPDFViewer(url, filename) {
             <!-- Contenedor principal del PDF -->
             <div class="pdf-main-container" style="position: relative; height: 600px; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; background: #f8f9fa;">
                 
-                <!-- Visualizador PDF mediante object (más compatible que iframe) -->
+                <!-- Visualizador PDF mediante object -->
                 <object 
                     id="pdf-object"
                     data="${url}#toolbar=1&navpanes=1&scrollbar=1&view=FitH" 
@@ -98,7 +98,7 @@ function createPDFViewer(url, filename) {
                             <i class="fas fa-file-pdf" style="font-size: 4rem; color: #e0c88c; margin-bottom: 20px;"></i>
                             <h4 style="margin-bottom: 15px;">PDF desde Firebase Storage</h4>
                             <p style="margin-bottom: 25px; color: #666; max-width: 400px;">
-                                El documento se encuentra en Firebase Storage. Su navegador no puede mostrarlo integrado debido a restricciones de seguridad.
+                                El documento se encuentra en Firebase Storage con URL pública. Su navegador no puede mostrarlo integrado debido a restricciones de seguridad.
                             </p>
                             <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
                                 <a href="${url}" target="_blank" class="btn-primary" style="
@@ -123,40 +123,21 @@ function createPDFViewer(url, filename) {
             
             <div style="margin-top: 15px; padding: 10px; background-color: #f8f9fa; border-radius: 4px; font-size: 12px; color: #666; text-align: center;">
                 <i class="fas fa-cloud"></i>
-                Documento cargado desde Firebase Storage. Si tiene problemas visualizándolo, use los botones de arriba.
+                Documento cargado desde Firebase Storage con URL pública. Si tiene problemas visualizándolo, use los botones de arriba.
             </div>
         </div>
     `;
 }
 
-// SOLO FIREBASE: Función para cargar dataService
-async function loadDataService() {
-    try {
-        // Verificar si ya está disponible
-        if (window.dataServiceFunctions) {
-            return;
-        }
-
-        // Cargar el módulo de forma segura
-        const dataServiceModule = await import('./src/dataService.js');
-        
-        // Asignar funciones disponibles
-        window.dataServiceFunctions = {
-            iniciarSesionAnonima: dataServiceModule.iniciarSesionAnonima,
-            verificarEstadoAuth: dataServiceModule.verificarEstadoAuth,
-            getMemoriaCalidadesUrl: dataServiceModule.getMemoriaCalidadesUrl,
-            getPlanosArquitectonicosUrl: dataServiceModule.getPlanosArquitectonicosUrl
-        };
-        
-        console.log('✅ DataService cargado correctamente (solo Firebase)');
-        
-    } catch (error) {
-        console.error('❌ Error crítico cargando dataService:', error);
-        throw new Error(`No se pudo cargar el sistema de documentos: ${error.message}`);
-    }
+// Función para generar URLs públicas directas
+function getPublicDocumentUrl(fileName) {
+    const projectId = 'ventanilla-barsant';
+    const bucket = `${projectId}.firebasestorage.app`;
+    const encodedFileName = encodeURIComponent(fileName);
+    return `https://firebasestorage.googleapis.com/v0/b/${bucket}/o/${encodedFileName}?alt=media`;
 }
 
-// SOLO FIREBASE: Función principal para abrir documentos
+// Función principal para abrir documentos (SIN importaciones complejas)
 async function openDocModal(docType) {
     const modal = document.getElementById('doc-modal');
     const modalTitle = document.getElementById('doc-modal-title');
@@ -181,9 +162,9 @@ async function openDocModal(docType) {
                         animation: spin 1s linear infinite;
                         margin: 0 auto 15px;
                     "></div>
-                    <p>Cargando desde Firebase Storage...</p>
+                    <p>Generando URL pública...</p>
                     <p style="font-size: 12px; color: #666; margin-top: 10px;">
-                        <i class="fas fa-cloud"></i> Conectando con Firebase Storage
+                        <i class="fas fa-cloud"></i> Firebase Storage (acceso público)
                     </p>
                 </div>
                 <style>
@@ -195,35 +176,29 @@ async function openDocModal(docType) {
             `;
             
             try {
-                // Cargar dataService
-                await loadDataService();
+                console.log('📄 Generando URL pública para memoria de calidades...');
                 
-                console.log('🔐 Obteniendo memoria de calidades desde Firebase Storage...');
-                
-                // Autenticar primero
-                await window.dataServiceFunctions.iniciarSesionAnonima();
-                
-                // Obtener URL del documento
-                const memoriaUrl = await window.dataServiceFunctions.getMemoriaCalidadesUrl();
-                console.log('✅ URL obtenida desde Firebase Storage:', memoriaUrl);
+                // Generar URL pública directa (SIN autenticación)
+                const memoriaUrl = getPublicDocumentUrl('MEMORIA CALIDADES_VENTANILLA.pdf');
+                console.log('✅ URL pública generada:', memoriaUrl);
                 
                 // Mostrar documento
                 modalBody.innerHTML = createPDFViewer(memoriaUrl, 'Memoria_Calidades_Ventanilla.pdf');
                 
             } catch (error) {
-                console.error('❌ Error cargando memoria de calidades:', error);
+                console.error('❌ Error generando URL pública:', error);
                 modalBody.innerHTML = `
                     <div class="error-container" style="text-align: center; padding: 40px;">
                         <i class="fas fa-exclamation-triangle" style="font-size: 2rem; color: #dc3545; margin-bottom: 15px;"></i>
-                        <h4>Error cargando desde Firebase Storage</h4>
+                        <h4>Error generando URL pública</h4>
                         <p style="color: #666; margin-bottom: 20px;">
                             <strong>Error:</strong> ${error.message}
                         </p>
                         <p style="color: #666; margin-bottom: 20px; font-size: 14px;">
                             Verifique que:
                             <br>• El documento existe en Firebase Storage
-                            <br>• La autenticación anónima está habilitada
-                            <br>• Las reglas de Storage permiten acceso
+                            <br>• Las reglas de Storage permiten acceso público de lectura
+                            <br>• El nombre del archivo es correcto
                         </p>
                         <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
                             <button onclick="openDocModal('memoria-calidades')" class="btn-primary" style="
@@ -256,43 +231,37 @@ async function openDocModal(docType) {
                         animation: spin 1s linear infinite;
                         margin: 0 auto 15px;
                     "></div>
-                    <p>Cargando desde Firebase Storage...</p>
+                    <p>Generando URL pública...</p>
                     <p style="font-size: 12px; color: #666; margin-top: 10px;">
-                        <i class="fas fa-cloud"></i> Conectando con Firebase Storage
+                        <i class="fas fa-cloud"></i> Firebase Storage (acceso público)
                     </p>
                 </div>
             `;
             
             try {
-                // Cargar dataService
-                await loadDataService();
+                console.log('📐 Generando URL pública para planos arquitectónicos...');
                 
-                console.log('🔐 Obteniendo planos arquitectónicos desde Firebase Storage...');
-                
-                // Autenticar primero
-                await window.dataServiceFunctions.iniciarSesionAnonima();
-                
-                // Obtener URL de los planos
-                const planosUrl = await window.dataServiceFunctions.getPlanosArquitectonicosUrl();
-                console.log('✅ URL obtenida desde Firebase Storage:', planosUrl);
+                // Generar URL pública directa (SIN autenticación)
+                const planosUrl = getPublicDocumentUrl('R05 PLANOS BASICO REFORMADO 22.pdf');
+                console.log('✅ URL pública generada:', planosUrl);
                 
                 // Mostrar documento
                 modalBody.innerHTML = createPDFViewer(planosUrl, 'Planos_Arquitectonicos_Ventanilla.pdf');
                 
             } catch (error) {
-                console.error('❌ Error cargando planos arquitectónicos:', error);
+                console.error('❌ Error generando URL pública:', error);
                 modalBody.innerHTML = `
                     <div class="error-container" style="text-align: center; padding: 40px;">
                         <i class="fas fa-exclamation-triangle" style="font-size: 2rem; color: #dc3545; margin-bottom: 15px;"></i>
-                        <h4>Error cargando desde Firebase Storage</h4>
+                        <h4>Error generando URL pública</h4>
                         <p style="color: #666; margin-bottom: 20px;">
                             <strong>Error:</strong> ${error.message}
                         </p>
                         <p style="color: #666; margin-bottom: 20px; font-size: 14px;">
                             Verifique que:
                             <br>• El documento existe en Firebase Storage
-                            <br>• La autenticación anónima está habilitada
-                            <br>• Las reglas de Storage permiten acceso
+                            <br>• Las reglas de Storage permiten acceso público de lectura
+                            <br>• El nombre del archivo es correcto
                         </p>
                         <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
                             <button onclick="openDocModal('planos-arquitectonicos')" class="btn-primary" style="
@@ -319,7 +288,7 @@ async function openDocModal(docType) {
                         <i class="fas fa-clock" style="font-size: 2rem; color: #e0c88c; margin-bottom: 15px;"></i>
                         <h4>Documento en preparación</h4>
                         <p style="color: #666; margin-bottom: 20px;">
-                            La guía de compra se cargará en Firebase Storage próximamente. 
+                            La guía de compra se subirá a Firebase Storage próximamente con acceso público. 
                             Mientras tanto, puede contactar con nuestro equipo comercial 
                             para resolver cualquier duda sobre el proceso de compra.
                         </p>
@@ -347,7 +316,7 @@ async function openDocModal(docType) {
                     <i class="fas fa-file-alt" style="font-size: 2rem; color: #e0c88c; margin-bottom: 15px;"></i>
                     <p>Tipo de documento no reconocido</p>
                     <p style="color: #666; font-size: 14px;">
-                        Solo se pueden cargar documentos desde Firebase Storage
+                        Solo se pueden cargar documentos desde Firebase Storage con URLs públicas
                     </p>
                 </div>
             `;
@@ -401,5 +370,5 @@ window.closeDocModal = closeDocModal;
 // Ejecutar detección de capacidades al cargar
 document.addEventListener('DOMContentLoaded', () => {
     detectBrowserCapabilities();
-    console.log('📄 Sistema de documentación cargado (solo Firebase Storage)');
-});             
+    console.log('📄 Sistema de documentación cargado (URLs públicas)');
+});

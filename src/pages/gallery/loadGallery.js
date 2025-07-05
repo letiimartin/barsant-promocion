@@ -108,8 +108,27 @@ function openImageModal(index) {
     const nombreDisplay = getNombreImagen(imagen.nombre, index);
     
     modalBody.innerHTML = `
+        <!-- Botón de Cerrar -->
+        <button class="modal-close-button" onclick="closeImageModal()" style="
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            z-index: 1001;
+            transition: background 0.3s ease;
+        " onmouseover="this.style.background='rgba(0,0,0,0.9)'" onmouseout="this.style.background='rgba(0,0,0,0.7)'">
+            <i class="fas fa-times"></i>
+        </button>
+
         <div class="modal-image-container" style="position: relative; text-align: center;">
-            <!-- Controles de navegación -->
+            <!-- Botón Anterior -->
             <button class="modal-nav modal-nav-prev" onclick="changeImage(-1)" style="
                 position: absolute;
                 left: 10px;
@@ -132,6 +151,7 @@ function openImageModal(index) {
                 <i class="fas fa-chevron-left"></i>
             </button>
             
+            <!-- Botón Siguiente -->
             <button class="modal-nav modal-nav-next" onclick="changeImage(1)" style="
                 position: absolute;
                 right: 10px;

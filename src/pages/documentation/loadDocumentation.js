@@ -29,6 +29,102 @@ function initDocumentation() {
     }
 }
 
+// Función para crear iframe con manejo de errores
+function createPDFIframe(url, filename) {
+    return `
+        <div class="pdf-viewer-container">
+            <div class="pdf-controls" style="margin-bottom: 15px; text-align: center; border-bottom: 1px solid #eee; padding-bottom: 15px;">
+                <a href="${url}" target="_blank" class="btn-secondary" style="
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                    background-color: transparent;
+                    color: #3a3a3a;
+                    border: 1px solid #3a3a3a;
+                    padding: 10px 20px;
+                    border-radius: 4px;
+                    text-decoration: none;
+                    font-weight: 500;
+                    margin-right: 10px;
+                    transition: all 0.3s ease;
+                " onmouseover="this.style.backgroundColor='#3a3a3a'; this.style.color='white'" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#3a3a3a'">
+                    <i class="fas fa-external-link-alt"></i> Abrir en nueva ventana
+                </a>
+                <a href="${url}" download="${filename}" class="btn-primary" style="
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                    background-color: #e0c88c;
+                    color: #3a3a3a;
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 4px;
+                    text-decoration: none;
+                    font-weight: 500;
+                    transition: all 0.3s ease;
+                " onmouseover="this.style.backgroundColor='#d4bc80'" onmouseout="this.style.backgroundColor='#e0c88c'">
+                    <i class="fas fa-download"></i> Descargar
+                </a>
+            </div>
+            
+            <div class="pdf-iframe-container" style="position: relative; height: 600px; border: 1px solid #ddd; border-radius: 4px; overflow: hidden;">
+                <iframe 
+                    id="pdf-iframe"
+                    src="${url}#toolbar=1&navpanes=1&scrollbar=1&view=FitH" 
+                    width="100%" 
+                    height="100%" 
+                    style="border: none;"
+                    onload="handleIframeLoad()"
+                    onerror="handleIframeError('${url}', '${filename}')">
+                </iframe>
+                
+                <!-- Fallback content si el iframe falla -->
+                <div id="iframe-fallback" style="display: none; text-align: center; padding: 40px; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: white;">
+                    <i class="fas fa-file-pdf" style="font-size: 3rem; color: #dc3545; margin-bottom: 15px;"></i>
+                    <h4>No se puede mostrar el PDF en el navegador</h4>
+                    <p style="margin-bottom: 20px; color: #666;">
+                        Su navegador no puede mostrar PDFs integrados o hay restricciones de seguridad.
+                    </p>
+                    <a href="${url}" target="_blank" class="btn-primary" style="
+                        display: inline-block;
+                        background-color: #e0c88c;
+                        color: #3a3a3a;
+                        padding: 12px 24px;
+                        border-radius: 4px;
+                        text-decoration: none;
+                        font-weight: 500;
+                    ">
+                        <i class="fas fa-external-link-alt"></i> Abrir PDF en nueva ventana
+                    </a>
+                </div>
+            </div>
+            
+            <div style="margin-top: 15px; padding: 10px; background-color: #f8f9fa; border-radius: 4px; font-size: 12px; color: #666; text-align: center;">
+                <i class="fas fa-info-circle" style="margin-right: 5px;"></i>
+                Si el PDF no se muestra correctamente, use el botón "Abrir en nueva ventana"
+            </div>
+        </div>
+    `;
+}
+
+// Manejar carga exitosa del iframe
+function handleIframeLoad() {
+    console.log('✅ PDF cargado exitosamente en iframe');
+    const fallback = document.getElementById('iframe-fallback');
+    if (fallback) {
+        fallback.style.display = 'none';
+    }
+}
+
+// Manejar error del iframe
+function handleIframeError(url, filename) {
+    console.warn('❌ Error cargando PDF en iframe, mostrando fallback');
+    const fallback = document.getElementById('iframe-fallback');
+    if (fallback) {
+        fallback.style.display = 'block';
+    }
+}
+
 async function openDocModal(docType) {
     const modal = document.getElementById('doc-modal');
     const modalTitle = document.getElementById('doc-modal-title');
@@ -75,55 +171,18 @@ async function openDocModal(docType) {
                     memoriaUrl = 'assets/docs/MEMORIA CALIDADES_VENTANILLA.pdf';
                 }
                 
-                modalBody.innerHTML = `
-                    <div class="pdf-viewer">
-                        <div class="plano-actions" style="margin-bottom: 15px; text-align: center;">
-                            <a href="${memoriaUrl}" target="_blank" class="btn-secondary" style="
-                                display: inline-flex;
-                                align-items: center;
-                                gap: 8px;
-                                background-color: transparent;
-                                color: #3a3a3a;
-                                border: 1px solid #3a3a3a;
-                                padding: 10px 20px;
-                                border-radius: 4px;
-                                text-decoration: none;
-                                font-weight: 500;
-                                margin-right: 10px;
-                            ">
-                                <i class="fas fa-external-link-alt"></i> Abrir en nueva ventana
-                            </a>
-                            <a href="${memoriaUrl}" download="Memoria_Calidades_Ventanilla.pdf" class="btn-primary" style="
-                                display: inline-flex;
-                                align-items: center;
-                                gap: 8px;
-                                background-color: #e0c88c;
-                                color: #3a3a3a;
-                                border: none;
-                                padding: 10px 20px;
-                                border-radius: 4px;
-                                text-decoration: none;
-                                font-weight: 500;
-                            ">
-                                <i class="fas fa-download"></i> Descargar
-                            </a>
-                        </div>
-                        <iframe src="${memoriaUrl}" 
-                                width="100%" 
-                                height="600px" 
-                                style="border: none; border-radius: 4px;"
-                                onload="console.log('📄 PDF cargado exitosamente')"
-                                onerror="console.error('❌ Error cargando PDF en iframe')">
-                            <div style="text-align: center; padding: 40px;">
-                                <i class="fas fa-file-pdf" style="font-size: 3rem; color: #dc3545; margin-bottom: 15px;"></i>
-                                <p>Su navegador no puede mostrar PDFs.</p>
-                                <a href="${memoriaUrl}" target="_blank" class="btn-primary">
-                                    Abrir PDF en nueva ventana
-                                </a>
-                            </div>
-                        </iframe>
-                    </div>
-                `;
+                // Crear iframe con controles
+                modalBody.innerHTML = createPDFIframe(memoriaUrl, 'Memoria_Calidades_Ventanilla.pdf');
+                
+                // Configurar timeout para mostrar fallback si el iframe tarda mucho
+                setTimeout(() => {
+                    const iframe = document.getElementById('pdf-iframe');
+                    if (iframe && !iframe.contentDocument && !iframe.contentWindow) {
+                        console.log('⏱️ Iframe tardando en cargar, podría haber restricciones CSP');
+                        handleIframeError(memoriaUrl, 'Memoria_Calidades_Ventanilla.pdf');
+                    }
+                }, 5000); // 5 segundos de timeout
+                
             } catch (error) {
                 console.error('Error cargando memoria de calidades:', error);
                 modalBody.innerHTML = `
@@ -136,6 +195,7 @@ async function openDocModal(docType) {
                             <li>Autenticación anónima no habilitada en Firebase</li>
                             <li>Reglas de Firebase Storage restrictivas</li>
                             <li>Archivo no encontrado en Storage</li>
+                            <li>Políticas de seguridad del navegador (CSP)</li>
                         </ul>
                         <button onclick="openDocModal('memoria-calidades')" class="btn-primary" style="
                             background-color: #e0c88c;
@@ -192,55 +252,18 @@ async function openDocModal(docType) {
                     planosUrl = 'assets/docs/R05 PLANOS BASICO REFORMADO 22.pdf';
                 }
                 
-                modalBody.innerHTML = `
-                    <div class="pdf-viewer">
-                        <div class="plano-actions" style="margin-bottom: 15px; text-align: center;">
-                            <a href="${planosUrl}" target="_blank" class="btn-secondary" style="
-                                display: inline-flex;
-                                align-items: center;
-                                gap: 8px;
-                                background-color: transparent;
-                                color: #3a3a3a;
-                                border: 1px solid #3a3a3a;
-                                padding: 10px 20px;
-                                border-radius: 4px;
-                                text-decoration: none;
-                                font-weight: 500;
-                                margin-right: 10px;
-                            ">
-                                <i class="fas fa-external-link-alt"></i> Abrir en nueva ventana
-                            </a>
-                            <a href="${planosUrl}" download="Planos_Arquitectonicos_Ventanilla.pdf" class="btn-primary" style="
-                                display: inline-flex;
-                                align-items: center;
-                                gap: 8px;
-                                background-color: #e0c88c;
-                                color: #3a3a3a;
-                                border: none;
-                                padding: 10px 20px;
-                                border-radius: 4px;
-                                text-decoration: none;
-                                font-weight: 500;
-                            ">
-                                <i class="fas fa-download"></i> Descargar
-                            </a>
-                        </div>
-                        <iframe src="${planosUrl}" 
-                                width="100%" 
-                                height="600px" 
-                                style="border: none; border-radius: 4px;"
-                                onload="console.log('📄 Planos cargados exitosamente')"
-                                onerror="console.error('❌ Error cargando planos en iframe')">
-                            <div style="text-align: center; padding: 40px;">
-                                <i class="fas fa-file-pdf" style="font-size: 3rem; color: #dc3545; margin-bottom: 15px;"></i>
-                                <p>Su navegador no puede mostrar PDFs.</p>
-                                <a href="${planosUrl}" target="_blank" class="btn-primary">
-                                    Abrir PDF en nueva ventana
-                                </a>
-                            </div>
-                        </iframe>
-                    </div>
-                `;
+                // Crear iframe con controles
+                modalBody.innerHTML = createPDFIframe(planosUrl, 'Planos_Arquitectonicos_Ventanilla.pdf');
+                
+                // Configurar timeout para mostrar fallback si el iframe tarda mucho
+                setTimeout(() => {
+                    const iframe = document.getElementById('pdf-iframe');
+                    if (iframe && !iframe.contentDocument && !iframe.contentWindow) {
+                        console.log('⏱️ Iframe tardando en cargar, podría haber restricciones CSP');
+                        handleIframeError(planosUrl, 'Planos_Arquitectonicos_Ventanilla.pdf');
+                    }
+                }, 5000); // 5 segundos de timeout
+                
             } catch (error) {
                 console.error('Error cargando planos arquitectónicos:', error);
                 modalBody.innerHTML = `
@@ -253,6 +276,7 @@ async function openDocModal(docType) {
                             <li>Autenticación anónima no habilitada en Firebase</li>
                             <li>Reglas de Firebase Storage restrictivas</li>
                             <li>Archivo no encontrado en Storage</li>
+                            <li>Políticas de seguridad del navegador (CSP)</li>
                         </ul>
                         <button onclick="openDocModal('planos-arquitectonicos')" class="btn-primary" style="
                             background-color: #e0c88c;
@@ -322,3 +346,5 @@ function closeDocModal() {
 // Hacer las funciones globales para que puedan ser llamadas desde HTML
 window.openDocModal = openDocModal;
 window.closeDocModal = closeDocModal;
+window.handleIframeLoad = handleIframeLoad;
+window.handleIframeError = handleIframeError;

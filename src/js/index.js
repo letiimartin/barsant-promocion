@@ -33,7 +33,7 @@ async function loadViviendas() {
         console.log('🏠 Cargando viviendas desde Firebase...');
         
         // RUTA CORREGIDA: usar ruta relativa correcta desde /src/js/
-        const { fetchAllViviendas } = await import('../dataService.js');
+        const { fetchAllViviendas } = await import('../../dataService.js');
         
         window.viviendas = await fetchAllViviendas();
         console.log(`✅ ${window.viviendas.length} viviendas cargadas`);

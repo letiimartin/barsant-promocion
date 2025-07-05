@@ -739,124 +739,228 @@
   window.mostrarModalContacto = mostrarModalContacto;
   window.irAContacto = irAContacto;
   window.cerrarModal = cerrarModal;
+    // 1. AGREGAR estas funciones al final de tu script (antes del loadViviendaFromUrl):
 
-  function convertirPlanta(planta) {
+    // Función para generar URL pública de Firebase Storage
+    function getPublicStorageUrl(fileName) {
+        const projectId = 'ventanilla-barsant';
+        const bucket = `${projectId}.firebasestorage.app`;
+        const encodedFileName = encodeURIComponent(fileName);
+        return `https://firebasestorage.googleapis.com/v0/b/${bucket}/o/${encodedFileName}?alt=media`;
+    }
+
+    function convertirPlanta(planta) {
     const mapa = {
-      0: 'Bajo',
-      1: 'Primero',
-      2: 'Segundo',
-      3: 'Tercero',
-      4: 'Cuarto'
+        0: 'Bajo',
+        1: 'Primero',
+        2: 'Segundo',
+        3: 'Tercero',
+        4: 'Cuarto'
     };
     return mapa[planta] || planta;
-  }
+    }
 
-  // Función para actualizar información de cochera y trastero
-  function actualizarCocheraYTrastero(vivienda) {
+    // Función para actualizar información de cochera y trastero
+    function actualizarCocheraYTrastero(vivienda) {
     const cocheraText = document.getElementById('cochera-text');
     const cocheraDetails = document.getElementById('cochera-details');
     const cocheraPrice = document.getElementById('cochera-price');
-    
+
     const trasteroText = document.getElementById('trastero-text');
     const trasteroDetails = document.getElementById('trastero-details');
     const trasteroPrice = document.getElementById('trastero-price');
 
     // ESCENARIO 1: Sin cochera ni trastero
     if (!vivienda.cochera && !vivienda.trastero) {
-      // Mantener texto por defecto
-      return;
+        // Mantener texto por defecto
+        return;
     }
 
     // ESCENARIO 3: Pack vinculado
     if (vivienda.vinculado && vivienda.cochera && vivienda.trastero) {
-      const precioTotal = (vivienda.precio_cochera || 0) + (vivienda.precio_trastero || 0);
-      
-      // Actualizar cochera
-      cocheraText.innerHTML = 'Pack Cochera + Trastero <span class="pack-indicator">PACK</span>';
-      cocheraDetails.textContent = `Cochera ${vivienda.cochera} + Trastero ${vivienda.trastero}`;
-      cocheraDetails.style.display = 'block';
-      cocheraPrice.textContent = `+€${precioTotal.toLocaleString()}`;
-      cocheraPrice.style.display = 'block';
-      
-      // Ocultar la línea del trastero ya que está incluida en el pack
-      document.getElementById('trastero-feature').style.display = 'none';
-      
-      return;
+        const precioTotal = (vivienda.precio_cochera || 0) + (vivienda.precio_trastero || 0);
+        
+        // Actualizar cochera
+        cocheraText.innerHTML = 'Pack Cochera + Trastero <span class="pack-indicator">PACK</span>';
+        cocheraDetails.textContent = `Cochera ${vivienda.cochera} + Trastero ${vivienda.trastero}`;
+        cocheraDetails.style.display = 'block';
+        cocheraPrice.textContent = `+€${precioTotal.toLocaleString()}`;
+        cocheraPrice.style.display = 'block';
+        
+        // Ocultar la línea del trastero ya que está incluida en el pack
+        document.getElementById('trastero-feature').style.display = 'none';
+        
+        return;
     }
 
     // ESCENARIO 2: Cochera y/o trastero asignados independientes
     if (vivienda.cochera) {
-      cocheraText.textContent = 'Plaza de garaje asignada (opcional)';
-      cocheraDetails.textContent = `Cochera ${vivienda.cochera}`;
-      cocheraDetails.style.display = 'block';
-      cocheraPrice.textContent = `+€${(vivienda.precio_cochera || 0).toLocaleString()}`;
-      cocheraPrice.style.display = 'block';
+        cocheraText.textContent = 'Plaza de garaje asignada (opcional)';
+        cocheraDetails.textContent = `Cochera ${vivienda.cochera}`;
+        cocheraDetails.style.display = 'block';
+        cocheraPrice.textContent = `+€${(vivienda.precio_cochera || 0).toLocaleString()}`;
+        cocheraPrice.style.display = 'block';
     }
 
     if (vivienda.trastero) {
-      trasteroText.textContent = 'Trastero asignado (opcional)';
-      trasteroDetails.textContent = `Trastero ${vivienda.trastero}`;
-      trasteroDetails.style.display = 'block';
-      trasteroPrice.textContent = `+€${(vivienda.precio_trastero || 0).toLocaleString()}`;
-      trasteroPrice.style.display = 'block';
+        trasteroText.textContent = 'Trastero asignado (opcional)';
+        trasteroDetails.textContent = `Trastero ${vivienda.trastero}`;
+        trasteroDetails.style.display = 'block';
+        trasteroPrice.textContent = `+€${(vivienda.precio_trastero || 0).toLocaleString()}`;
+        trasteroPrice.style.display = 'block';
     }
+    }
+
+    // Funcionalidad del plano PDF - MODIFICADA PARA USAR planoLink
+    function initPlanoFunctionality(viviendaData) {
+  const btnFullscreen = document.getElementById('btn-fullscreen');
+  const btnDownload = document.getElementById('btn-download');
+  const planoIframe = document.getElementById('plano-iframe');
+  const planoLoading = document.getElementById('plano-loading');
+  const planoError = document.getElementById('plano-error');
+  const planoFallback = document.getElementById('plano-fallback');
+  const fullscreenOverlay = document.getElementById('fullscreen-overlay');
+  const fullscreenPdf = document.getElementById('fullscreen-pdf');
+  const closeFullscreen = document.getElementById('close-fullscreen');
+
+  if (!viviendaData) {
+    mostrarFallback();
+    return;
   }
 
-  // Funcionalidad del plano PDF - MODIFICADA PARA USAR planoLink
-  function initPlanoFunctionality(viviendaData) {
-    const btnFullscreen = document.getElementById('btn-fullscreen');
-    const btnDownload = document.getElementById('btn-download');
-    const planoIframe = document.getElementById('plano-iframe');
-    const planoLoading = document.getElementById('plano-loading');
-    const planoError = document.getElementById('plano-error');
-    const planoFallback = document.getElementById('plano-fallback');
-    const fullscreenOverlay = document.getElementById('fullscreen-overlay');
-    const fullscreenPdf = document.getElementById('fullscreen-pdf');
-    const closeFullscreen = document.getElementById('close-fullscreen');
+  let planoPdfPath;
 
-    if (!viviendaData) {
-      mostrarFallback();
-      return;
-    }
+  // PRIORIDAD 1: Usar planoLink si existe en los datos
+  if (viviendaData.planoLink && viviendaData.planoLink.trim() !== '') {
+    console.log('Usando planoLink desde datos:', viviendaData.planoLink);
+    planoPdfPath = viviendaData.planoLink;
+  } 
+  // PRIORIDAD 2: Generar URL pública de Firebase Storage
+  else {
+    console.log('Generando URL pública de Firebase Storage');
+    const plantaTexto = convertirPlanta(viviendaData.planta);
+    const fileName = `plano-${viviendaData.bloque}-${plantaTexto}-${viviendaData.letra}.pdf`;
+    planoPdfPath = getPublicStorageUrl(fileName);
+    console.log('URL pública generada:', planoPdfPath);
+  }
 
-    let planoPdfPath;
+  // Configurar descarga del PDF
+  if (btnDownload) {
+    btnDownload.href = planoPdfPath;
+    const plantaTexto = convertirPlanta(viviendaData.planta);
+    btnDownload.download = `Plano_Bloque_${viviendaData.bloque}_${plantaTexto}_${viviendaData.letra}.pdf`;
+  }
 
-    // PRIORIDAD 1: Usar planoLink si existe en los datos
-    if (viviendaData.planoLink && viviendaData.planoLink.trim() !== '') {
-      console.log('Usando planoLink desde datos:', viviendaData.planoLink);
-      planoPdfPath = viviendaData.planoLink;
-    } 
-    // PRIORIDAD 2: Construir ruta automáticamente (fallback)
-    else {
-      console.log('Construyendo ruta automática del plano');
-      const plantaTexto = convertirPlanta(viviendaData.planta);
-      planoPdfPath = `../assets/docs/plano-${viviendaData.bloque}-${plantaTexto}-${viviendaData.letra}.pdf`;
-    }
+  // Intentar cargar el PDF en el iframe
+  cargarPDFEnIframe(planoPdfPath);
 
-    // Configurar descarga del PDF
-    if (btnDownload) {
-      btnDownload.href = planoPdfPath;
-      const plantaTexto = convertirPlanta(viviendaData.planta);
-      btnDownload.download = `Plano_Bloque_${viviendaData.bloque}_${plantaTexto}_${viviendaData.letra}.pdf`;
-    }
-
-    // Intentar cargar el PDF en el iframe
-    cargarPDFEnIframe(planoPdfPath);
-
-    // Función para cargar PDF en iframe
-    function cargarPDFEnIframe(pdfUrl) {
-      console.log('Intentando cargar PDF:', pdfUrl);
+  // Función para cargar PDF en iframe - MEJORADA
+  function cargarPDFEnIframe(pdfUrl) {
+    console.log('Intentando cargar PDF desde Firebase:', pdfUrl);
+    
+    // Mostrar loading
+    mostrarLoading();
+    
+    // Para URLs de Firebase Storage, usar visualizador mejorado
+    if (pdfUrl.includes('firebasestorage.googleapis.com')) {
+      // Crear visualizador con múltiples fallbacks
+      const planoContainer = document.querySelector('.plano-container');
+      planoContainer.innerHTML = `
+        <!-- Loading inicial -->
+        <div class="plano-loading" id="plano-loading" style="display: flex;">
+            <i class="fas fa-spinner"></i>
+            <span>Cargando desde Firebase...</span>
+        </div>
+        
+        <!-- Visualizador principal -->
+        <div id="pdf-viewer-firebase" style="display: none; width: 100%; height: 100%;">
+          <!-- Method 1: Object tag -->
+          <object 
+            data="${pdfUrl}#toolbar=1&navpanes=1&scrollbar=1&view=FitH" 
+            type="application/pdf"
+            width="100%" 
+            height="100%"
+            style="border: none;">
+            
+            <!-- Method 2: Embed tag -->
+            <embed 
+              src="${pdfUrl}#toolbar=1&navpanes=1&scrollbar=1&view=FitH"
+              type="application/pdf"
+              width="100%" 
+              height="100%"
+              style="border: none;">
+              
+              <!-- Method 3: Iframe fallback -->
+              <iframe 
+                src="${pdfUrl}" 
+                width="100%" 
+                height="100%"
+                style="border: none;">
+                
+                <!-- Fallback final -->
+                <div style="
+                  display: flex; 
+                  flex-direction: column; 
+                  align-items: center; 
+                  justify-content: center; 
+                  height: 100%; 
+                  text-align: center; 
+                  padding: 40px;
+                ">
+                  <i class="fas fa-file-pdf" style="font-size: 3rem; color: #e0c88c; margin-bottom: 20px;"></i>
+                  <h4>PDF desde Firebase Storage</h4>
+                  <p style="color: #666; margin: 15px 0;">
+                    Si no puedes ver el PDF, usa los botones de arriba para abrirlo en nueva ventana o descargarlo.
+                  </p>
+                  <a href="${pdfUrl}" target="_blank" style="
+                    background: #e0c88c;
+                    color: #3a3a3a;
+                    padding: 10px 20px;
+                    border-radius: 4px;
+                    text-decoration: none;
+                    font-weight: 500;
+                  ">
+                    <i class="fas fa-external-link-alt"></i> Abrir PDF
+                  </a>
+                </div>
+              </iframe>
+            </embed>
+          </object>
+        </div>
+        
+        <!-- Error de carga -->
+        <div class="plano-error" id="plano-error" style="display: none;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h4>Error al cargar el plano</h4>
+            <p>No se pudo cargar el archivo PDF desde Firebase Storage.</p>
+            <button onclick="location.reload()" style="
+              background: #e0c88c;
+              color: #3a3a3a;
+              border: none;
+              padding: 10px 20px;
+              border-radius: 4px;
+              cursor: pointer;
+              margin-top: 10px;
+            ">
+              <i class="fas fa-redo"></i> Reintentar
+            </button>
+        </div>
+      `;
       
-      // Mostrar loading
-      mostrarLoading();
+      // Simular carga exitosa después de un momento
+      setTimeout(() => {
+        document.getElementById('plano-loading').style.display = 'none';
+        document.getElementById('pdf-viewer-firebase').style.display = 'block';
+        console.log('✅ Visualizador PDF de Firebase configurado');
+      }, 1500);
       
-      // Configurar timeout para detectar carga fallida
+    } else {
+      // Método original para URLs locales
       const timeoutId = setTimeout(() => {
         console.log('Timeout al cargar PDF, mostrando fallback');
         mostrarFallback();
-      }, 5000); // 5 segundos timeout
+      }, 5000);
 
-      // Configurar eventos del iframe
       planoIframe.onload = function() {
         console.log('PDF cargado exitosamente');
         clearTimeout(timeoutId);
@@ -869,99 +973,99 @@
         mostrarError();
       };
 
-      // Cargar el PDF
       planoIframe.src = pdfUrl;
     }
-
+  }
+    
     // Funciones para mostrar diferentes estados
     function mostrarLoading() {
-      planoLoading.style.display = 'flex';
-      planoError.style.display = 'none';
-      planoFallback.style.display = 'none';
-      planoIframe.style.display = 'none';
+        planoLoading.style.display = 'flex';
+        planoError.style.display = 'none';
+        planoFallback.style.display = 'none';
+        planoIframe.style.display = 'none';
     }
 
     function mostrarPDF() {
-      planoLoading.style.display = 'none';
-      planoError.style.display = 'none';
-      planoFallback.style.display = 'none';
-      planoIframe.style.display = 'block';
+        planoLoading.style.display = 'none';
+        planoError.style.display = 'none';
+        planoFallback.style.display = 'none';
+        planoIframe.style.display = 'block';
     }
 
     function mostrarError() {
-      planoLoading.style.display = 'none';
-      planoError.style.display = 'flex';
-      planoFallback.style.display = 'none';
-      planoIframe.style.display = 'none';
+        planoLoading.style.display = 'none';
+        planoError.style.display = 'flex';
+        planoFallback.style.display = 'none';
+        planoIframe.style.display = 'none';
     }
 
     function mostrarFallback() {
-      planoLoading.style.display = 'none';
-      planoError.style.display = 'none';
-      planoFallback.style.display = 'flex';
-      planoIframe.style.display = 'none';
+        planoLoading.style.display = 'none';
+        planoError.style.display = 'none';
+        planoFallback.style.display = 'flex';
+        planoIframe.style.display = 'none';
     }
 
     // Pantalla completa
     if (btnFullscreen) {
-      btnFullscreen.addEventListener('click', () => {
+        btnFullscreen.addEventListener('click', () => {
         if (planoIframe.style.display === 'block') {
-          // Si el PDF está cargado, mostrarlo en pantalla completa
-          fullscreenPdf.src = planoPdfPath;
-          fullscreenOverlay.style.display = 'block';
-          document.body.style.overflow = 'hidden';
+            // Si el PDF está cargado, mostrarlo en pantalla completa
+            fullscreenPdf.src = planoPdfPath;
+            fullscreenOverlay.style.display = 'block';
+            document.body.style.overflow = 'hidden';
         } else {
-          // Si no está cargado, abrir en nueva ventana
-          window.open(planoPdfPath, '_blank');
+            // Si no está cargado, abrir en nueva ventana
+            window.open(planoPdfPath, '_blank');
         }
-      });
+        });
     }
 
     // Cerrar pantalla completa
     if (closeFullscreen) {
-      closeFullscreen.addEventListener('click', () => {
+        closeFullscreen.addEventListener('click', () => {
         fullscreenOverlay.style.display = 'none';
         document.body.style.overflow = 'auto';
-      });
+        });
     }
 
     // Cerrar al hacer click en el overlay
     if (fullscreenOverlay) {
-      fullscreenOverlay.addEventListener('click', (e) => {
+        fullscreenOverlay.addEventListener('click', (e) => {
         if (e.target === fullscreenOverlay) {
-          fullscreenOverlay.style.display = 'none';
-          document.body.style.overflow = 'auto';
+            fullscreenOverlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
         }
-      });
+        });
     }
 
     // Cerrar con ESC
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && fullscreenOverlay.style.display === 'block') {
+        if (e.key === 'Escape' && fullscreenOverlay.style.display === 'block') {
         fullscreenOverlay.style.display = 'none';
         document.body.style.overflow = 'auto';
-      }
+        }
     });
-  }
+    }
 
-  // CONFIGURAR EL BOTÓN DE RESERVA INMEDIATAMENTE
-  document.addEventListener('DOMContentLoaded', () => {
-      const btnReservar = document.getElementById('reservar-btn');
-      if (btnReservar) {
-          btnReservar.addEventListener('click', () => {
-              console.log('Click en botón reservar - mostrando modal');
-              mostrarModalContacto();
-          });
-      }
-  });
+    // CONFIGURAR EL BOTÓN DE RESERVA INMEDIATAMENTE
+    document.addEventListener('DOMContentLoaded', () => {
+        const btnReservar = document.getElementById('reservar-btn');
+        if (btnReservar) {
+            btnReservar.addEventListener('click', () => {
+                console.log('Click en botón reservar - mostrando modal');
+                mostrarModalContacto();
+            });
+        }
+    });
 
-  // Cargar datos de la vivienda
-  loadViviendaFromUrl().then(async () => {
+    // Cargar datos de la vivienda
+    loadViviendaFromUrl().then(async () => {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
     const v = await fetchVivienda(id);
     if (!v) return;
-    
+
     console.log('Datos de vivienda:', v);
 
     const plantaTexto = convertirPlanta(v.planta);
@@ -991,11 +1095,11 @@
 
     // Inicializar funcionalidades del plano
     initPlanoFunctionality(v);
-    
-  }).catch(error => {
+
+    }).catch(error => {
     console.error('Error cargando la vivienda:', error);
     // Aunque haya error cargando datos, el botón de reserva debe funcionar
-  });
+    });
   </script>
 </body>
 </html>

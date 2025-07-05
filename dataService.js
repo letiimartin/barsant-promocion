@@ -103,6 +103,8 @@ export async function getPlanoViviendaUrl(vivienda) {
   return getPublicStorageUrl(fileName);
 }
 
+
+
 // ========================
 // FIRESTORE - FUNCIONES BÁSICAS
 // ========================

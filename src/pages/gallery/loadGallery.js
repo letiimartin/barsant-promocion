@@ -110,6 +110,7 @@ function openImageModal(index) {
     modalBody.innerHTML = `
         <!-- Botón de Cerrar -->
         <button class="modal-close-button" onclick="closeImageModal()" style="
+            appearance: none;
             position: absolute;
             top: 20px;
             right: 20px;

@@ -1,3 +1,11 @@
+// Importaciones estáticas al inicio del archivo
+import { 
+    iniciarSesionAnonima, 
+    verificarEstadoAuth, 
+    getMemoriaCalidadesUrl, 
+    getPlanosArquitectonicosUrl 
+} from '../dataService.js';
+
 document.addEventListener("DOMContentLoaded", function () {
     fetch('src/pages/documentation/documentation.html')
         .then(response => {
@@ -142,9 +150,6 @@ async function openDocModal(docType) {
             `;
             
             try {
-                // ASEGURAR AUTENTICACIÓN ANTES DE CARGAR
-                const { iniciarSesionAnonima, verificarEstadoAuth } = await import('../dataService.js');
-                
                 console.log('🔐 Verificando autenticación para documentos...');
                 const authExitosa = await iniciarSesionAnonima();
                 
@@ -160,10 +165,9 @@ async function openDocModal(docType) {
                 
                 console.log('✅ Autenticación confirmada, cargando documento...');
                 
-                // Obtener URL desde Firebase Storage usando dataService
+                // Obtener URL desde Firebase Storage
                 let memoriaUrl;
                 try {
-                    const { getMemoriaCalidadesUrl } = await import('../dataService.js');
                     memoriaUrl = await getMemoriaCalidadesUrl();
                     console.log('✅ URL de memoria obtenida:', memoriaUrl);
                 } catch (error) {
@@ -189,7 +193,7 @@ async function openDocModal(docType) {
                     <div class="error-container" style="text-align: center; padding: 40px;">
                         <i class="fas fa-exclamation-triangle" style="font-size: 2rem; color: #dc3545; margin-bottom: 15px;"></i>
                         <h4>Error al cargar el documento</h4>
-                        <p><strong>Error de autenticación:</strong> ${error.message}</p>
+                        <p><strong>Error:</strong> ${error.message}</p>
                         <p>No se pudo cargar la memoria de calidades. Esto puede deberse a:</p>
                         <ul style="text-align: left; margin: 20px 0;">
                             <li>Autenticación anónima no habilitada en Firebase</li>
@@ -223,9 +227,6 @@ async function openDocModal(docType) {
             `;
             
             try {
-                // ASEGURAR AUTENTICACIÓN ANTES DE CARGAR
-                const { iniciarSesionAnonima, verificarEstadoAuth } = await import('../dataService.js');
-                
                 console.log('🔐 Verificando autenticación para planos...');
                 const authExitosa = await iniciarSesionAnonima();
                 
@@ -241,10 +242,9 @@ async function openDocModal(docType) {
                 
                 console.log('✅ Autenticación confirmada, cargando planos...');
                 
-                // Obtener URL desde Firebase Storage usando dataService
+                // Obtener URL desde Firebase Storage
                 let planosUrl;
                 try {
-                    const { getPlanosArquitectonicosUrl } = await import('../dataService.js');
                     planosUrl = await getPlanosArquitectonicosUrl();
                     console.log('✅ URL de planos obtenida:', planosUrl);
                 } catch (error) {
@@ -270,7 +270,7 @@ async function openDocModal(docType) {
                     <div class="error-container" style="text-align: center; padding: 40px;">
                         <i class="fas fa-exclamation-triangle" style="font-size: 2rem; color: #dc3545; margin-bottom: 15px;"></i>
                         <h4>Error al cargar el documento</h4>
-                        <p><strong>Error de autenticación:</strong> ${error.message}</p>
+                        <p><strong>Error:</strong> ${error.message}</p>
                         <p>No se pudieron cargar los planos arquitectónicos. Esto puede deberse a:</p>
                         <ul style="text-align: left; margin: 20px 0;">
                             <li>Autenticación anónima no habilitada en Firebase</li>

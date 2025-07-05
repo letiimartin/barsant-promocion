@@ -41,16 +41,35 @@ async function openDocModal(docType) {
             modalBody.innerHTML = `
                 <div class="loading-container" style="text-align: center; padding: 40px;">
                     <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #e0c88c; margin-bottom: 15px;"></i>
-                    <p>Cargando memoria de calidades...</p>
+                    <p>Preparando autenticación y cargando documento...</p>
                 </div>
             `;
             
             try {
+                // ASEGURAR AUTENTICACIÓN ANTES DE CARGAR
+                const { iniciarSesionAnonima, verificarEstadoAuth } = await import('../dataService.js');
+                
+                console.log('🔐 Verificando autenticación para documentos...');
+                const authExitosa = await iniciarSesionAnonima();
+                
+                if (!authExitosa) {
+                    throw new Error('No se pudo autenticar para acceder al documento');
+                }
+                
+                // Verificar estado de auth
+                const authVerificada = await verificarEstadoAuth();
+                if (!authVerificada) {
+                    throw new Error('Autenticación no verificada');
+                }
+                
+                console.log('✅ Autenticación confirmada, cargando documento...');
+                
                 // Obtener URL desde Firebase Storage usando dataService
                 let memoriaUrl;
                 try {
                     const { getMemoriaCalidadesUrl } = await import('../dataService.js');
                     memoriaUrl = await getMemoriaCalidadesUrl();
+                    console.log('✅ URL de memoria obtenida:', memoriaUrl);
                 } catch (error) {
                     console.warn('Error cargando desde Firebase Storage, usando fallback:', error);
                     memoriaUrl = 'assets/docs/MEMORIA CALIDADES_VENTANILLA.pdf';
@@ -92,7 +111,9 @@ async function openDocModal(docType) {
                         <iframe src="${memoriaUrl}" 
                                 width="100%" 
                                 height="600px" 
-                                style="border: none; border-radius: 4px;">
+                                style="border: none; border-radius: 4px;"
+                                onload="console.log('📄 PDF cargado exitosamente')"
+                                onerror="console.error('❌ Error cargando PDF en iframe')">
                             <div style="text-align: center; padding: 40px;">
                                 <i class="fas fa-file-pdf" style="font-size: 3rem; color: #dc3545; margin-bottom: 15px;"></i>
                                 <p>Su navegador no puede mostrar PDFs.</p>
@@ -109,7 +130,23 @@ async function openDocModal(docType) {
                     <div class="error-container" style="text-align: center; padding: 40px;">
                         <i class="fas fa-exclamation-triangle" style="font-size: 2rem; color: #dc3545; margin-bottom: 15px;"></i>
                         <h4>Error al cargar el documento</h4>
-                        <p>No se pudo cargar la memoria de calidades. Por favor, intente más tarde.</p>
+                        <p><strong>Error de autenticación:</strong> ${error.message}</p>
+                        <p>No se pudo cargar la memoria de calidades. Esto puede deberse a:</p>
+                        <ul style="text-align: left; margin: 20px 0;">
+                            <li>Autenticación anónima no habilitada en Firebase</li>
+                            <li>Reglas de Firebase Storage restrictivas</li>
+                            <li>Archivo no encontrado en Storage</li>
+                        </ul>
+                        <button onclick="openDocModal('memoria-calidades')" class="btn-primary" style="
+                            background-color: #e0c88c;
+                            color: #3a3a3a;
+                            border: none;
+                            padding: 10px 20px;
+                            border-radius: 4px;
+                            cursor: pointer;
+                        ">
+                            Reintentar
+                        </button>
                     </div>
                 `;
             }
@@ -121,16 +158,35 @@ async function openDocModal(docType) {
             modalBody.innerHTML = `
                 <div class="loading-container" style="text-align: center; padding: 40px;">
                     <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #e0c88c; margin-bottom: 15px;"></i>
-                    <p>Cargando planos arquitectónicos...</p>
+                    <p>Preparando autenticación y cargando planos...</p>
                 </div>
             `;
             
             try {
+                // ASEGURAR AUTENTICACIÓN ANTES DE CARGAR
+                const { iniciarSesionAnonima, verificarEstadoAuth } = await import('../dataService.js');
+                
+                console.log('🔐 Verificando autenticación para planos...');
+                const authExitosa = await iniciarSesionAnonima();
+                
+                if (!authExitosa) {
+                    throw new Error('No se pudo autenticar para acceder a los planos');
+                }
+                
+                // Verificar estado de auth
+                const authVerificada = await verificarEstadoAuth();
+                if (!authVerificada) {
+                    throw new Error('Autenticación no verificada');
+                }
+                
+                console.log('✅ Autenticación confirmada, cargando planos...');
+                
                 // Obtener URL desde Firebase Storage usando dataService
                 let planosUrl;
                 try {
                     const { getPlanosArquitectonicosUrl } = await import('../dataService.js');
                     planosUrl = await getPlanosArquitectonicosUrl();
+                    console.log('✅ URL de planos obtenida:', planosUrl);
                 } catch (error) {
                     console.warn('Error cargando desde Firebase Storage, usando fallback:', error);
                     planosUrl = 'assets/docs/R05 PLANOS BASICO REFORMADO 22.pdf';
@@ -172,7 +228,9 @@ async function openDocModal(docType) {
                         <iframe src="${planosUrl}" 
                                 width="100%" 
                                 height="600px" 
-                                style="border: none; border-radius: 4px;">
+                                style="border: none; border-radius: 4px;"
+                                onload="console.log('📄 Planos cargados exitosamente')"
+                                onerror="console.error('❌ Error cargando planos en iframe')">
                             <div style="text-align: center; padding: 40px;">
                                 <i class="fas fa-file-pdf" style="font-size: 3rem; color: #dc3545; margin-bottom: 15px;"></i>
                                 <p>Su navegador no puede mostrar PDFs.</p>
@@ -189,7 +247,23 @@ async function openDocModal(docType) {
                     <div class="error-container" style="text-align: center; padding: 40px;">
                         <i class="fas fa-exclamation-triangle" style="font-size: 2rem; color: #dc3545; margin-bottom: 15px;"></i>
                         <h4>Error al cargar el documento</h4>
-                        <p>No se pudieron cargar los planos arquitectónicos. Por favor, intente más tarde.</p>
+                        <p><strong>Error de autenticación:</strong> ${error.message}</p>
+                        <p>No se pudieron cargar los planos arquitectónicos. Esto puede deberse a:</p>
+                        <ul style="text-align: left; margin: 20px 0;">
+                            <li>Autenticación anónima no habilitada en Firebase</li>
+                            <li>Reglas de Firebase Storage restrictivas</li>
+                            <li>Archivo no encontrado en Storage</li>
+                        </ul>
+                        <button onclick="openDocModal('planos-arquitectonicos')" class="btn-primary" style="
+                            background-color: #e0c88c;
+                            color: #3a3a3a;
+                            border: none;
+                            padding: 10px 20px;
+                            border-radius: 4px;
+                            cursor: pointer;
+                        ">
+                            Reintentar
+                        </button>
                     </div>
                 `;
             }

@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
     try {
       // 1 · Import dinámico a tu servicio
-      const { cargarGaleriaFirebaseOptimizada } = await import('../../dataService.js');
+      const { cargarGaleriaFirebaseOptimizada } = await import('../../../dataService.js');
       // 2 · Obtiene array [{nombre, url}, …]
       const imagenes = await cargarGaleriaFirebaseOptimizada();
       if (!imagenes.length) throw new Error('No hay imágenes en Firebase');

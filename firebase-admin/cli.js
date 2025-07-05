@@ -4,6 +4,7 @@ const { Command } = require('commander');
 const { initializeFirebase } = require('./firebaseService');
 const { importCollection } = require('./importer');
 const { exportCollection } = require('./exporter');
+const { updatePlanos } = require('./updatePlanos');
 const path = require('path');
 
 const program = new Command();
@@ -26,5 +27,23 @@ program
     const outputPath = path.join(__dirname, '..', 'data', outputFile);
     await exportCollection(db, collection, outputPath);
   });
+
+  // update-planos
+  program
+  .command('update-planos')
+  .description('Añade enlaces de planos PDF a la colección datos_web')
+  .option('-c, --collection <name>', 'nombre de la colección', 'datos_web')
+  .action(async (options) => {
+    console.log('🔥 Iniciando actualización de planos...');
+    
+    try {
+      const db = initializeFirebase();
+      await updatePlanos(db, options.collection); // ✅ Llamar a tu función
+    } catch (error) {
+      console.error('❌ Error en comando update-planos:', error.message);
+      process.exit(1);
+    }
+  });
+
 
 program.parse(process.argv);

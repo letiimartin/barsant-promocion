@@ -263,7 +263,7 @@
             border-radius: var(--border-radius);
             overflow: hidden;
             box-shadow: var(--shadow);
-            height: 500px; /* Altura fija para el PDF */
+            height: 500px;
         }
 
         .plano-pdf {
@@ -273,46 +273,7 @@
             border-radius: var(--border-radius);
         }
 
-        .plano-message {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 300px;
-            text-align: center;
-            padding: 40px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border: 2px dashed #dee2e6;
-            margin: 20px;
-            border-radius: 8px;
-        }
-
-        .plano-message i {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            color: #6c757d;
-        }
-
-        .plano-message h4 {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        .plano-message p {
-            color: #666;
-            line-height: 1.6;
-            margin-bottom: 0;
-            font-size: 1rem;
-        }
-
-        .plano-message .highlight {
-            color: var(--secondary-color);
-            font-weight: 600;
-        }
-
-        .pdf-loading {
+        .plano-loading {
             position: absolute;
             top: 50%;
             left: 50%;
@@ -325,12 +286,18 @@
             gap: 15px;
         }
 
-        .pdf-loading i {
+        .plano-loading i {
             font-size: 2rem;
             color: var(--secondary-color);
+            animation: spin 2s linear infinite;
         }
 
-        .pdf-error {
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .plano-error {
             position: absolute;
             top: 50%;
             left: 50%;
@@ -339,12 +306,44 @@
             font-size: 1rem;
             text-align: center;
             display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
         }
 
-        .pdf-error i {
+        .plano-error i {
             font-size: 2rem;
             margin-bottom: 10px;
-            display: block;
+        }
+
+        .plano-fallback {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .plano-fallback i {
+            font-size: 3rem;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+
+        .plano-fallback h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .plano-fallback p {
+            color: #666;
+            line-height: 1.6;
         }
 
         .fullscreen-overlay {
@@ -386,6 +385,54 @@
             background: rgba(0,0,0,0.8);
         }
 
+        /* Estilos para cochera y trastero con detalles */
+        .feature-with-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        .feature-content {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+
+        .feature-details {
+            display: flex;
+            flex-direction: column;
+            margin-left: 30px;
+        }
+
+        .feature-main {
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .feature-sub {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .feature-price {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            margin-left: 10px;
+            white-space: nowrap;
+        }
+
+        .pack-indicator {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
         /* Sección de Calidades */
         .info-section.calidades {
             border-top: 2px solid var(--secondary-color);
@@ -414,6 +461,16 @@
             .plano-actions {
                 width: 100%;
                 justify-content: flex-start;
+            }
+
+            .feature-with-price {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+
+            .feature-price {
+                margin-left: 30px;
             }
         }
 
@@ -475,7 +532,6 @@
             .price {
                 font-size: 1.7rem;
             }
-            
         }
     </style>
 </head>
@@ -496,16 +552,6 @@
   <div class="container" id="contenido">
     <div class="vivienda-content">
       <div class="vivienda-gallery">
-        <!-- Esto es para añadir imagenes en cada vivienda -->
-        <!-- <div class="main-image" id="main-image">
-          <i class="fas fa-image"></i> Imagen principal
-        </div>
-        <div class="thumbnail-grid" id="thumbnail-grid">
-          <div class="thumbnail active" data-image="1"><i class="fas fa-image"></i></div>
-          <div class="thumbnail" data-image="2"><i class="fas fa-image"></i></div>
-          <div class="thumbnail" data-image="3"><i class="fas fa-image"></i></div>
-          <div class="thumbnail" data-image="4"><i class="fas fa-image"></i></div>
-        </div> -->
         
         <div class="plano-section">
           <div class="plano-header">
@@ -519,25 +565,34 @@
               </a>
             </div>
           </div>
-          <!-- ARREGLA CARGAR PDFS DESDE LOCAR (cUANDO SE COMPRE UN STORAGE) -->
-          <!-- <div class="plano-container">
-            <div class="pdf-loading" id="pdf-loading">
-              <i class="fas fa-file-pdf"></i>
-              <span>Cargando plano...</span>
-            </div>
-            <div class="pdf-error" id="pdf-error">
-              <i class="fas fa-exclamation-triangle"></i>
-              <span>No se pudo cargar el plano PDF.<br>Use el botón "Descargar PDF" para verlo.</span>
-            </div>
-            <iframe id="plano-pdf" class="plano-pdf" title="Plano de la vivienda"></iframe>
-          </div> -->
           <div class="plano-container">
-            <div class="plano-message">
-                <i class="fas fa-eye-slash"></i>
-                <h4>Vista previa no disponible</h4>
-                <p>Actualmente no se puede visualizar el plano en el navegador.<br>
-                Haz clic en <span class="highlight">"Descargar PDF"</span> para visualizarlo en tu dispositivo.</p>
+            <!-- Indicador de carga -->
+            <div class="plano-loading" id="plano-loading">
+                <i class="fas fa-spinner"></i>
+                <span>Cargando plano...</span>
             </div>
+            
+            <!-- Error de carga -->
+            <div class="plano-error" id="plano-error">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h4>Error al cargar el plano</h4>
+                <p>No se pudo cargar el archivo PDF. Verifica la conexión o intenta descargar el archivo.</p>
+            </div>
+            
+            <!-- Fallback cuando no hay planoLink -->
+            <div class="plano-fallback" id="plano-fallback">
+                <i class="fas fa-file-pdf"></i>
+                <h4>Plano disponible para descarga</h4>
+                <p>Haz clic en "Descargar PDF" para ver el plano de esta vivienda.</p>
+            </div>
+            
+            <!-- PDF embebido -->
+            <iframe 
+                class="plano-pdf" 
+                id="plano-iframe" 
+                style="display: none;"
+                title="Plano de la vivienda">
+            </iframe>
         </div>
         </div>
       </div>
@@ -553,10 +608,33 @@
           <ul class="feature-list">
             <li><i class="fas fa-bed"></i> <span id="dormitorios"></span></li>
             <li><i class="fas fa-bath"></i> <span id="baños"></span></li>
-            <li><i class="fas fa-ruler-combined"></i> <span id="sup_util"></span></li>
             <li><i class="fas fa-ruler"></i> <span id="sup_total"></span></li>
-            <li><i class="fas fa-box"></i> Trastero opcional</li>
-            <li><i class="fas fa-parking"></i> Plaza de garaje opcional</li>
+            <!-- Cochera - se actualiza dinámicamente -->
+            <li id="cochera-feature">
+              <div class="feature-with-price">
+                <div class="feature-content">
+                  <i class="fas fa-parking"></i>
+                  <div class="feature-details">
+                    <span class="feature-main" id="cochera-text">Plaza de garaje opcional</span>
+                    <span class="feature-sub" id="cochera-details" style="display: none;"></span>
+                  </div>
+                </div>
+                <span class="feature-price" id="cochera-price" style="display: none;"></span>
+              </div>
+            </li>
+            <!-- Trastero - se actualiza dinámicamente -->
+            <li id="trastero-feature">
+              <div class="feature-with-price">
+                <div class="feature-content">
+                  <i class="fas fa-box"></i>
+                  <div class="feature-details">
+                    <span class="feature-main" id="trastero-text">Trastero opcional</span>
+                    <span class="feature-sub" id="trastero-details" style="display: none;"></span>
+                  </div>
+                </div>
+                <span class="feature-price" id="trastero-price" style="display: none;"></span>
+              </div>
+            </li>
           </ul>
         </div>
 
@@ -673,28 +751,197 @@
     return mapa[planta] || planta;
   }
 
-  // Funcionalidad del plano PDF - SIMPLIFICADA PARA EVITAR ERRORES
+  // Función para actualizar información de cochera y trastero
+  function actualizarCocheraYTrastero(vivienda) {
+    const cocheraText = document.getElementById('cochera-text');
+    const cocheraDetails = document.getElementById('cochera-details');
+    const cocheraPrice = document.getElementById('cochera-price');
+    
+    const trasteroText = document.getElementById('trastero-text');
+    const trasteroDetails = document.getElementById('trastero-details');
+    const trasteroPrice = document.getElementById('trastero-price');
+
+    // ESCENARIO 1: Sin cochera ni trastero
+    if (!vivienda.cochera && !vivienda.trastero) {
+      // Mantener texto por defecto
+      return;
+    }
+
+    // ESCENARIO 3: Pack vinculado
+    if (vivienda.vinculado && vivienda.cochera && vivienda.trastero) {
+      const precioTotal = (vivienda.precio_cochera || 0) + (vivienda.precio_trastero || 0);
+      
+      // Actualizar cochera
+      cocheraText.innerHTML = 'Pack Cochera + Trastero <span class="pack-indicator">PACK</span>';
+      cocheraDetails.textContent = `Cochera ${vivienda.cochera} + Trastero ${vivienda.trastero}`;
+      cocheraDetails.style.display = 'block';
+      cocheraPrice.textContent = `+€${precioTotal.toLocaleString()}`;
+      cocheraPrice.style.display = 'block';
+      
+      // Ocultar la línea del trastero ya que está incluida en el pack
+      document.getElementById('trastero-feature').style.display = 'none';
+      
+      return;
+    }
+
+    // ESCENARIO 2: Cochera y/o trastero asignados independientes
+    if (vivienda.cochera) {
+      cocheraText.textContent = 'Plaza de garaje asignada (opcional)';
+      cocheraDetails.textContent = `Cochera ${vivienda.cochera}`;
+      cocheraDetails.style.display = 'block';
+      cocheraPrice.textContent = `+€${(vivienda.precio_cochera || 0).toLocaleString()}`;
+      cocheraPrice.style.display = 'block';
+    }
+
+    if (vivienda.trastero) {
+      trasteroText.textContent = 'Trastero asignado (opcional)';
+      trasteroDetails.textContent = `Trastero ${vivienda.trastero}`;
+      trasteroDetails.style.display = 'block';
+      trasteroPrice.textContent = `+€${(vivienda.precio_trastero || 0).toLocaleString()}`;
+      trasteroPrice.style.display = 'block';
+    }
+  }
+
+  // Funcionalidad del plano PDF - MODIFICADA PARA USAR planoLink
   function initPlanoFunctionality(viviendaData) {
     const btnFullscreen = document.getElementById('btn-fullscreen');
     const btnDownload = document.getElementById('btn-download');
+    const planoIframe = document.getElementById('plano-iframe');
+    const planoLoading = document.getElementById('plano-loading');
+    const planoError = document.getElementById('plano-error');
+    const planoFallback = document.getElementById('plano-fallback');
+    const fullscreenOverlay = document.getElementById('fullscreen-overlay');
+    const fullscreenPdf = document.getElementById('fullscreen-pdf');
+    const closeFullscreen = document.getElementById('close-fullscreen');
 
-    if (!viviendaData) return;
+    if (!viviendaData) {
+      mostrarFallback();
+      return;
+    }
 
-    const plantaTexto = convertirPlanta(viviendaData.planta);
-    const planoPdfPath = `../assets/docs/plano-${viviendaData.bloque}-${plantaTexto}-${viviendaData.letra}.pdf`;
-    
+    let planoPdfPath;
+
+    // PRIORIDAD 1: Usar planoLink si existe en los datos
+    if (viviendaData.planoLink && viviendaData.planoLink.trim() !== '') {
+      console.log('Usando planoLink desde datos:', viviendaData.planoLink);
+      planoPdfPath = viviendaData.planoLink;
+    } 
+    // PRIORIDAD 2: Construir ruta automáticamente (fallback)
+    else {
+      console.log('Construyendo ruta automática del plano');
+      const plantaTexto = convertirPlanta(viviendaData.planta);
+      planoPdfPath = `../assets/docs/plano-${viviendaData.bloque}-${plantaTexto}-${viviendaData.letra}.pdf`;
+    }
+
     // Configurar descarga del PDF
     if (btnDownload) {
       btnDownload.href = planoPdfPath;
+      const plantaTexto = convertirPlanta(viviendaData.planta);
       btnDownload.download = `Plano_Bloque_${viviendaData.bloque}_${plantaTexto}_${viviendaData.letra}.pdf`;
     }
 
-    // Pantalla completa - abre el PDF en nueva ventana
+    // Intentar cargar el PDF en el iframe
+    cargarPDFEnIframe(planoPdfPath);
+
+    // Función para cargar PDF en iframe
+    function cargarPDFEnIframe(pdfUrl) {
+      console.log('Intentando cargar PDF:', pdfUrl);
+      
+      // Mostrar loading
+      mostrarLoading();
+      
+      // Configurar timeout para detectar carga fallida
+      const timeoutId = setTimeout(() => {
+        console.log('Timeout al cargar PDF, mostrando fallback');
+        mostrarFallback();
+      }, 5000); // 5 segundos timeout
+
+      // Configurar eventos del iframe
+      planoIframe.onload = function() {
+        console.log('PDF cargado exitosamente');
+        clearTimeout(timeoutId);
+        mostrarPDF();
+      };
+
+      planoIframe.onerror = function() {
+        console.log('Error al cargar PDF');
+        clearTimeout(timeoutId);
+        mostrarError();
+      };
+
+      // Cargar el PDF
+      planoIframe.src = pdfUrl;
+    }
+
+    // Funciones para mostrar diferentes estados
+    function mostrarLoading() {
+      planoLoading.style.display = 'flex';
+      planoError.style.display = 'none';
+      planoFallback.style.display = 'none';
+      planoIframe.style.display = 'none';
+    }
+
+    function mostrarPDF() {
+      planoLoading.style.display = 'none';
+      planoError.style.display = 'none';
+      planoFallback.style.display = 'none';
+      planoIframe.style.display = 'block';
+    }
+
+    function mostrarError() {
+      planoLoading.style.display = 'none';
+      planoError.style.display = 'flex';
+      planoFallback.style.display = 'none';
+      planoIframe.style.display = 'none';
+    }
+
+    function mostrarFallback() {
+      planoLoading.style.display = 'none';
+      planoError.style.display = 'none';
+      planoFallback.style.display = 'flex';
+      planoIframe.style.display = 'none';
+    }
+
+    // Pantalla completa
     if (btnFullscreen) {
       btnFullscreen.addEventListener('click', () => {
-        window.open(planoPdfPath, '_blank');
+        if (planoIframe.style.display === 'block') {
+          // Si el PDF está cargado, mostrarlo en pantalla completa
+          fullscreenPdf.src = planoPdfPath;
+          fullscreenOverlay.style.display = 'block';
+          document.body.style.overflow = 'hidden';
+        } else {
+          // Si no está cargado, abrir en nueva ventana
+          window.open(planoPdfPath, '_blank');
+        }
       });
     }
+
+    // Cerrar pantalla completa
+    if (closeFullscreen) {
+      closeFullscreen.addEventListener('click', () => {
+        fullscreenOverlay.style.display = 'none';
+        document.body.style.overflow = 'auto';
+      });
+    }
+
+    // Cerrar al hacer click en el overlay
+    if (fullscreenOverlay) {
+      fullscreenOverlay.addEventListener('click', (e) => {
+        if (e.target === fullscreenOverlay) {
+          fullscreenOverlay.style.display = 'none';
+          document.body.style.overflow = 'auto';
+        }
+      });
+    }
+
+    // Cerrar con ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && fullscreenOverlay.style.display === 'block') {
+        fullscreenOverlay.style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }
+    });
   }
 
   // CONFIGURAR EL BOTÓN DE RESERVA INMEDIATAMENTE
@@ -723,17 +970,26 @@
     document.title = `Vivienda ${v.bloque} ${plantaTexto} ${v.letra} | Ventanilla Residencial`;
     document.getElementById('nombre').textContent = nombre;
 
-    const subtitle = `${v.dormitorios} dormitorios · ${v.baños} baños · ${v.sup_util} m² útiles · ${v.sup_total} m² construidos`;
+    const subtitle = `${v.dormitorios} dormitorios · ${v.baños} baños · ${v.m2_construidos} m² construidos`;
     document.getElementById('subtitulo').textContent = subtitle;
 
-    // Actualizar precio
-    document.getElementById('precio').textContent = `€${v.precio_final?.toLocaleString() || 0}`;
+    // Actualizar precio - usar precio_vivienda si está disponible, sino precio_total
+    const precioMostrar = v.precio_vivienda || v.precio_total || 0;
+    document.getElementById('precio').textContent = `€${precioMostrar.toLocaleString()}`;
 
     // Actualizar estado
     document.getElementById('estado').textContent = v.estado;
     document.getElementById('estado').classList.add(v.estado === 'Reservado' ? 'estado-reservado' : 'estado-disponible');
 
-    // Inicializar funcionalidades
+    // Actualizar características básicas
+    document.getElementById('dormitorios').textContent = `${v.dormitorios} dormitorio(s)`;
+    document.getElementById('baños').textContent = `${v.baños} baño(s)`;
+    document.getElementById('sup_total').textContent = `${v.m2_construidos} m² construidos`;
+
+    // Actualizar información de cochera y trastero
+    actualizarCocheraYTrastero(v);
+
+    // Inicializar funcionalidades del plano
     initPlanoFunctionality(v);
     
   }).catch(error => {

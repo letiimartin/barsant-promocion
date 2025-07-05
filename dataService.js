@@ -130,7 +130,65 @@ export async function fetchVivienda(id) {
       throw new Error(`Error cargando vivienda ${id}: ${err.message}`);
   }
 }
-
+export async function loadViviendaFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+  const vivienda = await fetchViviendaCompleta(id);
+  
+  if (!vivienda) {
+    const cont = document.getElementById('contenido');
+    if (cont) cont.innerHTML = '<p>Vivienda no encontrada.</p>';
+    return;
+  }
+  
+  // Actualizar información básica
+  const nombreElement = document.getElementById('nombre');
+  if (nombreElement) {
+    nombreElement.textContent = getNombreVivienda(vivienda);
+  }
+  
+  const precioElement = document.getElementById('precio');
+  if (precioElement) {
+    const precio = vivienda.precio_vivienda || vivienda.precio_total || 0;
+    precioElement.textContent = formatearPrecio(precio);
+  }
+  
+  const subtituloElement = document.getElementById('subtitulo');
+  if (subtituloElement) {
+    subtituloElement.textContent = getSubtituloVivienda(vivienda);
+  }
+  
+  // Actualizar campos individuales
+  const supTotalElement = document.getElementById('sup_total');
+  if (supTotalElement) {
+    supTotalElement.textContent = `${vivienda.m2_construidos} m² construidos`;
+  }
+  
+  const dormitoriosElement = document.getElementById('dormitorios');
+  if (dormitoriosElement) {
+    dormitoriosElement.textContent = `${vivienda.dormitorios} dormitorio(s)`;
+  }
+  
+  const bañosElement = document.getElementById('baños');
+  if (bañosElement) {
+    bañosElement.textContent = `${vivienda.baños} baño(s)`;
+  }
+  
+  // Log información de extras para depuración
+  if (vivienda.cochera) {
+    console.log('Cochera asignada:', vivienda.cochera, 'Precio:', vivienda.precio_cochera);
+  }
+  
+  if (vivienda.trastero) {
+    console.log('Trastero asignado:', vivienda.trastero, 'Precio:', vivienda.precio_trastero);
+  }
+  
+  if (vivienda.vinculado) {
+    console.log('Pack vinculado:', vivienda.vinculado);
+  }
+  
+  return vivienda;
+}
 // Obtiene todas las viviendas
 export async function fetchAllViviendas() {
   try {

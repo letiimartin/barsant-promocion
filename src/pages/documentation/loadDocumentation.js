@@ -97,9 +97,7 @@ function createPDFViewer(url, filename) {
                         <div id="pdf-fallback" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; padding: 40px;">
                             <i class="fas fa-file-pdf" style="font-size: 4rem; color: #e0c88c; margin-bottom: 20px;"></i>
                             <h4 style="margin-bottom: 15px;">PDF desde Firebase Storage</h4>
-                            <p style="margin-bottom: 25px; color: #666; max-width: 400px;">
-                                El documento se encuentra en Firebase Storage con URL pública. Su navegador no puede mostrarlo integrado debido a restricciones de seguridad.
-                            </p>
+                            ¡
                             <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
                                 <a href="${url}" target="_blank" class="btn-primary" style="
                                     display: inline-flex;
@@ -121,10 +119,7 @@ function createPDFViewer(url, filename) {
                 </object>
             </div>
             
-            <div style="margin-top: 15px; padding: 10px; background-color: #f8f9fa; border-radius: 4px; font-size: 12px; color: #666; text-align: center;">
-                <i class="fas fa-cloud"></i>
-                Documento cargado desde Firebase Storage con URL pública. Si tiene problemas visualizándolo, use los botones de arriba.
-            </div>
+            
         </div>
     `;
 }

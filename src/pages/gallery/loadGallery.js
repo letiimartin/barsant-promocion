@@ -169,9 +169,6 @@ function openImageModal(index) {
             <!-- Información de la imagen -->
             <div style="margin-top: 15px; text-align: center;">
                 <h3 style="margin: 0 0 5px 0; color: #3a3a3a;">${nombreDisplay}</h3>
-                <p style="margin: 0; color: #666; font-size: 14px;">
-                    <i class="fas fa-cloud"></i> Imagen ${index + 1} de ${window.galleryImages.length} - URL Pública
-                </p>
             </div>
         </div>
     `;

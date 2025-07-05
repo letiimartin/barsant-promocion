@@ -1,11 +1,3 @@
-// Importaciones estáticas al inicio del archivo
-import { 
-    iniciarSesionAnonima, 
-    verificarEstadoAuth, 
-    getMemoriaCalidadesUrl, 
-    getPlanosArquitectonicosUrl 
-} from '../dataService.js';
-
 document.addEventListener("DOMContentLoaded", function () {
     fetch('src/pages/documentation/documentation.html')
         .then(response => {
@@ -133,6 +125,58 @@ function handleIframeError(url, filename) {
     }
 }
 
+// Función para cargar dataService de forma segura
+async function loadDataService() {
+    try {
+        // Crear un script element para evitar problemas de MIME type
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.type = 'module';
+            script.textContent = `
+                import { 
+                    iniciarSesionAnonima, 
+                    verificarEstadoAuth, 
+                    getMemoriaCalidadesUrl, 
+                    getPlanosArquitectonicosUrl 
+                } from './src/dataService.js';
+                
+                window.dataServiceFunctions = {
+                    iniciarSesionAnonima,
+                    verificarEstadoAuth,
+                    getMemoriaCalidadesUrl,
+                    getPlanosArquitectonicosUrl
+                };
+                
+                window.dispatchEvent(new CustomEvent('dataServiceLoaded'));
+            `;
+            
+            script.onerror = () => {
+                console.warn('No se pudo cargar dataService, usando fallback');
+                // Crear funciones mock para fallback
+                window.dataServiceFunctions = {
+                    iniciarSesionAnonima: () => Promise.resolve(true),
+                    verificarEstadoAuth: () => Promise.resolve(true),
+                    getMemoriaCalidadesUrl: () => Promise.resolve('assets/docs/MEMORIA CALIDADES_VENTANILLA.pdf'),
+                    getPlanosArquitectonicosUrl: () => Promise.resolve('assets/docs/R05 PLANOS BASICO REFORMADO 22.pdf')
+                };
+                resolve();
+            };
+            
+            window.addEventListener('dataServiceLoaded', () => resolve(), { once: true });
+            document.head.appendChild(script);
+        });
+    } catch (error) {
+        console.error('Error cargando dataService:', error);
+        // Fallback functions
+        window.dataServiceFunctions = {
+            iniciarSesionAnonima: () => Promise.resolve(true),
+            verificarEstadoAuth: () => Promise.resolve(true),
+            getMemoriaCalidadesUrl: () => Promise.resolve('assets/docs/MEMORIA CALIDADES_VENTANILLA.pdf'),
+            getPlanosArquitectonicosUrl: () => Promise.resolve('assets/docs/R05 PLANOS BASICO REFORMADO 22.pdf')
+        };
+    }
+}
+
 async function openDocModal(docType) {
     const modal = document.getElementById('doc-modal');
     const modalTitle = document.getElementById('doc-modal-title');
@@ -145,30 +189,29 @@ async function openDocModal(docType) {
             modalBody.innerHTML = `
                 <div class="loading-container" style="text-align: center; padding: 40px;">
                     <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #e0c88c; margin-bottom: 15px;"></i>
-                    <p>Preparando autenticación y cargando documento...</p>
+                    <p>Cargando documento...</p>
                 </div>
             `;
             
             try {
+                // Asegurar que dataService esté cargado
+                if (!window.dataServiceFunctions) {
+                    await loadDataService();
+                }
+                
                 console.log('🔐 Verificando autenticación para documentos...');
-                const authExitosa = await iniciarSesionAnonima();
+                const authExitosa = await window.dataServiceFunctions.iniciarSesionAnonima();
                 
                 if (!authExitosa) {
                     throw new Error('No se pudo autenticar para acceder al documento');
                 }
                 
-                // Verificar estado de auth
-                const authVerificada = await verificarEstadoAuth();
-                if (!authVerificada) {
-                    throw new Error('Autenticación no verificada');
-                }
-                
                 console.log('✅ Autenticación confirmada, cargando documento...');
                 
-                // Obtener URL desde Firebase Storage
+                // Obtener URL del documento
                 let memoriaUrl;
                 try {
-                    memoriaUrl = await getMemoriaCalidadesUrl();
+                    memoriaUrl = await window.dataServiceFunctions.getMemoriaCalidadesUrl();
                     console.log('✅ URL de memoria obtenida:', memoriaUrl);
                 } catch (error) {
                     console.warn('Error cargando desde Firebase Storage, usando fallback:', error);
@@ -185,7 +228,7 @@ async function openDocModal(docType) {
                         console.log('⏱️ Iframe tardando en cargar, podría haber restricciones CSP');
                         handleIframeError(memoriaUrl, 'Memoria_Calidades_Ventanilla.pdf');
                     }
-                }, 5000); // 5 segundos de timeout
+                }, 5000);
                 
             } catch (error) {
                 console.error('Error cargando memoria de calidades:', error);
@@ -194,23 +237,30 @@ async function openDocModal(docType) {
                         <i class="fas fa-exclamation-triangle" style="font-size: 2rem; color: #dc3545; margin-bottom: 15px;"></i>
                         <h4>Error al cargar el documento</h4>
                         <p><strong>Error:</strong> ${error.message}</p>
-                        <p>No se pudo cargar la memoria de calidades. Esto puede deberse a:</p>
-                        <ul style="text-align: left; margin: 20px 0;">
-                            <li>Autenticación anónima no habilitada en Firebase</li>
-                            <li>Reglas de Firebase Storage restrictivas</li>
-                            <li>Archivo no encontrado en Storage</li>
-                            <li>Políticas de seguridad del navegador (CSP)</li>
-                        </ul>
-                        <button onclick="openDocModal('memoria-calidades')" class="btn-primary" style="
-                            background-color: #e0c88c;
-                            color: #3a3a3a;
-                            border: none;
-                            padding: 10px 20px;
-                            border-radius: 4px;
-                            cursor: pointer;
-                        ">
-                            Reintentar
-                        </button>
+                        <p>No se pudo cargar la memoria de calidades.</p>
+                        <div style="margin-top: 20px;">
+                            <button onclick="openDocModal('memoria-calidades')" class="btn-primary" style="
+                                background-color: #e0c88c;
+                                color: #3a3a3a;
+                                border: none;
+                                padding: 10px 20px;
+                                border-radius: 4px;
+                                cursor: pointer;
+                                margin-right: 10px;
+                            ">
+                                Reintentar
+                            </button>
+                            <a href="assets/docs/MEMORIA CALIDADES_VENTANILLA.pdf" target="_blank" class="btn-secondary" style="
+                                display: inline-block;
+                                color: #3a3a3a;
+                                border: 1px solid #3a3a3a;
+                                padding: 9px 20px;
+                                border-radius: 4px;
+                                text-decoration: none;
+                            ">
+                                Abrir archivo local
+                            </a>
+                        </div>
                     </div>
                 `;
             }
@@ -222,30 +272,29 @@ async function openDocModal(docType) {
             modalBody.innerHTML = `
                 <div class="loading-container" style="text-align: center; padding: 40px;">
                     <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #e0c88c; margin-bottom: 15px;"></i>
-                    <p>Preparando autenticación y cargando planos...</p>
+                    <p>Cargando planos...</p>
                 </div>
             `;
             
             try {
+                // Asegurar que dataService esté cargado
+                if (!window.dataServiceFunctions) {
+                    await loadDataService();
+                }
+                
                 console.log('🔐 Verificando autenticación para planos...');
-                const authExitosa = await iniciarSesionAnonima();
+                const authExitosa = await window.dataServiceFunctions.iniciarSesionAnonima();
                 
                 if (!authExitosa) {
                     throw new Error('No se pudo autenticar para acceder a los planos');
                 }
                 
-                // Verificar estado de auth
-                const authVerificada = await verificarEstadoAuth();
-                if (!authVerificada) {
-                    throw new Error('Autenticación no verificada');
-                }
-                
                 console.log('✅ Autenticación confirmada, cargando planos...');
                 
-                // Obtener URL desde Firebase Storage
+                // Obtener URL de los planos
                 let planosUrl;
                 try {
-                    planosUrl = await getPlanosArquitectonicosUrl();
+                    planosUrl = await window.dataServiceFunctions.getPlanosArquitectonicosUrl();
                     console.log('✅ URL de planos obtenida:', planosUrl);
                 } catch (error) {
                     console.warn('Error cargando desde Firebase Storage, usando fallback:', error);
@@ -262,7 +311,7 @@ async function openDocModal(docType) {
                         console.log('⏱️ Iframe tardando en cargar, podría haber restricciones CSP');
                         handleIframeError(planosUrl, 'Planos_Arquitectonicos_Ventanilla.pdf');
                     }
-                }, 5000); // 5 segundos de timeout
+                }, 5000);
                 
             } catch (error) {
                 console.error('Error cargando planos arquitectónicos:', error);
@@ -271,23 +320,30 @@ async function openDocModal(docType) {
                         <i class="fas fa-exclamation-triangle" style="font-size: 2rem; color: #dc3545; margin-bottom: 15px;"></i>
                         <h4>Error al cargar el documento</h4>
                         <p><strong>Error:</strong> ${error.message}</p>
-                        <p>No se pudieron cargar los planos arquitectónicos. Esto puede deberse a:</p>
-                        <ul style="text-align: left; margin: 20px 0;">
-                            <li>Autenticación anónima no habilitada en Firebase</li>
-                            <li>Reglas de Firebase Storage restrictivas</li>
-                            <li>Archivo no encontrado en Storage</li>
-                            <li>Políticas de seguridad del navegador (CSP)</li>
-                        </ul>
-                        <button onclick="openDocModal('planos-arquitectonicos')" class="btn-primary" style="
-                            background-color: #e0c88c;
-                            color: #3a3a3a;
-                            border: none;
-                            padding: 10px 20px;
-                            border-radius: 4px;
-                            cursor: pointer;
-                        ">
-                            Reintentar
-                        </button>
+                        <p>No se pudieron cargar los planos arquitectónicos.</p>
+                        <div style="margin-top: 20px;">
+                            <button onclick="openDocModal('planos-arquitectonicos')" class="btn-primary" style="
+                                background-color: #e0c88c;
+                                color: #3a3a3a;
+                                border: none;
+                                padding: 10px 20px;
+                                border-radius: 4px;
+                                cursor: pointer;
+                                margin-right: 10px;
+                            ">
+                                Reintentar
+                            </button>
+                            <a href="assets/docs/R05 PLANOS BASICO REFORMADO 22.pdf" target="_blank" class="btn-secondary" style="
+                                display: inline-block;
+                                color: #3a3a3a;
+                                border: 1px solid #3a3a3a;
+                                padding: 9px 20px;
+                                border-radius: 4px;
+                                text-decoration: none;
+                            ">
+                                Abrir archivo local
+                            </a>
+                        </div>
                     </div>
                 `;
             }
@@ -325,11 +381,11 @@ async function openDocModal(docType) {
             modalBody.innerHTML = '<p>Contenido no disponible</p>';
     }
     
-    // Mostrar el modal usando flexbox para centrar
+    // Mostrar el modal
     modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
     
-    // Añadir animación suave
+    // Animación suave
     modal.style.opacity = '0';
     setTimeout(() => {
         modal.style.opacity = '1';
@@ -343,7 +399,7 @@ function closeDocModal() {
     document.body.style.overflow = 'auto';
 }
 
-// Hacer las funciones globales para que puedan ser llamadas desde HTML
+// Hacer las funciones globales
 window.openDocModal = openDocModal;
 window.closeDocModal = closeDocModal;
 window.handleIframeLoad = handleIframeLoad;

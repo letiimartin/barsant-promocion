@@ -1,31 +1,28 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <!-- Meta tags básicos -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Descubre Ventanilla, 33 viviendas exclusivas en Granada desde €184,612. Diseñadas por arquitectos de prestigio, perfectas para tu nuevo hogar.">
     <meta name="keywords" content="comprar vivienda Granada, promoción inmobiliaria Granada, Ventanilla Granada, Barsant Promociones Inmobiliarias, viviendas nuevas Granada">
     <meta name="author" content="Barsant Promociones Inmobiliarias">
-    
     <!-- Open Graph para redes sociales -->
     <meta property="og:title" content="Ventanilla | Barsant Promociones Inmobiliarias">
     <meta property="og:description" content="Descubre Ventanilla, 33 viviendas exclusivas en Granada desde €184,612. Diseñadas por arquitectos de prestigio, perfectas para tu nuevo hogar.">
     <meta property="og:image" content="https://www.barsantventanilla.com/images/hero.jpg">
     <meta property="og:url" content="https://www.barsantventanilla.com">
     <meta property="og:type" content="website">
-    
     <title>Ventanilla | Barsant Promociones Inmobiliarias</title>
-    <script type="module" src="/src/js/auth.js"></script>
     <!-- Fuentes -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    
     <!-- Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <!-- Estilos Modularizados -->
     <link rel="stylesheet" href="/src/css/styles.css">
     <link rel="stylesheet" href="/src/css/pages/gallery.css">
+    <!-- Script de autenticación -->
+    <script type="module" src="/src/js/auth.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.js"></script>
 </head>
 <body>
 
@@ -67,13 +64,7 @@
         </div>
     </div>
 
-    <!-- EmailJS - ANTES de otros scripts -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    
-    <!-- Google Maps API -->
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRAPcQZ8XMPk6ZoJCalNKXxiwEPKfhDYw&callback=initMap"></script>
-
-    <!-- Scripts Modularizados - TODOS como scripts normales -->
+    <!-- Scripts Modularizados -->
     <script src="src/shared/loadHeader.js"></script>
     <script src="src/pages/inicio/loadInicio.js"></script>
     <script src="src/pages/about/loadAbout.js"></script>
@@ -86,37 +77,65 @@
     <script src="src/shared/loadFooter.js"></script>
     <script type="module" src="src/js/index.js"></script>
     
-    <!-- Inicialización general -->
+    <!-- CORRECCIÓN: Google Maps con carga optimizada -->
     <script>
-        console.log('🚀 Página cargada, inicializando componentes...');
-        
-        // Verificar que los elementos principales se han cargado
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('✅ DOM cargado completamente');
-            
-            // Verificar carga de EmailJS
-            if (typeof emailjs !== 'undefined') {
-                console.log('✅ EmailJS cargado correctamente');
-            } else {
-                console.warn('⚠️ EmailJS no disponible');
+        // Función para cargar Google Maps de forma optimizada
+        function loadGoogleMaps() {
+            if (window.google && window.google.maps) {
+                console.log('✅ Google Maps ya disponible');
+                return;
             }
             
-            // Verificar Google Maps
-            if (typeof google !== 'undefined') {
-                console.log('✅ Google Maps cargado correctamente');
-            } else {
-                console.warn('⚠️ Google Maps no disponible');
-            }
-        });
-        
-        // Función de callback para Google Maps
-        function initMap() {
-            console.log('🗺️ Inicializando Google Maps...');
-            // Esta función será llamada por el script de map cuando esté listo
+            const script = document.createElement('script');
+            script.async = true;
+            script.defer = true;
+            script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBRAPcQZ8XMPk6ZoJCalNKXxiwEPKfhDYw&libraries=geometry&callback=initMap&loading=async';
+            script.onerror = function() {
+                console.error('❌ Error cargando Google Maps');
+                // Llamar al fallback si el script no carga
+                if (typeof showFallbackMap === 'function') {
+                    showFallbackMap();
+                }
+            };
+            
+            document.head.appendChild(script);
+            console.log('🔄 Google Maps script cargado dinámicamente');
         }
         
-        // Hacer initMap global
-        window.initMap = initMap;
+        // Cargar Google Maps solo cuando el mapa esté visible o sea necesario
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Página cargada, inicializando componentes...');
+            
+            // Observar cuando el mapa sea visible
+            const mapObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        loadGoogleMaps();
+                        mapObserver.disconnect();
+                    }
+                });
+            }, { rootMargin: '200px' });
+            
+            // Observar el placeholder del mapa
+            const checkMapPlaceholder = () => {
+                const mapPlaceholder = document.getElementById('map-placeholder');
+                if (mapPlaceholder) {
+                    mapObserver.observe(mapPlaceholder);
+                } else {
+                    // Reintentar después de 500ms si no está disponible
+                    setTimeout(checkMapPlaceholder, 500);
+                }
+            };
+            
+            checkMapPlaceholder();
+            
+            console.log('✅ DOM cargado completamente');
+            
+            // Verificar EmailJS
+            if (typeof emailjs !== 'undefined') {
+                console.log('✅ EmailJS cargado correctamente');
+            }
+        });
     </script>
 </body>
 </html>

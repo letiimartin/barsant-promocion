@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initHeader();
   
   // Inicializar galerías y modales
-  //initGallery();
+  initGallery();
   
   // Inicializar tabla de propiedades
   initPropertiesTable();
@@ -52,10 +52,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Active Navigation Link
   setupNavigation();
   
-  // Inicializar el mapa de ubicación
-  if (typeof window.initMap === 'function') {
-    window.initMap();
-  }
 });
 
 /**
@@ -1432,6 +1428,16 @@ function guardarCacheFirebase() {
     } catch (error) {
         console.warn('Error guardando cache:', error);
     }
+}
+async function initGallery() {
+  console.log('🖼️ Inicializando galería...');
+  try {
+    await waitForElement('.gallery-grid', 3000);
+    await window.cargarGaleriaFirebaseOptimizada();
+    console.log('✅ Galería inicializada correctamente');
+  } catch (error) {
+    console.error('❌ Error inicializando galería:', error);
+  }
 }
 
 // Hacer función global para el botón de reintentar

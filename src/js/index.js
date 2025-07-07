@@ -226,104 +226,7 @@ async function inicializacionCompleta() {
   }
 }
 
-/**
-* Función setupNavigation actualizada para integrar con menú móvil
-*/
-function setupNavigation() {
-  console.log('Configurando navegación...');
-  
-  setTimeout(() => {
-      const navLinks = document.querySelectorAll('nav ul li a');
-      console.log('Enlaces de navegación encontrados:', navLinks.length);
-      
-      // Manejar clicks en enlaces de navegación desktop
-      navLinks.forEach(link => {
-          link.addEventListener('click', function(e) {
-              e.preventDefault();
-              
-              const href = this.getAttribute('href');
-              
-              // Solo procesar enlaces que empiecen con #
-              if (!href || !href.startsWith('#')) {
-                  return;
-              }
-              
-              const targetId = href.substring(1);
-              console.log('Navegando a:', targetId);
-              
-              // Usar la función unificada de navegación
-              navigateToSection(targetId);
-              
-              // Actualizar clase active en navegación desktop
-              navLinks.forEach(l => l.classList.remove('active'));
-              this.classList.add('active');
-              
-              // Sincronizar con menú móvil
-              syncMobileNavigation(href);
-          });
-      });
-      
-      // Detectar sección activa al hacer scroll
-      window.addEventListener('scroll', () => {
-          updateActiveNavigation();
-      });
-      
-      console.log('Navegación configurada correctamente');
-      
-  }, 1000);
-}
 
-/**
-* Función unificada de navegación que funciona para desktop y móvil
-*/
-function navigateToSection(targetId) {
-  console.log('Navegando a sección:', targetId);
-  
-  // Mapeo de IDs del header a IDs reales de las secciones
-  const sectionMapping = {
-      'home': 'inicio-placeholder',
-      'inicio': 'inicio-placeholder',
-      'about': 'about-placeholder', 
-      'properties': 'properties-placeholder',
-      'location': 'map-placeholder',
-      'map': 'map-placeholder',
-      'gallery': 'gallery-placeholder',
-      'documentation': 'documentation-placeholder',
-      'contact': 'contact-placeholder'
-  };
-  
-  // Buscar el elemento objetivo
-  let targetElement = document.getElementById(targetId);
-  
-  // Si no se encuentra, buscar con el mapeo
-  if (!targetElement && sectionMapping[targetId]) {
-      targetElement = document.getElementById(sectionMapping[targetId]);
-  }
-  
-  // Si aún no se encuentra, buscar la sección dentro del placeholder
-  if (!targetElement) {
-      const placeholder = document.getElementById(targetId + '-placeholder');
-      if (placeholder) {
-          const section = placeholder.querySelector('section');
-          targetElement = section || placeholder;
-      }
-  }
-  
-  if (targetElement) {
-      console.log('Elemento encontrado, haciendo scroll suave');
-      
-      // Scroll suave a la sección con compensación del header fijo
-      const headerHeight = document.querySelector('header')?.offsetHeight || 80;
-      const targetPosition = targetElement.offsetTop - headerHeight;
-      
-      window.scrollTo({
-          top: Math.max(0, targetPosition),
-          behavior: 'smooth'
-      });
-  } else {
-      console.warn('Sección no encontrada:', targetId);
-  }
-}
 
 /**
 * Sincronizar navegación móvil con desktop
@@ -421,15 +324,7 @@ function esperarElemento(selector, timeout = 3000) {
         }, timeout);
     });
 }
-function arreglarHeaderDespuesDeCerrarMenu() {
-  document.body.style.paddingTop = '80px';
-  console.log('✅ Header fijo arreglado');
-}
 
-// Ejecutar después de cerrar el menú
-setTimeout(() => {
-  arreglarHeaderDespuesDeCerrarMenu();
-}, 500);
 // ========================
 // FUNCIONES DE DEBUGGING PARA CONSOLA
 // ========================
@@ -1151,61 +1046,28 @@ function toggleMobileMenu() {
 }
 
 
-/**
-* Navega a una sección específica
-*/
-function navigateToSection(href) {
-  console.log('🧭 Navegando a:', href);
+// Funciones de control del menú
+
+
+function openMobileMenu() {
+  const toggle = document.getElementById('mobile-menu-toggle');
+  const overlay = document.getElementById('mobile-menu-overlay');
+  const panel = document.getElementById('mobile-menu-panel');
   
-  if (!href || !href.startsWith('#')) return;
-  
-  const targetId = href.substring(1);
-  
-  // Mapeo de IDs (igual que en tu código existente)
-  const sectionMapping = {
-      'home': 'inicio-placeholder',
-      'inicio': 'inicio-placeholder',
-      'about': 'about-placeholder', 
-      'properties': 'properties-placeholder',
-      'location': 'map-placeholder',
-      'map': 'map-placeholder',
-      'gallery': 'gallery-placeholder',
-      'documentation': 'documentation-placeholder',
-      'contact': 'contact-placeholder'
-  };
-  
-  // Buscar el elemento objetivo
-  let targetElement = document.getElementById(targetId);
-  
-  if (!targetElement && sectionMapping[targetId]) {
-      targetElement = document.getElementById(sectionMapping[targetId]);
-  }
-  
-  if (!targetElement) {
-      const placeholder = document.getElementById(targetId + '-placeholder');
-      if (placeholder) {
-          const section = placeholder.querySelector('section');
-          targetElement = section || placeholder;
-      }
-  }
-  
-  if (targetElement) {
-      // Scroll suave con offset para el header fijo
-      const headerHeight = document.querySelector('header')?.offsetHeight || 80;
-      const targetPosition = targetElement.offsetTop - headerHeight;
+  if (toggle && overlay && panel) {
+      console.log('📱 Abriendo menú móvil');
       
-      window.scrollTo({
-          top: Math.max(0, targetPosition),
-          behavior: 'smooth'
-      });
+      toggle.classList.add('active');
+      overlay.classList.add('active');
+      panel.classList.add('active');
+      document.body.classList.add('menu-open');
       
-      console.log(`✅ Navegando a: ${targetId}`);
-  } else {
-      console.warn(`❌ Sección con ID "${targetId}" no encontrada`);
+      // Aplicar estilos inline para asegurar funcionamiento
+      overlay.style.opacity = '1';
+      overlay.style.visibility = 'visible';
+      panel.style.right = '0';
   }
 }
-
-
 
 // ========================
 // FUNCIÓN DE TESTING
@@ -1284,178 +1146,226 @@ async function loadHeaderLogo() {
     }
 }
 
-/**
- * Inicializa el menú hamburguesa móvil
- */
+// ================================
+// CORRECCIÓN ESPECÍFICA DEL MENÚ MÓVIL
+// Añadir al final de tu index.js existente
+// ================================
+
+// ================================
+// CORRECCIÓN ESPECÍFICA DEL MENÚ MÓVIL
+// Añadir al final de tu index.js existente
+// ================================
+
+// Reemplazar la función del menú móvil problemática
 function initMobileMenu() {
-    console.log('Inicializando menú móvil...');
-    
-    setTimeout(() => {
-        loadHeaderLogo();
-        
-        const menuToggle = document.getElementById('mobile-menu-toggle');
-        const menuOverlay = document.getElementById('mobile-menu-overlay');
-        const menuPanel = document.getElementById('mobile-menu-panel');
-        const menuClose = document.getElementById('mobile-menu-close');
-        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
-        
-        if (!menuToggle || !menuOverlay || !menuPanel) {
-            console.error('Elementos del menú móvil no encontrados');
-            return;
-        }
-        
-        // Event listeners
-        menuToggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            openMobileMenu();
-        });
-        
-        if (menuClose) {
-            menuClose.addEventListener('click', function(e) {
-                e.preventDefault();
-                closeMobileMenu();
-            });
-        }
-        
-        menuOverlay.addEventListener('click', function(e) {
-            closeMobileMenu();
-        });
-        
-        // Navegación móvil
-        mobileNavLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const target = this.getAttribute('data-target');
-                
-                closeMobileMenu();
-                
-                setTimeout(() => {
-                    navigateToMobileSection(target);
-                    updateActiveMobileLink(this);
-                }, 300);
-            });
-        });
-        
-        // Cerrar con Escape
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && isMobileMenuOpen()) {
-                closeMobileMenu();
-            }
-        });
-        
-        // Cerrar al cambiar tamaño de pantalla
-        window.addEventListener('resize', function() {
-            if (window.innerWidth > 768 && isMobileMenuOpen()) {
-                closeMobileMenu();
-            }
-        });
-        
-        console.log('Menú móvil inicializado correctamente');
-        
-    }, 500);
+  console.log('🔧 Inicializando menú móvil corregido...');
+  
+  // Esperar a que el header se cargue completamente
+  const waitForHeader = () => {
+      return new Promise((resolve) => {
+          const checkHeader = () => {
+              const header = document.querySelector('header');
+              const toggle = document.getElementById('mobile-menu-toggle');
+              
+              if (header && toggle) {
+                  console.log('✅ Header y botón encontrados');
+                  resolve();
+              } else {
+                  console.log('⏳ Esperando header...');
+                  setTimeout(checkHeader, 200);
+              }
+          };
+          checkHeader();
+      });
+  };
+  
+  waitForHeader().then(() => {
+      console.log('🎯 Configurando menú móvil...');
+      
+      // Buscar elementos
+      const toggle = document.getElementById('mobile-menu-toggle');
+      let overlay = document.getElementById('mobile-menu-overlay');
+      let panel = document.getElementById('mobile-menu-panel');
+      
+      console.log('Elementos encontrados:', {
+          toggle: !!toggle,
+          overlay: !!overlay,
+          panel: !!panel
+      });
+      
+      // Crear elementos faltantes si es necesario
+      if (!overlay) {
+          overlay = document.createElement('div');
+          overlay.id = 'mobile-menu-overlay';
+          overlay.className = 'mobile-menu-overlay';
+          document.body.appendChild(overlay);
+          console.log('✅ Overlay creado');
+      }
+      
+      // El panel debería existir ya en header.html, pero por si acaso...
+      if (!panel) {
+          console.warn('⚠️ Panel del menú móvil no encontrado en header.html');
+          // Crear panel básico como fallback
+          panel = document.createElement('div');
+          panel.id = 'mobile-menu-panel';
+          panel.className = 'mobile-menu-panel';
+          panel.innerHTML = '<p>Menú móvil no configurado correctamente</p>';
+          document.body.appendChild(panel);
+      }
+      
+      // Configurar eventos
+      if (toggle) {
+          // Limpiar eventos anteriores
+          toggle.replaceWith(toggle.cloneNode(true));
+          const newToggle = document.getElementById('mobile-menu-toggle');
+          
+          newToggle.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log('🔘 Click en botón hamburguesa');
+              toggleMobileMenu();
+          });
+          
+          console.log('✅ Evento del botón configurado');
+      }
+      
+      // Configurar evento del overlay
+      overlay.addEventListener('click', function() {
+          console.log('🔘 Click en overlay');
+          closeMobileMenu();
+      });
+      
+      // Configurar botón de cerrar
+      const closeBtn = document.getElementById('mobile-menu-close');
+      if (closeBtn) {
+          closeBtn.addEventListener('click', function(e) {
+              e.preventDefault();
+              console.log('🔘 Click en botón cerrar');
+              closeMobileMenu();
+          });
+      }
+      
+      // Configurar enlaces de navegación
+      const navLinks = document.querySelectorAll('.mobile-nav-link');
+      navLinks.forEach(link => {
+          link.addEventListener('click', function(e) {
+              e.preventDefault();
+              const href = this.getAttribute('href');
+              console.log('🔘 Click en enlace:', href);
+              
+              closeMobileMenu();
+              setTimeout(() => {
+                  navigateToSection(href);
+              }, 300);
+          });
+      });
+      
+      // Cerrar con Escape
+      document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape' && isMobileMenuOpen()) {
+              closeMobileMenu();
+          }
+      });
+      
+      console.log('✅ Menú móvil corregido inicializado');
+  });
 }
 
-/**
- * Abre el menú móvil
- */
-function openMobileMenu() {
-    const menuToggle = document.getElementById('mobile-menu-toggle');
-    const menuOverlay = document.getElementById('mobile-menu-overlay');
-    const menuPanel = document.getElementById('mobile-menu-panel');
-    
-    if (!menuToggle || !menuOverlay || !menuPanel) {
-        return;
-    }
-    
-    menuToggle.classList.add('active');
-    menuOverlay.classList.add('active');
-    menuPanel.classList.add('active');
-    
-    document.body.classList.add('menu-open');
-    
-    setTimeout(() => {
-        const firstLink = document.querySelector('.mobile-nav-link');
-        if (firstLink) firstLink.focus();
-    }, 100);
-}
 
-/**
- * Cierra el menú móvil
- */
+
+
+
 function closeMobileMenu() {
-    const menuToggle = document.getElementById('mobile-menu-toggle');
-    const menuOverlay = document.getElementById('mobile-menu-overlay');
-    const menuPanel = document.getElementById('mobile-menu-panel');
-    
-    if (!menuToggle || !menuOverlay || !menuPanel) {
-        return;
-    }
-    
-    menuToggle.classList.remove('active');
-    menuOverlay.classList.remove('active');
-    menuPanel.classList.remove('active');
-    
-    document.body.classList.remove('menu-open');
+  const toggle = document.getElementById('mobile-menu-toggle');
+  const overlay = document.getElementById('mobile-menu-overlay');
+  const panel = document.getElementById('mobile-menu-panel');
+  
+  if (toggle && overlay && panel) {
+      console.log('📱 Cerrando menú móvil');
+      
+      toggle.classList.remove('active');
+      overlay.classList.remove('active');
+      panel.classList.remove('active');
+      document.body.classList.remove('menu-open');
+      
+      // Aplicar estilos inline para asegurar funcionamiento
+      overlay.style.opacity = '0';
+      overlay.style.visibility = 'hidden';
+      panel.style.right = '-100%';
+  }
 }
 
-/**
- * Verifica si el menú móvil está abierto
- */
 function isMobileMenuOpen() {
-    const menuPanel = document.getElementById('mobile-menu-panel');
-    return menuPanel && menuPanel.classList.contains('active');
+  const panel = document.getElementById('mobile-menu-panel');
+  return panel && panel.classList.contains('active');
 }
 
-/**
- * Navega a una sección específica desde el menú móvil
- */
-function navigateToMobileSection(targetId) {
-    const element = document.getElementById(targetId);
-    
-    if (element) {
-        const headerHeight = document.querySelector('header').offsetHeight || 80;
-        const targetPosition = element.offsetTop - headerHeight;
-        
-        window.scrollTo({
-            top: Math.max(0, targetPosition),
-            behavior: 'smooth'
-        });
-    }
+// Función de navegación (usar la que ya tienes o esta si no existe)
+function navigateToSection(href) {
+  if (!href || !href.startsWith('#')) return;
+  
+  const targetId = href.substring(1);
+  const sectionMapping = {
+      'home': 'inicio-placeholder',
+      'inicio': 'inicio-placeholder',
+      'about': 'about-placeholder',
+      'properties': 'properties-placeholder',
+      'location': 'map-placeholder',
+      'gallery': 'gallery-placeholder',
+      'documentation': 'documentation-placeholder',
+      'contact': 'contact-placeholder'
+  };
+  
+  let targetElement = document.getElementById(targetId);
+  
+  if (!targetElement && sectionMapping[targetId]) {
+      targetElement = document.getElementById(sectionMapping[targetId]);
+  }
+  
+  if (targetElement) {
+      const headerHeight = 80;
+      const targetPosition = targetElement.offsetTop - headerHeight;
+      
+      window.scrollTo({
+          top: Math.max(0, targetPosition),
+          behavior: 'smooth'
+      });
+      
+      console.log(`🧭 Navegando a: ${targetId}`);
+  }
 }
 
-/**
- * Actualiza el enlace activo en el menú móvil
- */
-function updateActiveMobileLink(activeLink) {
-    document.querySelectorAll('.mobile-nav-link').forEach(link => {
-        link.classList.remove('active');
-    });
-    
-    if (activeLink) {
-        activeLink.classList.add('active');
-    }
-    
-    // Sincronizar con navegación desktop
-    const href = activeLink?.getAttribute('href');
-    if (href) {
-        document.querySelectorAll('nav ul li a').forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === href) {
-                link.classList.add('active');
-            }
-        });
-    }
-}
-
-// Hacer las funciones disponibles globalmente
-window.openMobileMenu = openMobileMenu;
-window.closeMobileMenu = closeMobileMenu;
+// Sobrescribir las funciones problemáticas originales
 window.initMobileMenu = initMobileMenu;
-// Hacer la función disponible globalmente para debugging
-window.testMobileMenu = testMobileMenu;
 
+// Función de test para debug
+window.testMobileMenu = function() {
+  console.log('🧪 Probando menú móvil...');
+  
+  const elements = {
+      toggle: document.getElementById('mobile-menu-toggle'),
+      overlay: document.getElementById('mobile-menu-overlay'),
+      panel: document.getElementById('mobile-menu-panel')
+  };
+  
+  console.log('Estado de elementos:', elements);
+  
+  if (elements.toggle) {
+      console.log('🔘 Simulando click...');
+      toggleMobileMenu();
+  } else {
+      console.error('❌ Botón no encontrado');
+  }
+};
+
+// Auto-inicializar cuando el DOM esté listo
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(initMobileMenu, 1000);
+  });
+} else {
+  setTimeout(initMobileMenu, 1000);
+}
 
 // Exportar funciones para que Google Maps pueda acceder globalmente
 window.initMap = initMap;

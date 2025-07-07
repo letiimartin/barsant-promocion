@@ -1,6 +1,8 @@
 <section class="properties" id="properties">
     <div class="container">
         <h2 class="section-title">Planos y Precios</h2>
+        
+        <!-- Filtros -->
         <div class="filters">
             <select id="planta-filter">
                 <option value="">Todas las Plantas</option>
@@ -16,26 +18,42 @@
                 <option value="3">3 Dormitorios</option>
             </select>
         </div>
-        <div class="table-responsive">
-            <table class="properties-table">
-                <thead>
-                    <tr>
-                        <th>Bloque</th>
-                        <th>Planta</th>
-                        <th>Dormitorios</th>
-                        <th>Baños</th>
-                        <th>Superficie Construida</th>
-                        <th>Precio</th>
-                        <th>Planos</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="viviendas-table">
-                    <!-- Las viviendas se cargarán dinámicamente -->
-                </tbody>
-            </table>
-            <p class="price-note">*A estos precios debe añadirse el IVA al tipo vigente en cada momento en que se produzca el devengo. El tipo actual es el 10%</p>
+
+        <!-- Ayuda visual para dispositivos móviles -->
+        <div class="scroll-help">
+    
         </div>
+
+        <!-- Contenedor de tabla con scroll mejorado -->
+        <div class="table-scroll-container" id="table-scroll-container">
+            <!-- Indicador de scroll -->
+            <div class="scroll-indicator" id="scroll-indicator">
+    
+            </div>
+            
+            <!-- Tabla responsiva -->
+            <div class="table-responsive" id="table-responsive">
+                <table class="properties-table">
+                    <thead>
+                        <tr>
+                            <th>Bloque</th>
+                            <th>Planta</th>
+                            <th>Dormitorios</th>
+                            <th>Baños</th>
+                            <th>Superficie Construida</th>
+                            <th>Precio</th>
+                            <th>Planos</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="viviendas-table">
+                        <!-- Las viviendas se cargarán dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <p class="price-note">*A estos precios debe añadirse el IVA al tipo vigente en cada momento en que se produzca el devengo. El tipo actual es el 10%</p>
     </div>
 </section>

@@ -77,15 +77,14 @@ header.scrolled {
     display: flex;
     align-items: center;
     gap: 10px;
-    position: center !important;
-    justify-content: center;
+    margin-left: -150px;
+    
 }
 
 .logo img {
     height: 200px;
     width: auto;
     object-fit: contain;
-    position: center !important;
 
 }
 
@@ -96,6 +95,7 @@ header.scrolled {
 nav ul {
     display: flex;
     list-style: none;
+    margin-right: 10px;
 }
 
 nav ul li {
@@ -356,7 +356,7 @@ nav ul li a.active {
     color: var(--primary-color);
 }
 /* Properties */
-.properties {
+/* .properties {
     padding: 100px 0;
     background-color: var(--light-bg);
 }
@@ -411,6 +411,393 @@ nav ul li a.active {
 
 .properties-table tbody tr:hover {
     background-color: #f5f5f5;
+} */
+
+.properties {
+    padding: 100px 0;
+    background-color: var(--light-bg);
+}
+.filters {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+    justify-content: center;
+}
+
+.filters select {
+    padding: 12px 20px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-size: 1em;
+    min-width: 200px;
+    background-color: white;
+}
+
+.filters select:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+}
+/* ===== CONTENEDOR DE SCROLL MEJORADO ===== */
+.table-scroll-container {
+    position: relative;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    margin-top: 2rem;
+}
+
+.table-responsive {
+    overflow-x: auto;
+    overflow-y: hidden;
+    max-width: 100%;
+    position: relative;
+    scrollbar-width: thin;
+    scrollbar-color: var(--secondary-color) #f1f1f1;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling en iOS */
+}
+
+.table-responsive::-webkit-scrollbar {
+    height: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: var(--secondary-color);
+    border-radius: 10px;
+    transition: background 0.3s ease;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #d4bc80;
+}
+
+/* ===== INDICADOR VISUAL DE SCROLL ===== */
+.scroll-indicator {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    background: rgba(224, 200, 140, 0.95);
+    color: var(--primary-color);
+    padding: 10px 16px;
+    border-radius: 25px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    pointer-events: none;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.scroll-indicator.show {
+    opacity: 1;
+    animation: pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow {
+    0%, 100% { 
+        transform: translateY(-50%) scale(1);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    50% { 
+        transform: translateY(-50%) scale(1.05);
+        box-shadow: 0 4px 15px rgba(224, 200, 140, 0.4);
+    }
+}
+
+/* ===== AYUDA VISUAL PARA MÓVIL ===== */
+
+
+
+/* ===== TABLA MEJORADA ===== */
+.properties-table {
+    width: 100%;
+    min-width: 900px; /* Ancho mínimo para mantener legibilidad */
+    border-collapse: collapse;
+    background-color: white;
+    font-size: 0.9rem;
+}
+
+.properties-table th,
+.properties-table td {
+    padding: 16px 12px;
+    text-align: center;
+    border-bottom: 1px solid #e0e0e0;
+    white-space: nowrap;
+    position: relative;
+}
+
+.properties-table th {
+    background: linear-gradient(135deg, var(--primary-color), #4a4a4a);
+    color: white;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* ===== COLUMNAS FIJAS (PRIMERA Y ÚLTIMA) ===== */
+.properties-table th:first-child,
+.properties-table td:first-child {
+    position: sticky;
+    left: 0;
+    background: white;
+    z-index: 3;
+    box-shadow: 2px 0 6px rgba(0,0,0,0.1);
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.properties-table th:first-child {
+    background: linear-gradient(135deg, var(--primary-color), #4a4a4a);
+    color: white;
+    z-index: 6;
+    box-shadow: 2px 0 6px rgba(0,0,0,0.15);
+}
+
+.properties-table th:last-child,
+.properties-table td:last-child {
+    position: sticky;
+    right: 0;
+    background: white;
+    z-index: 3;
+    box-shadow: -2px 0 6px rgba(0,0,0,0.1);
+}
+
+.properties-table th:last-child {
+    background: linear-gradient(135deg, var(--primary-color), #4a4a4a);
+    color: white;
+    z-index: 6;
+    box-shadow: -2px 0 6px rgba(0,0,0,0.15);
+}
+
+/* ===== EFECTOS HOVER ===== */
+.properties-table tbody tr {
+    transition: all 0.3s ease;
+}
+
+.properties-table tbody tr:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-1px);
+}
+
+.properties-table tbody tr:hover td:first-child,
+.properties-table tbody tr:hover td:last-child {
+    background-color: #f8f9fa;
+}
+
+/* ===== ESTILOS ESPECÍFICOS MEJORADOS ===== */
+.estado-disponible {
+    color: #28a745;
+    font-weight: 700;
+    background: rgba(40, 167, 69, 0.15);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.estado-reservado {
+    color: #dc3545;
+    font-weight: 700;
+    background: rgba(220, 53, 69, 0.15);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.vivienda-link {
+    background: linear-gradient(135deg, var(--secondary-color), #f0d49e);
+    color: var(--primary-color);
+    padding: 10px 18px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(224, 200, 140, 0.3);
+}
+
+.vivienda-link:hover {
+    background: linear-gradient(135deg, var(--primary-color), #2a2a2a);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(58, 58, 58, 0.4);
+}
+
+.planos a {
+    color: var(--secondary-color);
+    font-size: 1.3em;
+    margin: 0 6px;
+    transition: all 0.3s ease;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+.planos a:hover {
+    color: var(--primary-color);
+    transform: scale(1.2);
+    background: rgba(224, 200, 140, 0.1);
+}
+
+/* ===== RESPONSIVE BREAKPOINTS ===== */
+
+/* Tablets grandes y desktop */
+@media (min-width: 1025px) {
+    .scroll-help {
+        display: none;
+    }
+    
+    .properties-table {
+        min-width: 100%;
+    }
+    
+    .scroll-indicator {
+        display: none;
+    }
+}
+
+/* Tablets medianas */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .scroll-help {
+        display: block;
+        font-size: 0.9rem;
+        padding: 12px;
+    }
+    
+    .properties-table {
+        min-width: 800px;
+        font-size: 0.85rem;
+    }
+    
+    .properties-table th,
+    .properties-table td {
+        padding: 12px 10px;
+    }
+    
+    .vivienda-link {
+        padding: 8px 14px;
+        font-size: 0.75rem;
+    }
+}
+
+/* Móviles grandes y tablets pequeñas */
+@media (max-width: 768px) {
+    .scroll-help {
+        display: block;
+        font-size: 0.85rem;
+        padding: 12px;
+        margin-bottom: 15px;
+    }
+    
+    .properties-table {
+        min-width: 700px;
+        font-size: 0.8rem;
+    }
+    
+    .properties-table th,
+    .properties-table td {
+        padding: 10px 8px;
+    }
+    
+    .vivienda-link {
+        padding: 7px 12px;
+        font-size: 0.7rem;
+        gap: 4px;
+    }
+    
+    .planos a {
+        font-size: 1.1em;
+        margin: 0 4px;
+    }
+    
+    .filters {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .filters select {
+        width: 100%;
+        max-width: 280px;
+    }
+}
+
+/* Móviles pequeños */
+@media (max-width: 480px) {
+    .properties-table {
+        min-width: 650px;
+        font-size: 0.75rem;
+    }
+    
+    .properties-table th,
+    .properties-table td {
+        padding: 8px 6px;
+    }
+    
+    .scroll-indicator {
+        font-size: 0.75rem;
+        padding: 8px 12px;
+        right: 10px;
+    }
+    
+    .vivienda-link {
+        padding: 6px 10px;
+        font-size: 0.65rem;
+    }
+    
+    .estado-disponible,
+    .estado-reservado {
+        padding: 4px 8px;
+        font-size: 0.7rem;
+    }
+}
+
+/* ===== MEJORAS DE ACCESIBILIDAD ===== */
+.properties-table th {
+    user-select: none;
+}
+
+.table-responsive:focus-within {
+    outline: 2px solid var(--secondary-color);
+    outline-offset: 2px;
+}
+
+/* Indicar que la tabla es scrollable */
+.table-scroll-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 100%;
+    background: linear-gradient(to left, rgba(224, 200, 140, 0.1), transparent);
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.table-scroll-container.scrollable::before {
+    opacity: 1;
 }
 
 .plano-icon {
@@ -1600,7 +1987,6 @@ tr.vivienda-row:hover {
 .mobile-menu-logo img {
     height: 200px !important;
     width: auto !important;
-    position: center !important;
 }
 
 .mobile-menu-logo span {

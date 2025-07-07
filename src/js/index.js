@@ -173,7 +173,7 @@ async function inicializacionCompleta() {
       
       // 5. Inicializar menú móvil
       console.log('Inicializando menú móvil...');
-      initMobileMenu();
+      initMobileMenu();  // ✅ CAMBIAR AQUÍ
       
       // 6. Inicializar navegación
       console.log('Inicializando navegación...');
@@ -198,7 +198,7 @@ async function inicializacionCompleta() {
       initHeader();
       
       // 10. Inicializar tabla de propiedades
-      initPropertiesTable();
+      initPropertiesTable();  // ✅ YA ESTÁ AQUÍ
       
       // 11. Diagnóstico final
       setTimeout(() => {
@@ -214,7 +214,7 @@ async function inicializacionCompleta() {
       console.log('Intentando inicialización básica...');
       setTimeout(() => {
           try {
-              initMobileMenu();
+              initMobileMenu();  // ✅ CAMBIAR AQUÍ TAMBIÉN
               setupNavigation();
               setupContactForm();
               initHeader();
@@ -225,7 +225,6 @@ async function inicializacionCompleta() {
       }, 1000);
   }
 }
-
 
 
 /**
@@ -493,17 +492,130 @@ function initHeader() {
  * Inicializa la tabla de propiedades
  */
 function initPropertiesTable() {
+  console.log('🏠 Inicializando tabla de propiedades deslizable...');
+  
+  // Inicializar funcionalidad de scroll
+  initScrollableTable();
+  
   // Eventos para los filtros
   const plantaFilter = document.getElementById('planta-filter');
   const dormitoriosFilter = document.getElementById('dormitorios-filter');
   
   if (plantaFilter) {
-    plantaFilter.addEventListener('change', filterViviendas);
+      plantaFilter.addEventListener('change', function() {
+          console.log('Filtro planta aplicado:', this.value);
+          filterViviendas();
+      });
   }
   
   if (dormitoriosFilter) {
-    dormitoriosFilter.addEventListener('change', filterViviendas);
+      dormitoriosFilter.addEventListener('change', function() {
+          console.log('Filtro dormitorios aplicado:', this.value);
+          filterViviendas();
+      });
   }
+  
+  // Añadir clase de focus para accesibilidad
+  const tableWrapper = document.getElementById('table-responsive');
+  if (tableWrapper) {
+      tableWrapper.setAttribute('tabindex', '0');
+      tableWrapper.setAttribute('role', 'region');
+      tableWrapper.setAttribute('aria-label', 'Tabla de viviendas deslizable horizontalmente');
+      
+      tableWrapper.addEventListener('focus', function() {
+          this.style.outline = '2px solid var(--secondary-color)';
+          this.style.outlineOffset = '2px';
+      });
+      
+      tableWrapper.addEventListener('blur', function() {
+          this.style.outline = 'none';
+      });
+  }
+  
+  console.log('✅ Tabla de propiedades deslizable inicializada');
+}
+function initScrollableTable() {
+  const tableContainer = document.getElementById('table-scroll-container');
+  const tableWrapper = document.getElementById('table-responsive');
+  const scrollIndicator = document.getElementById('scroll-indicator');
+  
+  if (!tableContainer || !tableWrapper || !scrollIndicator) {
+      console.warn('Elementos de tabla deslizable no encontrados');
+      return;
+  }
+  
+  // Detectar si la tabla necesita scroll horizontal
+  function checkScrollNeeded() {
+      const needsScroll = tableWrapper.scrollWidth > tableWrapper.clientWidth;
+      
+      if (needsScroll) {
+          tableContainer.classList.add('scrollable');
+          
+          // Mostrar indicador solo si estamos al inicio
+          if (tableWrapper.scrollLeft === 0) {
+              scrollIndicator.classList.add('show');
+              
+              // Ocultar después de 4 segundos
+              setTimeout(() => {
+                  scrollIndicator.classList.remove('show');
+              }, 4000);
+          }
+      } else {
+          tableContainer.classList.remove('scrollable');
+          scrollIndicator.classList.remove('show');
+      }
+  }
+  
+  // Ocultar indicador al hacer scroll
+  tableWrapper.addEventListener('scroll', function() {
+      scrollIndicator.classList.remove('show');
+      
+      // Efecto visual de scroll progress (opcional)
+      const scrollPercent = (this.scrollLeft / (this.scrollWidth - this.clientWidth)) * 100;
+      console.log('Scroll progress:', Math.round(scrollPercent) + '%');
+  });
+  
+  // Smooth scroll horizontal con rueda del mouse (solo en desktop)
+  tableWrapper.addEventListener('wheel', function(e) {
+      if (window.innerWidth > 768 && e.deltaY !== 0 && this.scrollWidth > this.clientWidth) {
+          e.preventDefault();
+          this.scrollLeft += e.deltaY * 2; // Multiplicador para velocidad
+      }
+  });
+  
+  // Touch scroll mejorado para móviles
+  let startX = 0;
+  let scrollLeft = 0;
+  let isScrolling = false;
+  
+  tableWrapper.addEventListener('touchstart', function(e) {
+      startX = e.touches[0].pageX - this.offsetLeft;
+      scrollLeft = this.scrollLeft;
+      isScrolling = true;
+      this.style.scrollBehavior = 'auto';
+  }, { passive: true });
+  
+  tableWrapper.addEventListener('touchmove', function(e) {
+      if (!isScrolling) return;
+      e.preventDefault();
+      const x = e.touches[0].pageX - this.offsetLeft;
+      const walk = (x - startX) * 1.5; // Multiplicador para sensibilidad
+      this.scrollLeft = scrollLeft - walk;
+  }, { passive: false });
+  
+  tableWrapper.addEventListener('touchend', function() {
+      isScrolling = false;
+      this.style.scrollBehavior = 'smooth';
+  });
+  
+  // Verificar scroll al cargar y redimensionar
+  window.addEventListener('load', checkScrollNeeded);
+  window.addEventListener('resize', checkScrollNeeded);
+  
+  // Verificar después de cargar datos
+  setTimeout(checkScrollNeeded, 1000);
+  
+  console.log('✅ Tabla deslizable inicializada');
 }
 
 // ========================
@@ -520,81 +632,120 @@ function filterViviendas() {
   const plantaFilter = document.getElementById('planta-filter')?.value;
   const dormitoriosFilter = document.getElementById('dormitorios-filter')?.value;
 
+  if (!window.viviendas || window.viviendas.length === 0) {
+      console.warn('No hay viviendas para filtrar');
+      return;
+  }
+
   let filtered = [...window.viviendas];
 
   if (plantaFilter) {
-    filtered = filtered.filter(v => mapPlantaNumeroALetra(v.planta) === plantaFilter);
+      filtered = filtered.filter(v => {
+          const plantaTexto = mapPlantaNumeroALetra(v.planta);
+          return plantaTexto === plantaFilter;
+      });
   }
+  
   if (dormitoriosFilter) {
-    filtered = filtered.filter(v => String(v.dormitorios) === dormitoriosFilter);
+      filtered = filtered.filter(v => String(v.dormitorios) === dormitoriosFilter);
   }
 
+  console.log(`Filtros aplicados: ${filtered.length} viviendas de ${window.viviendas.length} total`);
   displayViviendas(filtered);
 }
 
 function displayViviendas(vivs) {
   const tabla = document.getElementById('viviendas-table');
-  if (!tabla) return;
+  if (!tabla) {
+      console.error('Tabla de viviendas no encontrada');
+      return;
+  }
 
   tabla.innerHTML = '';
 
-  // Elimina duplicados por bloque+planta+letra
+  // Eliminar duplicados por bloque+planta+letra
   const seen = new Set();
   const viviendasSinDuplicar = vivs.filter(v => {
-    const key = `${v.bloque}|${v.planta}|${v.letra}`;
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
+      const key = `${v.bloque}|${v.planta}|${v.letra}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
   });
 
-  // Ordena viviendas
+  // Ordenar viviendas
   const bloquesOrder = ['A', 'B', 'C', 'D', 'E'];
   viviendasSinDuplicar.sort((a, b) => {
-    const bloqueDiff = bloquesOrder.indexOf(a.bloque) - bloquesOrder.indexOf(b.bloque);
-    if (bloqueDiff !== 0) return bloqueDiff;
-    return (a.planta - b.planta);
+      const bloqueDiff = bloquesOrder.indexOf(a.bloque) - bloquesOrder.indexOf(b.bloque);
+      if (bloqueDiff !== 0) return bloqueDiff;
+      return (a.planta - b.planta);
   });
 
-  viviendasSinDuplicar.forEach(v => {
-    const row = document.createElement('tr');
-    const estadoClass = v.estado === 'Reservado' ? 'estado-reservado' : 'estado-disponible';
-    const id = getViviendaId(v);
-    const plantaTexto = mapPlantaNumeroALetra(v.planta);
-    const pisoLabel = `${plantaTexto} ${v.letra || ''}`.trim();
+  viviendasSinDuplicar.forEach((v, index) => {
+      const row = document.createElement('tr');
+      const estadoClass = v.estado === 'Reservado' ? 'estado-reservado' : 'estado-disponible';
+      const id = getViviendaId(v);
+      const plantaTexto = mapPlantaNumeroALetra(v.planta);
+      const pisoLabel = `${plantaTexto} ${v.letra || ''}`.trim();
 
-    let planoLink = '-';
-    if (v.letra) {
-      const pdfPath = `assets/docs/plano-${v.bloque}-${plantaTexto}-${v.letra}.pdf`;
-      planoLink = `
-        <a href="${pdfPath}" target="_blank" title="Ver plano">
-          <i class="fas fa-external-link-alt"></i>
-        </a>
-        <a href="${pdfPath}" download title="Descargar plano">
-          <i class="fas fa-download"></i>
-        </a>`;
-    }
+      // Generar enlaces de planos
+      let planoLinks = '-';
+      if (v.letra) {
+          const pdfPath = `assets/docs/plano-${v.bloque}-${plantaTexto}-${v.letra}.pdf`;
+          planoLinks = `
+              <a href="${pdfPath}" target="_blank" title="Ver plano en nueva ventana">
+                  <i class="fas fa-external-link-alt"></i>
+              </a>
+              <a href="${pdfPath}" download title="Descargar plano PDF">
+                  <i class="fas fa-download"></i>
+              </a>
+          `;
+      }
 
-    const accionesLinks = `
-      <a href="viviendas/template-viviendas.html?id=${id}" class="vivienda-link">
-        Más información
-      </a>
-    `;
+      // Formatear precio
+      const precioFormateado = v.precio_vivienda 
+          ? `€${v.precio_vivienda.toLocaleString('es-ES')}` 
+          : 'Consultar';
 
-    row.innerHTML = `
-      <td>${v.bloque}</td>
-      <td>${pisoLabel}</td>
-      <td>${v.dormitorios}</td>
-      <td>${v.baños}</td>
-      <td>${(v.m2_construidos || 0).toFixed(2)} m²</td>
-      <td>€${v.precio_vivienda?.toLocaleString() || ''}</td>
-      <td class="planos">${planoLink}</td>
-      <td class="${estadoClass}">${v.estado}</td>
-      <td class="acciones-cell" style="min-width: 160px;">
-        ${accionesLinks}
-      </td>`;
+      // Formatear superficie
+      const superficieFormateada = v.m2_construidos 
+          ? `${v.m2_construidos.toFixed(2)} m²` 
+          : '-';
 
-    tabla.appendChild(row);
+      row.innerHTML = `
+          <td><strong>${v.bloque}</strong></td>
+          <td>${pisoLabel}</td>
+          <td><strong>${v.dormitorios}</strong></td>
+          <td>${v.baños}</td>
+          <td>${superficieFormateada}</td>
+          <td><strong>${precioFormateado}</strong></td>
+          <td class="planos">${planoLinks}</td>
+          <td><span class="${estadoClass}">${v.estado}</span></td>
+          <td>
+              <a href="viviendas/template-viviendas.html?id=${id}" class="vivienda-link">
+                  <i class="fas fa-info-circle"></i> Más info
+              </a>
+          </td>
+      `;
+
+      // Animación escalonada (opcional)
+      row.style.opacity = '0';
+      row.style.transform = 'translateY(20px)';
+      tabla.appendChild(row);
+      
+      // Animar entrada
+      setTimeout(() => {
+          row.style.transition = 'all 0.3s ease';
+          row.style.opacity = '1';
+          row.style.transform = 'translateY(0)';
+      }, index * 50);
   });
+
+  // Reinicializar funcionalidad de scroll después de cargar datos
+  setTimeout(() => {
+      initScrollableTable();
+  }, 100);
+  
+  console.log(`✅ ${viviendasSinDuplicar.length} viviendas mostradas en tabla deslizable`);
 }
 
 function mapPlantaNumeroALetra(num) {
@@ -1358,14 +1509,7 @@ window.testMobileMenu = function() {
   }
 };
 
-// Auto-inicializar cuando el DOM esté listo
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', function() {
-      setTimeout(initMobileMenu, 1000);
-  });
-} else {
-  setTimeout(initMobileMenu, 1000);
-}
+
 
 // Exportar funciones para que Google Maps pueda acceder globalmente
 window.initMap = initMap;

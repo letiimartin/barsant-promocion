@@ -68,9 +68,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   // Inicializar otros componentes
   initHeader();
+  initMobileMenu();
   initPropertiesTable();
   setupContactForm();
-  setupNavigationUpdated;
+  setupNavigation();
 });
 
 // ========================
@@ -632,8 +633,13 @@ function initMap() {
   }
 }
 
+/**
+ * MENÚ HAMBURGUESA MÓVIL - VERSIÓN CORREGIDA
+ * Para añadir al index.js
+ */
+
 // ========================
-// FUNCIONES DEL MENÚ MÓVIL
+// FUNCIONES DEL MENÚ MÓVIL - CORREGIDAS
 // ========================
 
 /**
@@ -643,25 +649,17 @@ async function loadHeaderLogo() {
   try {
       console.log('🖼️ Cargando logo desde Firebase Storage...');
       
-      // Importar función de dataService.js
-      const { default: dataServiceModule } = await import('../../dataService.js');
-      
-      // Si no está disponible como default, intentar importación nombrada
-      let getPublicStorageUrl;
-      if (dataServiceModule && dataServiceModule.getPublicStorageUrl) {
-          getPublicStorageUrl = dataServiceModule.getPublicStorageUrl;
-      } else {
-          // Función inline basada en tu dataService.js
-          getPublicStorageUrl = function(fileName) {
-              const projectId = 'ventanilla-barsant';
-              const bucket = `${projectId}.firebasestorage.app`;
-              const encodedFileName = encodeURIComponent(fileName);
-              return `https://firebasestorage.googleapis.com/v0/b/${bucket}/o/${encodedFileName}?alt=media`;
-          };
+      // Función inline basada en tu dataService.js (más confiable)
+      function getPublicStorageUrl(fileName) {
+          const projectId = 'ventanilla-barsant';
+          const bucket = `${projectId}.firebasestorage.app`;
+          const encodedFileName = encodeURIComponent(fileName);
+          return `https://firebasestorage.googleapis.com/v0/b/${bucket}/o/${encodedFileName}?alt=media`;
       }
       
       // Generar URL pública del logo
       const logoUrl = getPublicStorageUrl('logo (3).png');
+      console.log('🔗 URL del logo generada:', logoUrl);
       
       // Actualizar ambos logos (header y menú móvil)
       const headerLogo = document.getElementById('header-logo');
@@ -670,92 +668,124 @@ async function loadHeaderLogo() {
       if (headerLogo) {
           headerLogo.src = logoUrl;
           headerLogo.onload = () => console.log('✅ Logo del header cargado desde Firebase');
-          headerLogo.onerror = () => console.warn('⚠️ Error cargando logo del header');
+          headerLogo.onerror = (e) => {
+              console.warn('⚠️ Error cargando logo del header:', e);
+              headerLogo.src = 'assets/images/logo (3).png'; // Fallback
+          };
+      } else {
+          console.warn('⚠️ Elemento header-logo no encontrado');
       }
       
       if (mobileMenuLogo) {
           mobileMenuLogo.src = logoUrl;
           mobileMenuLogo.onload = () => console.log('✅ Logo del menú móvil cargado desde Firebase');
-          mobileMenuLogo.onerror = () => console.warn('⚠️ Error cargando logo del menú móvil');
+          mobileMenuLogo.onerror = (e) => {
+              console.warn('⚠️ Error cargando logo del menú móvil:', e);
+              mobileMenuLogo.src = 'assets/images/logo (3).png'; // Fallback
+          };
+      } else {
+          console.warn('⚠️ Elemento mobile-menu-logo no encontrado');
       }
       
   } catch (error) {
       console.error('❌ Error cargando logo desde Firebase:', error);
       
-      // Fallback - usar logo local si Firebase falla
-      const fallbackUrl = 'assets/images/logo (3).png';
+      // Fallback completo
       const headerLogo = document.getElementById('header-logo');
       const mobileMenuLogo = document.getElementById('mobile-menu-logo');
       
-      if (headerLogo) headerLogo.src = fallbackUrl;
-      if (mobileMenuLogo) mobileMenuLogo.src = fallbackUrl;
+      if (headerLogo) headerLogo.src = 'assets/images/logo (3).png';
+      if (mobileMenuLogo) mobileMenuLogo.src = 'assets/images/logo (3).png';
       
       console.log('🔄 Usando logo local como fallback');
   }
 }
 
 /**
-* Inicializa el menú hamburguesa móvil
+* Inicializa el menú hamburguesa móvil - VERSION CORREGIDA
 */
-async function initMobileMenu() {
+function initMobileMenu() {
   console.log('📱 Inicializando menú móvil...');
   
-  // Cargar logo desde Firebase Storage
-  await loadHeaderLogo();
-  
-  const menuToggle = document.getElementById('mobile-menu-toggle');
-  const menuOverlay = document.getElementById('mobile-menu-overlay');
-  const menuPanel = document.getElementById('mobile-menu-panel');
-  const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
-  
-  if (!menuToggle || !menuOverlay || !menuPanel) {
-      console.warn('⚠️ Elementos del menú móvil no encontrados');
-      return;
-  }
-  
-  // Event listeners
-  menuToggle.addEventListener('click', toggleMobileMenu);
-  menuOverlay.addEventListener('click', closeMobileMenu);
-  
-  // Cerrar menú al hacer clic en enlaces de navegación
-  mobileNavLinks.forEach(link => {
-      link.addEventListener('click', function(e) {
+  // Esperar a que el header se cargue
+  setTimeout(() => {
+      // Cargar logo después de que el DOM esté listo
+      loadHeaderLogo();
+      
+      const menuToggle = document.getElementById('mobile-menu-toggle');
+      const menuOverlay = document.getElementById('mobile-menu-overlay');
+      const menuPanel = document.getElementById('mobile-menu-panel');
+      const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+      
+      console.log('🔍 Elementos del menú móvil:');
+      console.log('- Toggle button:', menuToggle);
+      console.log('- Overlay:', menuOverlay);
+      console.log('- Panel:', menuPanel);
+      console.log('- Nav links:', mobileNavLinks.length);
+      
+      if (!menuToggle || !menuOverlay || !menuPanel) {
+          console.error('❌ Elementos del menú móvil no encontrados. Verificar que header.html se haya cargado correctamente.');
+          return;
+      }
+      
+      // Event listeners con logs para debugging
+      menuToggle.addEventListener('click', function(e) {
+          console.log('🔘 Click en botón hamburguesa');
           e.preventDefault();
-          
-          const href = this.getAttribute('href');
-          
-          // Cerrar menú primero
-          closeMobileMenu();
-          
-          // Navegar después de un pequeño delay para que se vea la animación
-          setTimeout(() => {
-              navigateToSection(href);
-              updateActiveMobileLink(this);
-          }, 300);
+          e.stopPropagation();
+          toggleMobileMenu();
       });
-  });
-  
-  // Cerrar menú con tecla Escape
-  document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && isMobileMenuOpen()) {
+      
+      menuOverlay.addEventListener('click', function(e) {
+          console.log('🔘 Click en overlay');
           closeMobileMenu();
-      }
-  });
-  
-  // Cerrar menú al cambiar orientación/resize
-  window.addEventListener('resize', function() {
-      if (window.innerWidth > 768 && isMobileMenuOpen()) {
-          closeMobileMenu();
-      }
-  });
-  
-  console.log('✅ Menú móvil inicializado correctamente');
+      });
+      
+      // Cerrar menú al hacer clic en enlaces de navegación
+      mobileNavLinks.forEach((link, index) => {
+          link.addEventListener('click', function(e) {
+              console.log(`🔘 Click en enlace móvil ${index + 1}:`, this.textContent);
+              e.preventDefault();
+              
+              const href = this.getAttribute('href');
+              
+              // Cerrar menú primero
+              closeMobileMenu();
+              
+              // Navegar después de un pequeño delay
+              setTimeout(() => {
+                  navigateToSection(href);
+                  updateActiveMobileLink(this);
+              }, 300);
+          });
+      });
+      
+      // Cerrar menú con tecla Escape
+      document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape' && isMobileMenuOpen()) {
+              console.log('⌨️ Cerrando menú con Escape');
+              closeMobileMenu();
+          }
+      });
+      
+      // Cerrar menú al cambiar orientación/resize
+      window.addEventListener('resize', function() {
+          if (window.innerWidth > 768 && isMobileMenuOpen()) {
+              console.log('📱 Cerrando menú por resize de pantalla');
+              closeMobileMenu();
+          }
+      });
+      
+      console.log('✅ Menú móvil inicializado correctamente');
+      
+  }, 500); // Dar tiempo para que se cargue el header
 }
 
 /**
 * Alterna la visibilidad del menú móvil
 */
 function toggleMobileMenu() {
+  console.log('🔄 Alternando menú móvil...');
   if (isMobileMenuOpen()) {
       closeMobileMenu();
   } else {
@@ -767,9 +797,16 @@ function toggleMobileMenu() {
 * Abre el menú móvil
 */
 function openMobileMenu() {
+  console.log('📂 Abriendo menú móvil...');
+  
   const menuToggle = document.getElementById('mobile-menu-toggle');
   const menuOverlay = document.getElementById('mobile-menu-overlay');
   const menuPanel = document.getElementById('mobile-menu-panel');
+  
+  if (!menuToggle || !menuOverlay || !menuPanel) {
+      console.error('❌ No se pueden encontrar elementos del menú para abrir');
+      return;
+  }
   
   // Añadir clases activas
   menuToggle.classList.add('active');
@@ -785,16 +822,23 @@ function openMobileMenu() {
       if (firstLink) firstLink.focus();
   }, 100);
   
-  console.log('📱 Menú móvil abierto');
+  console.log('✅ Menú móvil abierto');
 }
 
 /**
 * Cierra el menú móvil
 */
 function closeMobileMenu() {
+  console.log('📁 Cerrando menú móvil...');
+  
   const menuToggle = document.getElementById('mobile-menu-toggle');
   const menuOverlay = document.getElementById('mobile-menu-overlay');
   const menuPanel = document.getElementById('mobile-menu-panel');
+  
+  if (!menuToggle || !menuOverlay || !menuPanel) {
+      console.error('❌ No se pueden encontrar elementos del menú para cerrar');
+      return;
+  }
   
   // Remover clases activas
   menuToggle.classList.remove('active');
@@ -804,7 +848,7 @@ function closeMobileMenu() {
   // Restaurar scroll del body
   document.body.classList.remove('menu-open');
   
-  console.log('📱 Menú móvil cerrado');
+  console.log('✅ Menú móvil cerrado');
 }
 
 /**
@@ -812,13 +856,17 @@ function closeMobileMenu() {
 */
 function isMobileMenuOpen() {
   const menuPanel = document.getElementById('mobile-menu-panel');
-  return menuPanel && menuPanel.classList.contains('active');
+  const isOpen = menuPanel && menuPanel.classList.contains('active');
+  console.log('❓ ¿Menú abierto?', isOpen);
+  return isOpen;
 }
 
 /**
 * Navega a una sección específica
 */
 function navigateToSection(href) {
+  console.log('🧭 Navegando a:', href);
+  
   if (!href || !href.startsWith('#')) return;
   
   const targetId = href.substring(1);
@@ -853,15 +901,15 @@ function navigateToSection(href) {
   
   if (targetElement) {
       // Scroll suave con offset para el header fijo
-      const headerHeight = document.querySelector('header').offsetHeight;
+      const headerHeight = document.querySelector('header')?.offsetHeight || 80;
       const targetPosition = targetElement.offsetTop - headerHeight;
       
       window.scrollTo({
-          top: targetPosition,
+          top: Math.max(0, targetPosition),
           behavior: 'smooth'
       });
       
-      console.log(`🎯 Navegando a: ${targetId}`);
+      console.log(`✅ Navegando a: ${targetId}`);
   } else {
       console.warn(`❌ Sección con ID "${targetId}" no encontrada`);
   }
@@ -871,6 +919,8 @@ function navigateToSection(href) {
 * Actualiza el enlace activo en el menú móvil
 */
 function updateActiveMobileLink(activeLink) {
+  console.log('🎯 Actualizando enlace activo:', activeLink?.textContent);
+  
   // Remover clase active de todos los enlaces móviles
   document.querySelectorAll('.mobile-nav-link').forEach(link => {
       link.classList.remove('active');
@@ -893,122 +943,36 @@ function updateActiveMobileLink(activeLink) {
   }
 }
 
+// ========================
+// FUNCIÓN DE TESTING
+// ========================
+
 /**
-* Sincroniza la navegación móvil con el scroll de la página
+* Función para testear el menú móvil desde la consola
 */
-function syncMobileNavWithScroll() {
-  const sections = document.querySelectorAll('section, [id*="placeholder"]');
-  let current = '';
+function testMobileMenu() {
+  console.log('🧪 Testing menú móvil...');
   
-  sections.forEach(section => {
-      const sectionTop = section.offsetTop;
-      const sectionHeight = section.clientHeight;
-      const headerHeight = document.querySelector('header').offsetHeight;
-      
-      if (pageYOffset >= (sectionTop - headerHeight - 100) && 
-          pageYOffset < (sectionTop + sectionHeight - headerHeight - 100)) {
-          let sectionId = section.getAttribute('id');
-          
-          if (sectionId) {
-              sectionId = sectionId.replace('-placeholder', '');
-              current = sectionId;
-          }
-      }
-  });
+  const elements = {
+      toggle: document.getElementById('mobile-menu-toggle'),
+      overlay: document.getElementById('mobile-menu-overlay'),
+      panel: document.getElementById('mobile-menu-panel'),
+      links: document.querySelectorAll('.mobile-nav-link')
+  };
   
-  if (current) {
-      // Actualizar enlaces móviles
-      document.querySelectorAll('.mobile-nav-link').forEach(link => {
-          link.classList.remove('active');
-          const linkHref = link.getAttribute('href');
-          
-          if (linkHref && linkHref.includes(current)) {
-              link.classList.add('active');
-          }
-      });
+  console.log('📋 Estado de elementos:', elements);
+  
+  if (elements.toggle) {
+      console.log('🔘 Simulando click en botón hamburguesa...');
+      elements.toggle.click();
+  } else {
+      console.error('❌ Botón hamburguesa no encontrado');
   }
 }
 
-// ========================
-// INTEGRACIÓN CON CÓDIGO EXISTENTE
-// ========================
+// Hacer la función disponible globalmente para debugging
+window.testMobileMenu = testMobileMenu;
 
-/**
-* Actualizar la función setupNavigation existente
-*/
-function setupNavigationUpdated() {
-  console.log('🔧 Configurando navegación (con menú móvil)...');
-  
-  // Inicializar menú móvil
-  initMobileMenu();
-  
-  // Configuración existente para desktop...
-  setTimeout(() => {
-      const navLinks = document.querySelectorAll('nav ul li a');
-      console.log('📍 Enlaces de navegación encontrados:', navLinks.length);
-      
-      navLinks.forEach(link => {
-          link.addEventListener('click', function(e) {
-              e.preventDefault();
-              
-              const href = this.getAttribute('href');
-              if (!href || !href.startsWith('#')) return;
-              
-              navigateToSection(href);
-              
-              // Actualizar clase active
-              navLinks.forEach(l => l.classList.remove('active'));
-              this.classList.add('active');
-              
-              // Sincronizar con menú móvil
-              document.querySelectorAll('.mobile-nav-link').forEach(mobileLink => {
-                  mobileLink.classList.remove('active');
-                  if (mobileLink.getAttribute('href') === href) {
-                      mobileLink.classList.add('active');
-                  }
-              });
-          });
-      });
-      
-      // Detectar sección activa al hacer scroll (actualizada)
-      window.addEventListener('scroll', () => {
-          syncMobileNavWithScroll();
-          
-          // Código existente para desktop...
-          let current = '';
-          const sections = document.querySelectorAll('section, [id*="placeholder"]');
-          
-          sections.forEach(section => {
-              const sectionTop = section.offsetTop;
-              const sectionHeight = section.clientHeight;
-              const headerHeight = document.querySelector('header').offsetHeight;
-              
-              if (pageYOffset >= (sectionTop - headerHeight - 100) && 
-                  pageYOffset < (sectionTop + sectionHeight - headerHeight - 100)) {
-                  let sectionId = section.getAttribute('id');
-                  
-                  if (sectionId) {
-                      sectionId = sectionId.replace('-placeholder', '');
-                      current = sectionId;
-                  }
-              }
-          });
-
-          // Actualizar enlaces desktop
-          navLinks.forEach(link => {
-              link.classList.remove('active');
-              const linkHref = link.getAttribute('href');
-              
-              if (linkHref && linkHref.includes(current) && current !== '') {
-                  link.classList.add('active');
-              }
-          });
-      });
-      
-      console.log('✅ Navegación configurada correctamente (con menú móvil)');
-      
-  }, 1000);
-}
 
 // Exportar funciones para que Google Maps pueda acceder globalmente
 window.initMap = initMap;

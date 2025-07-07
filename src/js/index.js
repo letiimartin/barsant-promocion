@@ -2,7 +2,511 @@
  * Archivo principal para la web de Barsant Promociones - Ventanilla
  * Versión simplificada sin problemas de MIME types
  */
+/**
+ * Función para diagnosticar problemas de carga
+ **/
+function diagnosticarProblemas() {
+    console.log('🔍 DIAGNÓSTICO DEL SITIO WEB');
+    console.log('================================');
+    
+    // 1. Verificar si el header se cargó
+    const headerPlaceholder = document.getElementById('header-placeholder');
+    const header = document.querySelector('header');
+    console.log('📋 Header placeholder:', headerPlaceholder);
+    console.log('📋 Header elemento:', header);
+    
+    // 2. Verificar todas las secciones
+    const secciones = [
+        'header-placeholder',
+        'inicio-placeholder', 
+        'about-placeholder',
+        'features-placeholder',
+        'properties-placeholder',
+        'map-placeholder',
+        'gallery-placeholder',
+        'documentation-placeholder',
+        'contact-placeholder',
+        'footer-placeholder'
+    ];
+    
+    console.log('📋 Estado de las secciones:');
+    secciones.forEach(id => {
+        const elemento = document.getElementById(id);
+        console.log(`- ${id}: ${elemento ? '✅ Existe' : '❌ No existe'}`);
+        if (elemento) {
+            console.log(`  Contenido cargado: ${elemento.innerHTML.length > 0 ? '✅ Sí' : '❌ No'}`);
+        }
+    });
+    
+    // 3. Verificar archivos CSS
+    const cssFiles = Array.from(document.querySelectorAll('link[rel="stylesheet"]'));
+    console.log('📋 Archivos CSS cargados:', cssFiles.length);
+    cssFiles.forEach(css => {
+        console.log(`- ${css.href}`);
+    });
+    
+    // 4. Verificar scripts cargados
+    const scripts = Array.from(document.querySelectorAll('script[src]'));
+    console.log('📋 Scripts cargados:', scripts.length);
+    scripts.forEach(script => {
+        console.log(`- ${script.src}`);
+    });
+    
+    // 5. Verificar viewport
+    const viewport = document.querySelector('meta[name="viewport"]');
+    console.log('📋 Viewport meta tag:', viewport ? viewport.content : 'No encontrado');
+    
+    return {
+        headerCargado: !!header,
+        placeholderExists: !!headerPlaceholder,
+        totalSecciones: secciones.filter(id => document.getElementById(id)).length
+    };
+}
 
+/**
+ * Función para forzar la carga de todas las secciones
+ */
+async function forzarCargaSecciones() {
+    console.log('🔄 Forzando carga de todas las secciones...');
+    
+    const cargas = [
+        { script: 'src/shared/loadHeader.js', placeholder: 'header-placeholder' },
+        { script: 'src/pages/inicio/loadInicio.js', placeholder: 'inicio-placeholder' },
+        { script: 'src/pages/about/loadAbout.js', placeholder: 'about-placeholder' },
+        { script: 'src/pages/features/loadFeatures.js', placeholder: 'features-placeholder' },
+        { script: 'src/pages/properties/loadProperties.js', placeholder: 'properties-placeholder' },
+        { script: 'src/pages/gallery/loadGallery.js', placeholder: 'gallery-placeholder' },
+        { script: 'src/pages/map/loadMap.js', placeholder: 'map-placeholder' },
+        { script: 'src/pages/documentation/loadDocumentation.js', placeholder: 'documentation-placeholder' },
+        { script: 'src/pages/contact/loadContact.js', placeholder: 'contact-placeholder' },
+        { script: 'src/shared/loadFooter.js', placeholder: 'footer-placeholder' }
+    ];
+    
+    for (const carga of cargas) {
+        try {
+            const placeholder = document.getElementById(carga.placeholder);
+            if (placeholder && placeholder.innerHTML.trim() === '') {
+                console.log(`⏳ Cargando ${carga.placeholder}...`);
+                
+                // Cargar el script si no está ya cargado
+                if (!document.querySelector(`script[src="${carga.script}"]`)) {
+                    await cargarScript(carga.script);
+                }
+                
+                // Esperar un momento para que se ejecute
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+        } catch (error) {
+            console.error(`❌ Error cargando ${carga.placeholder}:`, error);
+        }
+    }
+    
+    console.log('✅ Carga forzada completada');
+}
+
+/**
+ * Función para cargar un script dinámicamente
+ */
+function cargarScript(src) {
+    return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = src;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+    });
+}
+
+/**
+ * Función para asegurar que el CSS esté cargado
+ */
+function asegurarCSS() {
+    console.log('🎨 Verificando CSS...');
+    
+    // Verificar si styles.css está cargado
+    const stylesCSS = Array.from(document.querySelectorAll('link[rel="stylesheet"]'))
+        .find(link => link.href.includes('styles.css'));
+    
+    if (!stylesCSS) {
+        console.log('⚠️ styles.css no encontrado, añadiendo...');
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'src/css/styles.css';
+        document.head.appendChild(link);
+    }
+    
+    // Añadir viewport si no existe
+    if (!document.querySelector('meta[name="viewport"]')) {
+        console.log('📱 Añadiendo viewport meta tag...');
+        const viewport = document.createElement('meta');
+        viewport.name = 'viewport';
+        viewport.content = 'width=device-width, initial-scale=1.0';
+        document.head.appendChild(viewport);
+    }
+}
+
+/**
+ * Función de inicialización completa y robusta
+ */
+/**
+ * Función de inicialización completa y robusta
+ */
+async function inicializacionCompleta() {
+  console.log('INICIANDO INICIALIZACIÓN COMPLETA');
+  console.log('====================================');
+  
+  try {
+      // 1. Diagnóstico inicial
+      const diagnostico = diagnosticarProblemas();
+      
+      // 2. Asegurar CSS básico
+      asegurarCSS();
+      
+      // 3. Si faltan secciones, forzar carga
+      if (diagnostico.totalSecciones < 8) {
+          console.log('Faltan secciones, forzando carga...');
+          await forzarCargaSecciones();
+      }
+      
+      // 4. Esperar a que el header esté completamente cargado
+      await esperarElemento('header', 5000);
+      
+      // 5. Inicializar menú móvil
+      console.log('Inicializando menú móvil...');
+      initMobileMenu();
+      
+      // 6. Inicializar navegación
+      console.log('Inicializando navegación...');
+      setupNavigation();
+      
+      // 7. Cargar viviendas
+      console.log('Cargando viviendas...');
+      try {
+          await loadViviendas();
+          if (window.viviendas && window.viviendas.length > 0) {
+              displayViviendas(window.viviendas);
+          }
+      } catch (viviendaError) {
+          console.warn('Error cargando viviendas:', viviendaError);
+      }
+      
+      // 8. Configurar formulario
+      console.log('Configurando formulario...');
+      setupContactForm();
+      
+      // 9. Inicializar header scroll
+      initHeader();
+      
+      // 10. Inicializar tabla de propiedades
+      initPropertiesTable();
+      
+      // 11. Diagnóstico final
+      setTimeout(() => {
+          console.log('DIAGNÓSTICO FINAL:');
+          diagnosticarProblemas();
+          console.log('Inicialización completa terminada');
+      }, 2000);
+      
+  } catch (error) {
+      console.error('Error en inicialización completa:', error);
+      
+      // Fallback: intentar inicialización básica
+      console.log('Intentando inicialización básica...');
+      setTimeout(() => {
+          try {
+              initMobileMenu();
+              setupNavigation();
+              setupContactForm();
+              initHeader();
+              console.log('Inicialización básica completada');
+          } catch (fallbackError) {
+              console.error('Error en inicialización básica:', fallbackError);
+          }
+      }, 1000);
+  }
+}
+
+/**
+* Función setupNavigation actualizada para integrar con menú móvil
+*/
+function setupNavigation() {
+  console.log('Configurando navegación...');
+  
+  setTimeout(() => {
+      const navLinks = document.querySelectorAll('nav ul li a');
+      console.log('Enlaces de navegación encontrados:', navLinks.length);
+      
+      // Manejar clicks en enlaces de navegación desktop
+      navLinks.forEach(link => {
+          link.addEventListener('click', function(e) {
+              e.preventDefault();
+              
+              const href = this.getAttribute('href');
+              
+              // Solo procesar enlaces que empiecen con #
+              if (!href || !href.startsWith('#')) {
+                  return;
+              }
+              
+              const targetId = href.substring(1);
+              console.log('Navegando a:', targetId);
+              
+              // Usar la función unificada de navegación
+              navigateToSection(targetId);
+              
+              // Actualizar clase active en navegación desktop
+              navLinks.forEach(l => l.classList.remove('active'));
+              this.classList.add('active');
+              
+              // Sincronizar con menú móvil
+              syncMobileNavigation(href);
+          });
+      });
+      
+      // Detectar sección activa al hacer scroll
+      window.addEventListener('scroll', () => {
+          updateActiveNavigation();
+      });
+      
+      console.log('Navegación configurada correctamente');
+      
+  }, 1000);
+}
+
+/**
+* Función unificada de navegación que funciona para desktop y móvil
+*/
+function navigateToSection(targetId) {
+  console.log('Navegando a sección:', targetId);
+  
+  // Mapeo de IDs del header a IDs reales de las secciones
+  const sectionMapping = {
+      'home': 'inicio-placeholder',
+      'inicio': 'inicio-placeholder',
+      'about': 'about-placeholder', 
+      'properties': 'properties-placeholder',
+      'location': 'map-placeholder',
+      'map': 'map-placeholder',
+      'gallery': 'gallery-placeholder',
+      'documentation': 'documentation-placeholder',
+      'contact': 'contact-placeholder'
+  };
+  
+  // Buscar el elemento objetivo
+  let targetElement = document.getElementById(targetId);
+  
+  // Si no se encuentra, buscar con el mapeo
+  if (!targetElement && sectionMapping[targetId]) {
+      targetElement = document.getElementById(sectionMapping[targetId]);
+  }
+  
+  // Si aún no se encuentra, buscar la sección dentro del placeholder
+  if (!targetElement) {
+      const placeholder = document.getElementById(targetId + '-placeholder');
+      if (placeholder) {
+          const section = placeholder.querySelector('section');
+          targetElement = section || placeholder;
+      }
+  }
+  
+  if (targetElement) {
+      console.log('Elemento encontrado, haciendo scroll suave');
+      
+      // Scroll suave a la sección con compensación del header fijo
+      const headerHeight = document.querySelector('header')?.offsetHeight || 80;
+      const targetPosition = targetElement.offsetTop - headerHeight;
+      
+      window.scrollTo({
+          top: Math.max(0, targetPosition),
+          behavior: 'smooth'
+      });
+  } else {
+      console.warn('Sección no encontrada:', targetId);
+  }
+}
+
+/**
+* Sincronizar navegación móvil con desktop
+*/
+function syncMobileNavigation(href) {
+  const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+  mobileLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === href) {
+          link.classList.add('active');
+      }
+  });
+}
+
+/**
+* Actualizar navegación activa basada en scroll
+*/
+function updateActiveNavigation() {
+  let current = '';
+  
+  // Buscar todas las secciones posibles
+  const sections = document.querySelectorAll('section, [id*="placeholder"]');
+  
+  sections.forEach(section => {
+      const sectionTop = section.offsetTop;
+      const sectionHeight = section.clientHeight;
+      const headerHeight = 100; // Margen adicional
+      
+      // Verificar si estamos en esta sección
+      if (pageYOffset >= (sectionTop - headerHeight) && 
+          pageYOffset < (sectionTop + sectionHeight - headerHeight)) {
+          let sectionId = section.getAttribute('id');
+          
+          // Limpiar el ID para matching
+          if (sectionId) {
+              sectionId = sectionId.replace('-placeholder', '');
+              current = sectionId;
+          }
+      }
+  });
+
+  // Actualizar enlaces activos en ambas navegaciones
+  if (current) {
+      // Desktop navigation
+      const navLinks = document.querySelectorAll('nav ul li a');
+      navLinks.forEach(link => {
+          link.classList.remove('active');
+          const linkHref = link.getAttribute('href');
+          
+          if (linkHref && linkHref.includes(current)) {
+              link.classList.add('active');
+          }
+      });
+      
+      // Mobile navigation
+      const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+      mobileLinks.forEach(link => {
+          link.classList.remove('active');
+          const linkHref = link.getAttribute('href');
+          
+          if (linkHref && linkHref.includes(current)) {
+              link.classList.add('active');
+          }
+      });
+  }
+}
+
+/**
+ * Función auxiliar para esperar a que aparezca un elemento
+ */
+function esperarElemento(selector, timeout = 3000) {
+    return new Promise((resolve, reject) => {
+        const elemento = document.querySelector(selector);
+        if (elemento) {
+            resolve(elemento);
+            return;
+        }
+        
+        const observer = new MutationObserver((mutations, obs) => {
+            const elemento = document.querySelector(selector);
+            if (elemento) {
+                obs.disconnect();
+                resolve(elemento);
+            }
+        });
+        
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+        
+        setTimeout(() => {
+            observer.disconnect();
+            reject(new Error(`Elemento ${selector} no apareció en ${timeout}ms`));
+        }, timeout);
+    });
+}
+function arreglarHeaderDespuesDeCerrarMenu() {
+  document.body.style.paddingTop = '80px';
+  console.log('✅ Header fijo arreglado');
+}
+
+// Ejecutar después de cerrar el menú
+setTimeout(() => {
+  arreglarHeaderDespuesDeCerrarMenu();
+}, 500);
+// ========================
+// FUNCIONES DE DEBUGGING PARA CONSOLA
+// ========================
+
+/**
+ * Función para ejecutar en consola para debugging
+ */
+function debugCompleto() {
+    console.clear();
+    diagnosticarProblemas();
+    
+    // Verificar específicamente el problema del header
+    const header = document.querySelector('header');
+    if (header) {
+        const computedStyle = window.getComputedStyle(header);
+        console.log('📋 Estilos del header:');
+        console.log('- Display:', computedStyle.display);
+        console.log('- Position:', computedStyle.position);
+        console.log('- Z-index:', computedStyle.zIndex);
+        console.log('- Visibility:', computedStyle.visibility);
+        console.log('- Opacity:', computedStyle.opacity);
+    }
+    
+    // Verificar botón hamburguesa
+    const botonHamburguesa = document.getElementById('mobile-menu-toggle');
+    console.log('📋 Botón hamburguesa:', botonHamburguesa);
+    if (botonHamburguesa) {
+        const style = window.getComputedStyle(botonHamburguesa);
+        console.log('- Display:', style.display);
+        console.log('- Visibility:', style.visibility);
+    }
+}
+
+/**
+ * Función para recargar manualmente el header
+ */
+async function recargarHeader() {
+    console.log('🔄 Recargando header manualmente...');
+    
+    const headerPlaceholder = document.getElementById('header-placeholder');
+    if (headerPlaceholder) {
+        try {
+            const response = await fetch('src/shared/header.html');
+            if (response.ok) {
+                const html = await response.text();
+                headerPlaceholder.innerHTML = html;
+                console.log('✅ Header recargado');
+                
+                // Reinicializar menú móvil
+                setTimeout(() => {
+                    initMobileMenu();
+                }, 500);
+            }
+        } catch (error) {
+            console.error('❌ Error recargando header:', error);
+        }
+    }
+}
+
+// Hacer funciones disponibles globalmente para debugging
+window.debugCompleto = debugCompleto;
+window.recargarHeader = recargarHeader;
+window.diagnosticarProblemas = diagnosticarProblemas;
+window.forzarCargaSecciones = forzarCargaSecciones;
+
+// ========================
+// NUEVA INICIALIZACIÓN PRINCIPAL
+// ========================
+
+// Reemplazar el DOMContentLoaded existente con este:
+document.addEventListener('DOMContentLoaded', inicializacionCompleta);
+
+console.log('🛠️ Sistema de debug cargado. Funciones disponibles:');
+console.log('- debugCompleto()');
+console.log('- recargarHeader()'); 
+console.log('- diagnosticarProblemas()');
+console.log('- forzarCargaSecciones()');
 // ========================
 // FUNCIONES BÁSICAS PARA VIVIENDAS
 // ========================
@@ -46,7 +550,7 @@ async function loadViviendas() {
     }
 }
 
-// Inicialización cuando el DOM esté cargado
+/* // Inicialización cuando el DOM esté cargado
 document.addEventListener('DOMContentLoaded', async () => {
   console.log('🚀 Aplicación Barsant Ventanilla inicializada');
 
@@ -72,7 +576,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initPropertiesTable();
   setupContactForm();
   setupNavigation();
-});
+}); */
 
 // ========================
 // FUNCIONES DE INTERFAZ
@@ -633,153 +1137,6 @@ function initMap() {
   }
 }
 
-/**
- * MENÚ HAMBURGUESA MÓVIL - VERSIÓN CORREGIDA
- * Para añadir al index.js
- */
-
-// ========================
-// FUNCIONES DEL MENÚ MÓVIL - CORREGIDAS
-// ========================
-
-/**
- * Carga el logo desde Firebase Storage
- */
-async function loadHeaderLogo() {
-  try {
-      console.log('🖼️ Cargando logo desde Firebase Storage...');
-      
-      // Función inline basada en tu dataService.js (más confiable)
-      function getPublicStorageUrl(fileName) {
-          const projectId = 'ventanilla-barsant';
-          const bucket = `${projectId}.firebasestorage.app`;
-          const encodedFileName = encodeURIComponent(fileName);
-          return `https://firebasestorage.googleapis.com/v0/b/${bucket}/o/${encodedFileName}?alt=media`;
-      }
-      
-      // Generar URL pública del logo
-      const logoUrl = getPublicStorageUrl('logo (3).png');
-      console.log('🔗 URL del logo generada:', logoUrl);
-      
-      // Actualizar ambos logos (header y menú móvil)
-      const headerLogo = document.getElementById('header-logo');
-      const mobileMenuLogo = document.getElementById('mobile-menu-logo');
-      
-      if (headerLogo) {
-          headerLogo.src = logoUrl;
-          headerLogo.onload = () => console.log('✅ Logo del header cargado desde Firebase');
-          headerLogo.onerror = (e) => {
-              console.warn('⚠️ Error cargando logo del header:', e);
-              headerLogo.src = 'assets/images/logo (3).png'; // Fallback
-          };
-      } else {
-          console.warn('⚠️ Elemento header-logo no encontrado');
-      }
-      
-      if (mobileMenuLogo) {
-          mobileMenuLogo.src = logoUrl;
-          mobileMenuLogo.onload = () => console.log('✅ Logo del menú móvil cargado desde Firebase');
-          mobileMenuLogo.onerror = (e) => {
-              console.warn('⚠️ Error cargando logo del menú móvil:', e);
-              mobileMenuLogo.src = 'assets/images/logo (3).png'; // Fallback
-          };
-      } else {
-          console.warn('⚠️ Elemento mobile-menu-logo no encontrado');
-      }
-      
-  } catch (error) {
-      console.error('❌ Error cargando logo desde Firebase:', error);
-      
-      // Fallback completo
-      const headerLogo = document.getElementById('header-logo');
-      const mobileMenuLogo = document.getElementById('mobile-menu-logo');
-      
-      if (headerLogo) headerLogo.src = 'assets/images/logo (3).png';
-      if (mobileMenuLogo) mobileMenuLogo.src = 'assets/images/logo (3).png';
-      
-      console.log('🔄 Usando logo local como fallback');
-  }
-}
-
-/**
-* Inicializa el menú hamburguesa móvil - VERSION CORREGIDA
-*/
-function initMobileMenu() {
-  console.log('📱 Inicializando menú móvil...');
-  
-  // Esperar a que el header se cargue
-  setTimeout(() => {
-      // Cargar logo después de que el DOM esté listo
-      loadHeaderLogo();
-      
-      const menuToggle = document.getElementById('mobile-menu-toggle');
-      const menuOverlay = document.getElementById('mobile-menu-overlay');
-      const menuPanel = document.getElementById('mobile-menu-panel');
-      const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
-      
-      console.log('🔍 Elementos del menú móvil:');
-      console.log('- Toggle button:', menuToggle);
-      console.log('- Overlay:', menuOverlay);
-      console.log('- Panel:', menuPanel);
-      console.log('- Nav links:', mobileNavLinks.length);
-      
-      if (!menuToggle || !menuOverlay || !menuPanel) {
-          console.error('❌ Elementos del menú móvil no encontrados. Verificar que header.html se haya cargado correctamente.');
-          return;
-      }
-      
-      // Event listeners con logs para debugging
-      menuToggle.addEventListener('click', function(e) {
-          console.log('🔘 Click en botón hamburguesa');
-          e.preventDefault();
-          e.stopPropagation();
-          toggleMobileMenu();
-      });
-      
-      menuOverlay.addEventListener('click', function(e) {
-          console.log('🔘 Click en overlay');
-          closeMobileMenu();
-      });
-      
-      // Cerrar menú al hacer clic en enlaces de navegación
-      mobileNavLinks.forEach((link, index) => {
-          link.addEventListener('click', function(e) {
-              console.log(`🔘 Click en enlace móvil ${index + 1}:`, this.textContent);
-              e.preventDefault();
-              
-              const href = this.getAttribute('href');
-              
-              // Cerrar menú primero
-              closeMobileMenu();
-              
-              // Navegar después de un pequeño delay
-              setTimeout(() => {
-                  navigateToSection(href);
-                  updateActiveMobileLink(this);
-              }, 300);
-          });
-      });
-      
-      // Cerrar menú con tecla Escape
-      document.addEventListener('keydown', function(e) {
-          if (e.key === 'Escape' && isMobileMenuOpen()) {
-              console.log('⌨️ Cerrando menú con Escape');
-              closeMobileMenu();
-          }
-      });
-      
-      // Cerrar menú al cambiar orientación/resize
-      window.addEventListener('resize', function() {
-          if (window.innerWidth > 768 && isMobileMenuOpen()) {
-              console.log('📱 Cerrando menú por resize de pantalla');
-              closeMobileMenu();
-          }
-      });
-      
-      console.log('✅ Menú móvil inicializado correctamente');
-      
-  }, 500); // Dar tiempo para que se cargue el header
-}
 
 /**
 * Alterna la visibilidad del menú móvil
@@ -793,73 +1150,6 @@ function toggleMobileMenu() {
   }
 }
 
-/**
-* Abre el menú móvil
-*/
-function openMobileMenu() {
-  console.log('📂 Abriendo menú móvil...');
-  
-  const menuToggle = document.getElementById('mobile-menu-toggle');
-  const menuOverlay = document.getElementById('mobile-menu-overlay');
-  const menuPanel = document.getElementById('mobile-menu-panel');
-  
-  if (!menuToggle || !menuOverlay || !menuPanel) {
-      console.error('❌ No se pueden encontrar elementos del menú para abrir');
-      return;
-  }
-  
-  // Añadir clases activas
-  menuToggle.classList.add('active');
-  menuOverlay.classList.add('active');
-  menuPanel.classList.add('active');
-  
-  // Prevenir scroll del body
-  document.body.classList.add('menu-open');
-  
-  // Foco en el primer enlace del menú para accesibilidad
-  setTimeout(() => {
-      const firstLink = document.querySelector('.mobile-nav-link');
-      if (firstLink) firstLink.focus();
-  }, 100);
-  
-  console.log('✅ Menú móvil abierto');
-}
-
-/**
-* Cierra el menú móvil
-*/
-function closeMobileMenu() {
-  console.log('📁 Cerrando menú móvil...');
-  
-  const menuToggle = document.getElementById('mobile-menu-toggle');
-  const menuOverlay = document.getElementById('mobile-menu-overlay');
-  const menuPanel = document.getElementById('mobile-menu-panel');
-  
-  if (!menuToggle || !menuOverlay || !menuPanel) {
-      console.error('❌ No se pueden encontrar elementos del menú para cerrar');
-      return;
-  }
-  
-  // Remover clases activas
-  menuToggle.classList.remove('active');
-  menuOverlay.classList.remove('active');
-  menuPanel.classList.remove('active');
-  
-  // Restaurar scroll del body
-  document.body.classList.remove('menu-open');
-  
-  console.log('✅ Menú móvil cerrado');
-}
-
-/**
-* Verifica si el menú móvil está abierto
-*/
-function isMobileMenuOpen() {
-  const menuPanel = document.getElementById('mobile-menu-panel');
-  const isOpen = menuPanel && menuPanel.classList.contains('active');
-  console.log('❓ ¿Menú abierto?', isOpen);
-  return isOpen;
-}
 
 /**
 * Navega a una sección específica
@@ -915,33 +1205,7 @@ function navigateToSection(href) {
   }
 }
 
-/**
-* Actualiza el enlace activo en el menú móvil
-*/
-function updateActiveMobileLink(activeLink) {
-  console.log('🎯 Actualizando enlace activo:', activeLink?.textContent);
-  
-  // Remover clase active de todos los enlaces móviles
-  document.querySelectorAll('.mobile-nav-link').forEach(link => {
-      link.classList.remove('active');
-  });
-  
-  // Añadir clase active al enlace clicado
-  if (activeLink) {
-      activeLink.classList.add('active');
-  }
-  
-  // Sincronizar con navegación desktop
-  const href = activeLink?.getAttribute('href');
-  if (href) {
-      document.querySelectorAll('nav ul li a').forEach(link => {
-          link.classList.remove('active');
-          if (link.getAttribute('href') === href) {
-              link.classList.add('active');
-          }
-      });
-  }
-}
+
 
 // ========================
 // FUNCIÓN DE TESTING
@@ -970,6 +1234,225 @@ function testMobileMenu() {
   }
 }
 
+// ========================
+// FUNCIONES DEL MENÚ MÓVIL
+// ========================
+
+/**
+ * Carga el logo desde Firebase Storage
+ */
+async function loadHeaderLogo() {
+    try {
+        console.log('Cargando logo desde Firebase Storage...');
+        
+        function getPublicStorageUrl(fileName) {
+            const projectId = 'ventanilla-barsant';
+            const bucket = `${projectId}.firebasestorage.app`;
+            const encodedFileName = encodeURIComponent(fileName);
+            return `https://firebasestorage.googleapis.com/v0/b/${bucket}/o/${encodedFileName}?alt=media`;
+        }
+        
+        const logoUrl = getPublicStorageUrl('logo (3).png');
+        
+        const headerLogo = document.getElementById('header-logo');
+        const mobileMenuLogo = document.getElementById('mobile-menu-logo');
+        
+        if (headerLogo) {
+            headerLogo.src = logoUrl;
+            headerLogo.onload = () => console.log('Logo del header cargado desde Firebase');
+            headerLogo.onerror = () => {
+                headerLogo.src = 'assets/images/logo (3).png';
+            };
+        }
+        
+        if (mobileMenuLogo) {
+            mobileMenuLogo.src = logoUrl;
+            mobileMenuLogo.onload = () => console.log('Logo del menú móvil cargado desde Firebase');
+            mobileMenuLogo.onerror = () => {
+                mobileMenuLogo.src = 'assets/images/logo (3).png';
+            };
+        }
+        
+    } catch (error) {
+        console.error('Error cargando logo desde Firebase:', error);
+        
+        const headerLogo = document.getElementById('header-logo');
+        const mobileMenuLogo = document.getElementById('mobile-menu-logo');
+        
+        if (headerLogo) headerLogo.src = 'assets/images/logo (3).png';
+        if (mobileMenuLogo) mobileMenuLogo.src = 'assets/images/logo (3).png';
+    }
+}
+
+/**
+ * Inicializa el menú hamburguesa móvil
+ */
+function initMobileMenu() {
+    console.log('Inicializando menú móvil...');
+    
+    setTimeout(() => {
+        loadHeaderLogo();
+        
+        const menuToggle = document.getElementById('mobile-menu-toggle');
+        const menuOverlay = document.getElementById('mobile-menu-overlay');
+        const menuPanel = document.getElementById('mobile-menu-panel');
+        const menuClose = document.getElementById('mobile-menu-close');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+        
+        if (!menuToggle || !menuOverlay || !menuPanel) {
+            console.error('Elementos del menú móvil no encontrados');
+            return;
+        }
+        
+        // Event listeners
+        menuToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            openMobileMenu();
+        });
+        
+        if (menuClose) {
+            menuClose.addEventListener('click', function(e) {
+                e.preventDefault();
+                closeMobileMenu();
+            });
+        }
+        
+        menuOverlay.addEventListener('click', function(e) {
+            closeMobileMenu();
+        });
+        
+        // Navegación móvil
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const target = this.getAttribute('data-target');
+                
+                closeMobileMenu();
+                
+                setTimeout(() => {
+                    navigateToMobileSection(target);
+                    updateActiveMobileLink(this);
+                }, 300);
+            });
+        });
+        
+        // Cerrar con Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && isMobileMenuOpen()) {
+                closeMobileMenu();
+            }
+        });
+        
+        // Cerrar al cambiar tamaño de pantalla
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768 && isMobileMenuOpen()) {
+                closeMobileMenu();
+            }
+        });
+        
+        console.log('Menú móvil inicializado correctamente');
+        
+    }, 500);
+}
+
+/**
+ * Abre el menú móvil
+ */
+function openMobileMenu() {
+    const menuToggle = document.getElementById('mobile-menu-toggle');
+    const menuOverlay = document.getElementById('mobile-menu-overlay');
+    const menuPanel = document.getElementById('mobile-menu-panel');
+    
+    if (!menuToggle || !menuOverlay || !menuPanel) {
+        return;
+    }
+    
+    menuToggle.classList.add('active');
+    menuOverlay.classList.add('active');
+    menuPanel.classList.add('active');
+    
+    document.body.classList.add('menu-open');
+    
+    setTimeout(() => {
+        const firstLink = document.querySelector('.mobile-nav-link');
+        if (firstLink) firstLink.focus();
+    }, 100);
+}
+
+/**
+ * Cierra el menú móvil
+ */
+function closeMobileMenu() {
+    const menuToggle = document.getElementById('mobile-menu-toggle');
+    const menuOverlay = document.getElementById('mobile-menu-overlay');
+    const menuPanel = document.getElementById('mobile-menu-panel');
+    
+    if (!menuToggle || !menuOverlay || !menuPanel) {
+        return;
+    }
+    
+    menuToggle.classList.remove('active');
+    menuOverlay.classList.remove('active');
+    menuPanel.classList.remove('active');
+    
+    document.body.classList.remove('menu-open');
+}
+
+/**
+ * Verifica si el menú móvil está abierto
+ */
+function isMobileMenuOpen() {
+    const menuPanel = document.getElementById('mobile-menu-panel');
+    return menuPanel && menuPanel.classList.contains('active');
+}
+
+/**
+ * Navega a una sección específica desde el menú móvil
+ */
+function navigateToMobileSection(targetId) {
+    const element = document.getElementById(targetId);
+    
+    if (element) {
+        const headerHeight = document.querySelector('header').offsetHeight || 80;
+        const targetPosition = element.offsetTop - headerHeight;
+        
+        window.scrollTo({
+            top: Math.max(0, targetPosition),
+            behavior: 'smooth'
+        });
+    }
+}
+
+/**
+ * Actualiza el enlace activo en el menú móvil
+ */
+function updateActiveMobileLink(activeLink) {
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+        link.classList.remove('active');
+    });
+    
+    if (activeLink) {
+        activeLink.classList.add('active');
+    }
+    
+    // Sincronizar con navegación desktop
+    const href = activeLink?.getAttribute('href');
+    if (href) {
+        document.querySelectorAll('nav ul li a').forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === href) {
+                link.classList.add('active');
+            }
+        });
+    }
+}
+
+// Hacer las funciones disponibles globalmente
+window.openMobileMenu = openMobileMenu;
+window.closeMobileMenu = closeMobileMenu;
+window.initMobileMenu = initMobileMenu;
 // Hacer la función disponible globalmente para debugging
 window.testMobileMenu = testMobileMenu;
 

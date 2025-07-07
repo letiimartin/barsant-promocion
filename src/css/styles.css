@@ -1410,7 +1410,8 @@ tr.vivienda-row:hover {
 }
 
 /* ================================
-   MENÚ HAMBURGUESA MÓVIL - AÑADIR AL FINAL DE styles.css
+   MENÚ HAMBURGUESA MÓVIL - VERSIÓN FINAL
+   Añadir al final de styles.css
    ================================ */
 
 /* Botón hamburguesa - oculto por defecto en desktop */
@@ -1424,6 +1425,8 @@ tr.vivienda-row:hover {
     transition: all 0.3s ease;
     position: relative;
     z-index: 1001;
+    width: 40px;
+    height: 40px;
 }
 
 .mobile-menu-toggle:hover {
@@ -1438,6 +1441,7 @@ tr.vivienda-row:hover {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    margin: 0 auto;
 }
 
 .hamburger-line {
@@ -1488,14 +1492,16 @@ tr.vivienda-row:hover {
     position: fixed;
     top: 0;
     right: -100%;
-    width: 280px;
-    max-width: 80vw;
+    width: 320px;
+    max-width: 85vw;
     height: 100vh;
-    background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+    background: white;
     box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
     z-index: 1000;
-    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: right 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .mobile-menu-panel.active {
@@ -1505,27 +1511,59 @@ tr.vivienda-row:hover {
 /* Header del menú móvil */
 .mobile-menu-header {
     padding: 20px;
-    border-bottom: 1px solid rgba(224, 200, 140, 0.2);
     background: linear-gradient(45deg, var(--secondary-color), #f0d49e);
+    border-bottom: 1px solid rgba(224, 200, 140, 0.3);
+    position: relative;
+    flex-shrink: 0;
 }
 
-.mobile-menu-header .logo {
-    color: var(--primary-color);
+.mobile-menu-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
     font-size: 20px;
-    font-weight: 700;
+    font-weight: bold;
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: center;
+    z-index: 1001;
+    transition: all 0.3s ease;
 }
 
-.mobile-menu-header .logo img {
-    height: 35px;
+.mobile-menu-close:hover {
+    background: #2a2a2a;
+    transform: scale(1.1);
+}
+
+.mobile-menu-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.mobile-menu-logo img {
+    height: 30px;
     width: auto;
+}
+
+.mobile-menu-logo span {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--primary-color);
 }
 
 /* Navegación del menú móvil */
 .mobile-menu-nav {
-    padding: 20px 0;
+    flex: 1;
+    overflow-y: auto;
 }
 
 .mobile-menu-nav ul {
@@ -1536,19 +1574,23 @@ tr.vivienda-row:hover {
 
 .mobile-menu-nav li {
     margin: 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.mobile-menu-nav li:last-child {
+    border-bottom: none;
 }
 
 .mobile-menu-nav a {
     display: flex;
     align-items: center;
     gap: 15px;
-    padding: 15px 20px;
+    padding: 18px 20px;
     color: var(--text-color);
     text-decoration: none;
     font-size: 16px;
     font-weight: 500;
     transition: all 0.3s ease;
-    border-left: 4px solid transparent;
     position: relative;
 }
 
@@ -1556,54 +1598,63 @@ tr.vivienda-row:hover {
 .mobile-menu-nav a.active {
     background: linear-gradient(90deg, rgba(224, 200, 140, 0.1), transparent);
     color: var(--primary-color);
-    border-left-color: var(--secondary-color);
-    transform: translateX(5px);
+    transform: translateX(10px);
 }
 
-/* Iconos para cada sección del menú */
-.mobile-menu-nav a::before {
-    font-family: "Font Awesome 6 Free";
-    font-weight: 900;
+.mobile-menu-nav a:hover::after,
+.mobile-menu-nav a.active::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--secondary-color);
+}
+
+/* Iconos de navegación */
+.nav-icon {
     font-size: 18px;
     color: var(--secondary-color);
     width: 20px;
     text-align: center;
+    flex-shrink: 0;
 }
-
-.mobile-menu-nav a[href="#home"]::before { content: "\f015"; }
-.mobile-menu-nav a[href="#about"]::before { content: "\f1ad"; }
-.mobile-menu-nav a[href="#properties"]::before { content: "\f015"; }
-.mobile-menu-nav a[href="#location"]::before { content: "\f3c5"; }
-.mobile-menu-nav a[href="#gallery"]::before { content: "\f03e"; }
-.mobile-menu-nav a[href="#documentation"]::before { content: "\f15c"; }
-.mobile-menu-nav a[href="#contact"]::before { content: "\f095"; }
 
 /* Información adicional en el menú */
 .mobile-menu-info {
-    padding: 20px;
-    border-top: 1px solid rgba(224, 200, 140, 0.2);
-    background: rgba(224, 200, 140, 0.05);
-    margin-top: auto;
+    padding: 25px 20px;
+    background: #f8f9fa;
+    border-top: 1px solid #e0e0e0;
+    flex-shrink: 0;
 }
 
 .mobile-menu-info h4 {
     color: var(--primary-color);
-    font-size: 14px;
-    margin-bottom: 10px;
+    font-size: 16px;
+    margin-bottom: 12px;
     font-weight: 600;
 }
 
 .mobile-menu-info p {
     color: #666;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.4;
     margin-bottom: 8px;
+}
+
+.mobile-menu-info p:last-child {
+    margin-bottom: 0;
 }
 
 .mobile-menu-info a {
     color: var(--secondary-color);
     text-decoration: none;
     font-weight: 500;
+}
+
+.mobile-menu-info a:hover {
+    text-decoration: underline;
 }
 
 /* ================================
@@ -1649,8 +1700,12 @@ tr.vivienda-row:hover {
     }
     
     .mobile-menu-nav a {
-        padding: 18px 20px;
+        padding: 20px;
         font-size: 17px;
+    }
+    
+    .mobile-menu-info {
+        padding: 30px 20px;
     }
 }
 
@@ -1680,20 +1735,12 @@ tr.vivienda-row:hover {
     }
 }
 
-/* Efecto hover mejorado */
-.mobile-menu-nav a::after {
-    content: '';
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 0;
-    height: 2px;
-    background: var(--secondary-color);
-    transition: width 0.3s ease;
+/* Compensar header fijo */
+body {
+    padding-top: 80px;
 }
 
-.mobile-menu-nav a:hover::after,
-.mobile-menu-nav a.active::after {
-    width: 20px;
+/* Asegurar que las secciones no queden ocultas */
+section {
+    scroll-margin-top: 80px;
 }

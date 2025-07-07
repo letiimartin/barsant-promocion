@@ -64,6 +64,9 @@ header.scrolled {
     justify-content: space-between;
     align-items: center;
     padding: 15px 0;
+    justify-content: center;
+    position: relative;
+    
 }
 
 .logo {
@@ -74,12 +77,16 @@ header.scrolled {
     display: flex;
     align-items: center;
     gap: 10px;
+    position: center !important;
+    justify-content: center;
 }
 
 .logo img {
-    height: 150px;
+    height: 200px;
     width: auto;
     object-fit: contain;
+    position: center !important;
+
 }
 
 .logo span {
@@ -1471,7 +1478,8 @@ tr.vivienda-row:hover {
     width: 40px;
     height: 40px;
     z-index: 1001;
-    position: relative;
+    position: absolute;
+    right: 20px;
 }
 
 .mobile-menu-toggle:hover {
@@ -1553,12 +1561,13 @@ tr.vivienda-row:hover {
 
 /* Header del menú */
 .mobile-menu-header {
-    padding: 8px !important;
+    padding: 22px !important;
     background: linear-gradient(45deg, var(--secondary-color), #ebe9e5) !important;
     position: relative !important;
     min-height: 40x !important;
     display: flex !important;
     align-items: center !important;
+    position: center !important;
 }
 
 .mobile-menu-close {
@@ -1585,12 +1594,13 @@ tr.vivienda-row:hover {
 .mobile-menu-logo {
     display: flex !important;
     align-items: center !important;
-    gap: 10px !important;
+    gap: 20px !important;
 }
 
 .mobile-menu-logo img {
-    height: 30px !important;
+    height: 200px !important;
     width: auto !important;
+    position: center !important;
 }
 
 .mobile-menu-logo span {
@@ -1625,7 +1635,7 @@ tr.vivienda-row:hover {
     display: flex !important;
     align-items: center !important;
     gap: 12px !important;
-    padding: 10px 20px !important;
+    padding: 16px 20px !important;
     color: var(--text-color, #333) !important;
     text-decoration: none !important;
     font-size: 16px !important;
@@ -1716,9 +1726,7 @@ body.menu-open {
    Si los CSS variables no funcionan
    ================================ */
 
-.mobile-menu-header {
-    background: #fdfdfd !important;
-}
+
 
 .mobile-menu-close {
     background: #3a3a3a !important;
@@ -1856,7 +1864,8 @@ body.menu-open {
     }
     
     .logo img {
-        height: 35px !important;
+        height: 50px !important;
+        position: center !important;
     }
 }
 
@@ -1890,7 +1899,8 @@ body.menu-open {
     }
     
     .logo img {
-        height: 45px !important;
+        height: 60px !important;
+        position: center !important;
     }
 }
 
@@ -1922,48 +1932,13 @@ body.menu-open {
     }
     
     .logo img {
-        height: 50px !important;
+        height: 70px !important;
     }
     
     .header-content {
         padding: 16px 0 !important;
     }
 }
-
-/* ================================
-   ALTERNATIVA: MENÚ MÓVIL EN TABLETS
-   Descomenta este bloque si prefieres menú hamburguesa en tablets
-   ================================ */
-
-/*
-@media (min-width: 769px) and (max-width: 1024px) {
-    .mobile-menu-toggle {
-        display: block !important;
-    }
-    
-    nav ul {
-        display: none !important;
-    }
-    
-    .mobile-menu-panel {
-        width: 450px !important;
-    }
-    
-    .mobile-menu-nav a {
-        padding: 22px 28px !important;
-        font-size: 19px !important;
-    }
-    
-    .mobile-menu-header {
-        padding: 28px !important;
-        min-height: 100px !important;
-    }
-    
-    .logo img {
-        height: 50px !important;
-    }
-}
-*/
 
 /* Tablets grandes y desktop: 1025px+ */
 @media (min-width: 1025px) {
@@ -1988,7 +1963,8 @@ body.menu-open {
     }
     
     .logo img {
-        height: 60px !important;
+        height: 80px !important;
+        position: center !important;
     }
 }
 

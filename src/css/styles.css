@@ -1553,10 +1553,10 @@ tr.vivienda-row:hover {
 
 /* Header del menú */
 .mobile-menu-header {
-    padding: 20px !important;
-    background: linear-gradient(45deg, var(--secondary-color), #f0d49e) !important;
+    padding: 8px !important;
+    background: linear-gradient(45deg, var(--secondary-color), #ebe9e5) !important;
     position: relative !important;
-    min-height: 60px !important;
+    min-height: 40x !important;
     display: flex !important;
     align-items: center !important;
 }
@@ -1625,7 +1625,7 @@ tr.vivienda-row:hover {
     display: flex !important;
     align-items: center !important;
     gap: 12px !important;
-    padding: 16px 20px !important;
+    padding: 10px 20px !important;
     color: var(--text-color, #333) !important;
     text-decoration: none !important;
     font-size: 16px !important;
@@ -1717,7 +1717,7 @@ body.menu-open {
    ================================ */
 
 .mobile-menu-header {
-    background: #e0c88c !important;
+    background: #fdfdfd !important;
 }
 
 .mobile-menu-close {

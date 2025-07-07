@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initHeader();
   initPropertiesTable();
   setupContactForm();
-  setupNavigation();
+  setupNavigationUpdated;
 });
 
 // ========================
@@ -630,6 +630,384 @@ function initMap() {
       mapContainer.innerHTML = '<p>Error al cargar el mapa. Por favor, verifica tu conexión o intenta de nuevo más tarde.</p>';
     }
   }
+}
+
+// ========================
+// FUNCIONES DEL MENÚ MÓVIL
+// ========================
+
+/**
+ * Carga el logo desde Firebase Storage
+ */
+async function loadHeaderLogo() {
+  try {
+      console.log('🖼️ Cargando logo desde Firebase Storage...');
+      
+      // Importar función de dataService.js
+      const { default: dataServiceModule } = await import('../../dataService.js');
+      
+      // Si no está disponible como default, intentar importación nombrada
+      let getPublicStorageUrl;
+      if (dataServiceModule && dataServiceModule.getPublicStorageUrl) {
+          getPublicStorageUrl = dataServiceModule.getPublicStorageUrl;
+      } else {
+          // Función inline basada en tu dataService.js
+          getPublicStorageUrl = function(fileName) {
+              const projectId = 'ventanilla-barsant';
+              const bucket = `${projectId}.firebasestorage.app`;
+              const encodedFileName = encodeURIComponent(fileName);
+              return `https://firebasestorage.googleapis.com/v0/b/${bucket}/o/${encodedFileName}?alt=media`;
+          };
+      }
+      
+      // Generar URL pública del logo
+      const logoUrl = getPublicStorageUrl('logo (3).png');
+      
+      // Actualizar ambos logos (header y menú móvil)
+      const headerLogo = document.getElementById('header-logo');
+      const mobileMenuLogo = document.getElementById('mobile-menu-logo');
+      
+      if (headerLogo) {
+          headerLogo.src = logoUrl;
+          headerLogo.onload = () => console.log('✅ Logo del header cargado desde Firebase');
+          headerLogo.onerror = () => console.warn('⚠️ Error cargando logo del header');
+      }
+      
+      if (mobileMenuLogo) {
+          mobileMenuLogo.src = logoUrl;
+          mobileMenuLogo.onload = () => console.log('✅ Logo del menú móvil cargado desde Firebase');
+          mobileMenuLogo.onerror = () => console.warn('⚠️ Error cargando logo del menú móvil');
+      }
+      
+  } catch (error) {
+      console.error('❌ Error cargando logo desde Firebase:', error);
+      
+      // Fallback - usar logo local si Firebase falla
+      const fallbackUrl = 'assets/images/logo (3).png';
+      const headerLogo = document.getElementById('header-logo');
+      const mobileMenuLogo = document.getElementById('mobile-menu-logo');
+      
+      if (headerLogo) headerLogo.src = fallbackUrl;
+      if (mobileMenuLogo) mobileMenuLogo.src = fallbackUrl;
+      
+      console.log('🔄 Usando logo local como fallback');
+  }
+}
+
+/**
+* Inicializa el menú hamburguesa móvil
+*/
+async function initMobileMenu() {
+  console.log('📱 Inicializando menú móvil...');
+  
+  // Cargar logo desde Firebase Storage
+  await loadHeaderLogo();
+  
+  const menuToggle = document.getElementById('mobile-menu-toggle');
+  const menuOverlay = document.getElementById('mobile-menu-overlay');
+  const menuPanel = document.getElementById('mobile-menu-panel');
+  const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+  
+  if (!menuToggle || !menuOverlay || !menuPanel) {
+      console.warn('⚠️ Elementos del menú móvil no encontrados');
+      return;
+  }
+  
+  // Event listeners
+  menuToggle.addEventListener('click', toggleMobileMenu);
+  menuOverlay.addEventListener('click', closeMobileMenu);
+  
+  // Cerrar menú al hacer clic en enlaces de navegación
+  mobileNavLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          const href = this.getAttribute('href');
+          
+          // Cerrar menú primero
+          closeMobileMenu();
+          
+          // Navegar después de un pequeño delay para que se vea la animación
+          setTimeout(() => {
+              navigateToSection(href);
+              updateActiveMobileLink(this);
+          }, 300);
+      });
+  });
+  
+  // Cerrar menú con tecla Escape
+  document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && isMobileMenuOpen()) {
+          closeMobileMenu();
+      }
+  });
+  
+  // Cerrar menú al cambiar orientación/resize
+  window.addEventListener('resize', function() {
+      if (window.innerWidth > 768 && isMobileMenuOpen()) {
+          closeMobileMenu();
+      }
+  });
+  
+  console.log('✅ Menú móvil inicializado correctamente');
+}
+
+/**
+* Alterna la visibilidad del menú móvil
+*/
+function toggleMobileMenu() {
+  if (isMobileMenuOpen()) {
+      closeMobileMenu();
+  } else {
+      openMobileMenu();
+  }
+}
+
+/**
+* Abre el menú móvil
+*/
+function openMobileMenu() {
+  const menuToggle = document.getElementById('mobile-menu-toggle');
+  const menuOverlay = document.getElementById('mobile-menu-overlay');
+  const menuPanel = document.getElementById('mobile-menu-panel');
+  
+  // Añadir clases activas
+  menuToggle.classList.add('active');
+  menuOverlay.classList.add('active');
+  menuPanel.classList.add('active');
+  
+  // Prevenir scroll del body
+  document.body.classList.add('menu-open');
+  
+  // Foco en el primer enlace del menú para accesibilidad
+  setTimeout(() => {
+      const firstLink = document.querySelector('.mobile-nav-link');
+      if (firstLink) firstLink.focus();
+  }, 100);
+  
+  console.log('📱 Menú móvil abierto');
+}
+
+/**
+* Cierra el menú móvil
+*/
+function closeMobileMenu() {
+  const menuToggle = document.getElementById('mobile-menu-toggle');
+  const menuOverlay = document.getElementById('mobile-menu-overlay');
+  const menuPanel = document.getElementById('mobile-menu-panel');
+  
+  // Remover clases activas
+  menuToggle.classList.remove('active');
+  menuOverlay.classList.remove('active');
+  menuPanel.classList.remove('active');
+  
+  // Restaurar scroll del body
+  document.body.classList.remove('menu-open');
+  
+  console.log('📱 Menú móvil cerrado');
+}
+
+/**
+* Verifica si el menú móvil está abierto
+*/
+function isMobileMenuOpen() {
+  const menuPanel = document.getElementById('mobile-menu-panel');
+  return menuPanel && menuPanel.classList.contains('active');
+}
+
+/**
+* Navega a una sección específica
+*/
+function navigateToSection(href) {
+  if (!href || !href.startsWith('#')) return;
+  
+  const targetId = href.substring(1);
+  
+  // Mapeo de IDs (igual que en tu código existente)
+  const sectionMapping = {
+      'home': 'inicio-placeholder',
+      'inicio': 'inicio-placeholder',
+      'about': 'about-placeholder', 
+      'properties': 'properties-placeholder',
+      'location': 'map-placeholder',
+      'map': 'map-placeholder',
+      'gallery': 'gallery-placeholder',
+      'documentation': 'documentation-placeholder',
+      'contact': 'contact-placeholder'
+  };
+  
+  // Buscar el elemento objetivo
+  let targetElement = document.getElementById(targetId);
+  
+  if (!targetElement && sectionMapping[targetId]) {
+      targetElement = document.getElementById(sectionMapping[targetId]);
+  }
+  
+  if (!targetElement) {
+      const placeholder = document.getElementById(targetId + '-placeholder');
+      if (placeholder) {
+          const section = placeholder.querySelector('section');
+          targetElement = section || placeholder;
+      }
+  }
+  
+  if (targetElement) {
+      // Scroll suave con offset para el header fijo
+      const headerHeight = document.querySelector('header').offsetHeight;
+      const targetPosition = targetElement.offsetTop - headerHeight;
+      
+      window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+      });
+      
+      console.log(`🎯 Navegando a: ${targetId}`);
+  } else {
+      console.warn(`❌ Sección con ID "${targetId}" no encontrada`);
+  }
+}
+
+/**
+* Actualiza el enlace activo en el menú móvil
+*/
+function updateActiveMobileLink(activeLink) {
+  // Remover clase active de todos los enlaces móviles
+  document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.classList.remove('active');
+  });
+  
+  // Añadir clase active al enlace clicado
+  if (activeLink) {
+      activeLink.classList.add('active');
+  }
+  
+  // Sincronizar con navegación desktop
+  const href = activeLink?.getAttribute('href');
+  if (href) {
+      document.querySelectorAll('nav ul li a').forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === href) {
+              link.classList.add('active');
+          }
+      });
+  }
+}
+
+/**
+* Sincroniza la navegación móvil con el scroll de la página
+*/
+function syncMobileNavWithScroll() {
+  const sections = document.querySelectorAll('section, [id*="placeholder"]');
+  let current = '';
+  
+  sections.forEach(section => {
+      const sectionTop = section.offsetTop;
+      const sectionHeight = section.clientHeight;
+      const headerHeight = document.querySelector('header').offsetHeight;
+      
+      if (pageYOffset >= (sectionTop - headerHeight - 100) && 
+          pageYOffset < (sectionTop + sectionHeight - headerHeight - 100)) {
+          let sectionId = section.getAttribute('id');
+          
+          if (sectionId) {
+              sectionId = sectionId.replace('-placeholder', '');
+              current = sectionId;
+          }
+      }
+  });
+  
+  if (current) {
+      // Actualizar enlaces móviles
+      document.querySelectorAll('.mobile-nav-link').forEach(link => {
+          link.classList.remove('active');
+          const linkHref = link.getAttribute('href');
+          
+          if (linkHref && linkHref.includes(current)) {
+              link.classList.add('active');
+          }
+      });
+  }
+}
+
+// ========================
+// INTEGRACIÓN CON CÓDIGO EXISTENTE
+// ========================
+
+/**
+* Actualizar la función setupNavigation existente
+*/
+function setupNavigationUpdated() {
+  console.log('🔧 Configurando navegación (con menú móvil)...');
+  
+  // Inicializar menú móvil
+  initMobileMenu();
+  
+  // Configuración existente para desktop...
+  setTimeout(() => {
+      const navLinks = document.querySelectorAll('nav ul li a');
+      console.log('📍 Enlaces de navegación encontrados:', navLinks.length);
+      
+      navLinks.forEach(link => {
+          link.addEventListener('click', function(e) {
+              e.preventDefault();
+              
+              const href = this.getAttribute('href');
+              if (!href || !href.startsWith('#')) return;
+              
+              navigateToSection(href);
+              
+              // Actualizar clase active
+              navLinks.forEach(l => l.classList.remove('active'));
+              this.classList.add('active');
+              
+              // Sincronizar con menú móvil
+              document.querySelectorAll('.mobile-nav-link').forEach(mobileLink => {
+                  mobileLink.classList.remove('active');
+                  if (mobileLink.getAttribute('href') === href) {
+                      mobileLink.classList.add('active');
+                  }
+              });
+          });
+      });
+      
+      // Detectar sección activa al hacer scroll (actualizada)
+      window.addEventListener('scroll', () => {
+          syncMobileNavWithScroll();
+          
+          // Código existente para desktop...
+          let current = '';
+          const sections = document.querySelectorAll('section, [id*="placeholder"]');
+          
+          sections.forEach(section => {
+              const sectionTop = section.offsetTop;
+              const sectionHeight = section.clientHeight;
+              const headerHeight = document.querySelector('header').offsetHeight;
+              
+              if (pageYOffset >= (sectionTop - headerHeight - 100) && 
+                  pageYOffset < (sectionTop + sectionHeight - headerHeight - 100)) {
+                  let sectionId = section.getAttribute('id');
+                  
+                  if (sectionId) {
+                      sectionId = sectionId.replace('-placeholder', '');
+                      current = sectionId;
+                  }
+              }
+          });
+
+          // Actualizar enlaces desktop
+          navLinks.forEach(link => {
+              link.classList.remove('active');
+              const linkHref = link.getAttribute('href');
+              
+              if (linkHref && linkHref.includes(current) && current !== '') {
+                  link.classList.add('active');
+              }
+          });
+      });
+      
+      console.log('✅ Navegación configurada correctamente (con menú móvil)');
+      
+  }, 1000);
 }
 
 // Exportar funciones para que Google Maps pueda acceder globalmente

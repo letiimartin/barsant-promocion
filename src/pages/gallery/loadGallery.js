@@ -435,24 +435,24 @@ function getNombreImagen(nombreArchivo, index) {
   
   const nameMap = {
       // Alzados y vistas exteriores
-      '01_ALZ_1_CULT_R': 'Alzado Principal',
-      '02_ALZ_2_CULT_R': 'Alzado Lateral', 
-      '03_ALZ_3_CULT_R': 'Alzado Posterior',
-      '04_ALZ_4_CULT_R': 'Alzado Lateral Sur',
-      '05_ALZ_5_CULT_R': 'Alzado Frontal',
-      '06_ALZ_COMPLETO_CULT_R': 'Vista Completa del Complejo',
-      '07_ALZ_COMPLETO_ESQUINA_CULT_R': 'Vista Esquina',
+      '01_ALZ_1_CULT_R': 'Imagen 1 Fachada',
+      '02_ALZ_2_CULT_R': 'Imagen 2 Fachada', 
+      '03_ALZ_3_CULT_R': 'Imagen 3 Fachada',
+      '04_ALZ_4_CULT_R': 'Imagen 4 Fachada',
+      '05_ALZ_5_CULT_R': 'Imagen 5 Fachada',
+      '06_ALZ_COMPLETO_CULT_R': 'Imagen Completa Fachada',
+      '07_ALZ_COMPLETO_ESQUINA_CULT_R': 'Imagen Completa Esquina',
       
       // Vistas aéreas
       '08_IMG_AEREA_1': 'Vista Aérea General',
       '09_IMG_AEREA_2': 'Vista Aérea Lateral',
       
       // Patios interiores
-      '10_IMG_PATIO_1': 'Patio Interior Central',
-      '11_IMG_PATIO_2': 'Zona Comunitaria',
-      '12_IMG_PATIO_3': 'Patio Trasero',
-      '13_IMG_PATIO_4': 'Área de Jardín',
-      '14_IMG_PATIO_5': 'Espacio Exterior',
+      '10_IMG_PATIO_1': 'Imagen 1 Patio',
+      '11_IMG_PATIO_2': 'Imagen 2 Patio',
+      '12_IMG_PATIO_3': 'Imagen 3 Patio',
+      '13_IMG_PATIO_4': 'Imagen 4 Patio',
+      '14_IMG_PATIO_5': 'Imagen 5 Patio',
       
       // Distribuciones de plantas
       '15_IMG_PLANTA_1': 'Primera Planta',

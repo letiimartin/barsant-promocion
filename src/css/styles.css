@@ -1667,7 +1667,7 @@ tr.vivienda-row:hover {
     to { opacity: 1; transform: translateX(0); }
 }
 
-/* Efectos adicionales para mejor experiencia */
+/* Efectos adicionales para mejor experiencia 
 .gallery-main-image::before {
     content: '';
     position: absolute;
@@ -1684,6 +1684,7 @@ tr.vivienda-row:hover {
 .gallery-main-image:hover::before {
     opacity: 1;
 }
+    */
 
 /* ================================
    RESPONSIVE DESIGN
@@ -1756,7 +1757,7 @@ tr.vivienda-row:hover {
         height: 300px;
     }
 
-    /* Galería responsive */
+    /* Galería responsive 
     .gallery-main-image {
         height: 350px;
     }
@@ -1849,6 +1850,7 @@ tr.vivienda-row:hover {
     .vivienda-content {
         padding: 30px 0;
     }
+        */
 }
 
 /* ================================

@@ -1,9 +1,76 @@
 <section class="gallery" id="gallery">
     <div class="container">
         <h2 class="section-title">Galería</h2>
-        <div class="gallery-grid">
-            <!-- Las imágenes se cargarán dinámicamente desde Firebase -->
+        
+        <!-- Imagen principal con navegación -->
+        <div class="gallery-main-container">
+            <div class="gallery-main-viewer">
+                <!-- Imagen principal -->
+                <div class="gallery-main-image">
+                    <img id="main-gallery-image" src="" alt="Imagen principal de la galería">
+                    
+                    <!-- Botones de navegación -->
+                    <button class="gallery-nav-btn gallery-prev" onclick="changeMainImage(-1)">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="gallery-nav-btn gallery-next" onclick="changeMainImage(1)">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    
+                    <!-- Botón fullscreen -->
+                    <button class="gallery-fullscreen-btn" onclick="openFullscreen()">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                    
+                    <!-- Título de la imagen -->
+                    <div class="gallery-image-title">
+                        <h4 id="main-image-title">Cargando imagen...</h4>
+                    </div>
+                </div>
+            </div>
             
+            <!-- Thumbnails horizontales -->
+            <div class="gallery-thumbnails-container">
+                <button class="thumbnail-nav thumbnail-nav-left" onclick="scrollThumbnails(-1)">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                
+                <div class="gallery-thumbnails" id="gallery-thumbnails">
+                    <!-- Los thumbnails se cargarán dinámicamente -->
+                </div>
+                
+                <button class="thumbnail-nav thumbnail-nav-right" onclick="scrollThumbnails(1)">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
         </div>
     </div>
 </section>
+
+<!-- Modal para vista fullscreen -->
+<div id="gallery-fullscreen-modal" class="gallery-fullscreen-modal">
+    <div class="fullscreen-backdrop" onclick="closeFullscreen()"></div>
+    <div class="fullscreen-content">
+        <button class="fullscreen-close" onclick="closeFullscreen()">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <div class="fullscreen-image-container">
+            <img id="fullscreen-image" src="" alt="Imagen en pantalla completa">
+            
+            <button class="fullscreen-nav fullscreen-prev" onclick="changeMainImage(-1)">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="fullscreen-nav fullscreen-next" onclick="changeMainImage(1)">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+        
+        <div class="fullscreen-info">
+            <h3 id="fullscreen-title">Título de la imagen</h3>
+            <div class="fullscreen-counter">
+                <span id="fullscreen-current">1</span> / <span id="fullscreen-total">1</span>
+            </div>
+        </div>
+    </div>
+</div>

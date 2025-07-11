@@ -1,558 +1,744 @@
-// ========================
-// GALERÍA TIPO SLIDER - ESTILO GRALUSA
+async function initOptimizedSliderGallery() {
+    console.log('🎨 Inicializando slider (modo compatibilidad - solo originales)...');
+    
+    // Mostrar estado de carga
+    showGalleryLoading();
+    
+    try {
+        // Cargar imágenes básicas desde Firebase
+        console.log('📥 Importando dataService...');
+        const dataService = await import('../../../dataService.js');
+        console.log('✅ DataService importado');
+        
+        // Usar la función básica (solo originales)
+        galleryImages = await dataService.cargarGaleriaFirebaseOptimizada();
+        
+        if (!galleryImages || galleryImages.length === 0) {
+            throw new Error('No se encontraron imágenes en Firebase Storage');
+        }
+        
+        console.log(`✅ ${galleryImages.length} imágenes cargadas (solo originales)`);
+        console.log('🔍 Primera imagen:', galleryImages[0]);
+        
+        // Guardar función para usar globalmente
+        window.getImagenOptimizada = dataService.getImagenOptimizada;
+        
+        // Recargar el HTML completo para asegurar que existe
+        await reloadGalleryHTML();
+        
+        // Configurar la galería con delay mayor para asegurar rendering
+        setTimeout(() => {
+            setupOptimizedSliderGallery();
+            setupGalleryEvents();
+            
+            console.log('🎯 Galería inicializada correctamente');
+        }, 500); // Aumentar delay
+        
+    } catch (error) {
+        console.error('❌ Error cargando galería:', error);
+        showGalleryError(error.message);
+    }
+}// ========================
+// GALERÍA TIPO SLIDER - OPTIMIZADA CON DATASERVICE
+// Usa las nuevas funciones optimizadas del dataService.js
 // ========================
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('🖼️ Inicializando galería tipo slider...');
-  loadGalleryHTML();
+    console.log('🖼️ Inicializando galería optimizada tipo slider...');
+    loadGalleryHTML();
 });
 
 // Variables globales
 let galleryImages = [];
 let currentImageIndex = 0;
 let thumbnailScrollPosition = 0;
+let imageCache = new Map();
 
 // ========================
 // CARGA INICIAL
 // ========================
 async function loadGalleryHTML() {
-  try {
-      const response = await fetch('src/pages/gallery/gallery.html');
-      if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
-      
-      const html = await response.text();
-      const placeholder = document.getElementById('gallery-placeholder');
-      
-      if (!placeholder) throw new Error('No existe #gallery-placeholder');
-      
-      placeholder.innerHTML = html;
-      console.log('✅ HTML de galería cargado');
-      
-      // Cargar CSS
-      loadGalleryCSS();
-      
-      // Inicializar galería
-      await initSliderGallery();
-      
-  } catch (error) {
-      console.error('Error al cargar gallery.html:', error);
-      showGalleryError(error.message);
-  }
+    try {
+        const response = await fetch('src/pages/gallery/gallery.html');
+        if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+        
+        const html = await response.text();
+        const placeholder = document.getElementById('gallery-placeholder');
+        
+        if (!placeholder) throw new Error('No existe #gallery-placeholder');
+        
+        placeholder.innerHTML = html;
+        console.log('✅ HTML de galería cargado');
+        
+        // Cargar CSS
+        loadGalleryCSS();
+        
+        // Inicializar galería optimizada
+        await initOptimizedSliderGallery();
+        
+    } catch (error) {
+        console.error('Error al cargar gallery.html:', error);
+        showGalleryError(error.message);
+    }
 }
 
 function loadGalleryCSS() {
-  if (document.querySelector('link[href*="gallery.css"]')) {
-      console.log('CSS de galería ya cargado');
-      return;
-  }
-  
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.href = 'src/css/pages/gallery.css';
-  link.onload = () => console.log('✅ CSS de galería cargado');
-  link.onerror = () => console.warn('⚠️ Error cargando CSS de galería');
-  
-  document.head.appendChild(link);
+    if (document.querySelector('link[href*="gallery.css"]')) {
+        console.log('CSS de galería ya cargado');
+        return;
+    }
+    
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'src/css/pages/gallery.css';
+    link.onload = () => console.log('✅ CSS de galería cargado');
+    link.onerror = () => console.warn('⚠️ Error cargando CSS de galería');
+    
+    document.head.appendChild(link);
 }
 
 // ========================
-// INICIALIZACIÓN PRINCIPAL
+// INICIALIZACIÓN OPTIMIZADA
 // ========================
-async function initSliderGallery() {
-  console.log('🎨 Inicializando slider de galería...');
-  
-  // Mostrar estado de carga
-  showGalleryLoading();
-  
-  try {
-      // Cargar imágenes desde Firebase
-      const { cargarGaleriaFirebaseOptimizada } = await import('../../../dataService.js');
-      galleryImages = await cargarGaleriaFirebaseOptimizada();
-      
-      if (!galleryImages || galleryImages.length === 0) {
-          throw new Error('No se encontraron imágenes en Firebase Storage');
-      }
-      
-      console.log(`✅ ${galleryImages.length} imágenes cargadas`);
-      
-      // Recargar el HTML completo para asegurar que existe
-      await reloadGalleryHTML();
-      
-      // Configurar la galería con un pequeño delay
-      setTimeout(() => {
-          setupSliderGallery();
-          setupGalleryEvents();
-      }, 200);
-      
-  } catch (error) {
-      console.error('❌ Error cargando galería:', error);
-      showGalleryError(error.message);
-  }
+async function initOptimizedSliderGallery() {
+    console.log('🎨 Inicializando slider optimizado...');
+    
+    // Mostrar estado de carga
+    showGalleryLoading();
+    
+    try {
+        // Cargar imágenes optimizadas desde Firebase
+        const { cargarGaleriaConLazyLoading, getImagenOptimizada } = await import('../../../dataService.js');
+        galleryImages = await cargarGaleriaConLazyLoading();
+        
+        if (!galleryImages || galleryImages.length === 0) {
+            throw new Error('No se encontraron imágenes en Firebase Storage');
+        }
+        
+        console.log(`✅ ${galleryImages.length} imágenes optimizadas cargadas`);
+        
+        // Guardar función para usar globalmente
+        window.getImagenOptimizada = getImagenOptimizada;
+        
+        // Recargar el HTML completo para asegurar que existe
+        await reloadGalleryHTML();
+        
+        // Configurar la galería optimizada con delay
+        setTimeout(() => {
+            setupOptimizedSliderGallery();
+            setupGalleryEvents();
+            
+            // Iniciar precarga inteligente después de configurar
+            setTimeout(startIntelligentPreloading, 300);
+        }, 200);
+        
+    } catch (error) {
+        console.error('❌ Error cargando galería optimizada:', error);
+        showGalleryError(error.message);
+    }
 }
 
 async function reloadGalleryHTML() {
-  try {
-      const response = await fetch('src/pages/gallery/gallery.html');
-      const html = await response.text();
-      const placeholder = document.getElementById('gallery-placeholder');
-      
-      if (placeholder) {
-          placeholder.innerHTML = html;
-          console.log('✅ HTML de galería recargado');
-      }
-  } catch (error) {
-      console.warn('⚠️ Error recargando HTML:', error);
-  }
+    try {
+        const response = await fetch('src/pages/gallery/gallery.html');
+        const html = await response.text();
+        const placeholder = document.getElementById('gallery-placeholder');
+        
+        if (placeholder) {
+            placeholder.innerHTML = html;
+            console.log('✅ HTML de galería recargado');
+        }
+    } catch (error) {
+        console.warn('⚠️ Error recargando HTML:', error);
+    }
 }
 
 // ========================
-// CONFIGURACIÓN DEL SLIDER
+// CONFIGURACIÓN OPTIMIZADA DEL SLIDER
 // ========================
-function setupSliderGallery() {
-  // Verificar que los elementos existen antes de continuar
-  const thumbnailsContainer = document.getElementById('gallery-thumbnails');
-  const mainImage = document.getElementById('main-gallery-image');
-  
-  if (!thumbnailsContainer || !mainImage) {
-      console.error('❌ Elementos de galería no encontrados');
-      setTimeout(() => setupSliderGallery(), 500); // Reintentar después de 500ms
-      return;
-  }
-  
-  // Crear thumbnails
-  createThumbnails();
-  
-  // Esperar un momento para que se renderice el DOM
-  setTimeout(() => {
-      // Mostrar primera imagen
-      showMainImage(0);
-      
-      // Configurar navegación con teclado
-      setupKeyboardNavigation();
-      
-      console.log('✅ Slider de galería configurado');
-  }, 100);
+function setupOptimizedSliderGallery() {
+    // Verificar que los elementos existen
+    const thumbnailsContainer = document.getElementById('gallery-thumbnails');
+    const mainImage = document.getElementById('main-gallery-image');
+    
+    if (!thumbnailsContainer || !mainImage) {
+        console.error('❌ Elementos de galería no encontrados');
+        setTimeout(() => setupOptimizedSliderGallery(), 500);
+        return;
+    }
+    
+    // Crear thumbnails optimizados
+    createOptimizedThumbnails();
+    
+    // Esperar renderizado del DOM
+    setTimeout(() => {
+        // Mostrar primera imagen optimizada
+        showOptimizedMainImage(0);
+        
+        // Configurar navegación
+        setupKeyboardNavigation();
+        
+        console.log('✅ Slider optimizado configurado');
+    }, 100);
 }
 
-function createThumbnails() {
-  const thumbnailsContainer = document.getElementById('gallery-thumbnails');
-  if (!thumbnailsContainer) {
-      console.error('❌ Contenedor de thumbnails no encontrado');
-      return;
-  }
-  
-  thumbnailsContainer.innerHTML = '';
-  
-  galleryImages.forEach((imagen, index) => {
-      const thumbnail = document.createElement('div');
-      thumbnail.className = 'gallery-thumbnail';
-      thumbnail.dataset.index = index;
-      
-      if (index === 0) {
-          thumbnail.classList.add('active');
-      }
-      
-      thumbnail.innerHTML = `
-          <img src="${imagen.url}" 
-               alt="${getNombreImagen(imagen.nombre, index)}"
-               loading="lazy"
-               onerror="handleImageError(this, ${index})">
-      `;
-      
-      // Evento click
-      thumbnail.addEventListener('click', () => {
-          showMainImage(index);
-      });
-      
-      thumbnailsContainer.appendChild(thumbnail);
-  });
-  
-  console.log(`✅ ${galleryImages.length} thumbnails creados`);
+function createOptimizedThumbnails() {
+    const thumbnailsContainer = document.getElementById('gallery-thumbnails');
+    if (!thumbnailsContainer) {
+        console.error('❌ Contenedor de thumbnails no encontrado');
+        return;
+    }
+    
+    thumbnailsContainer.innerHTML = '';
+    
+    console.log('🔍 Creando thumbnails para', galleryImages.length, 'imágenes (solo originales)');
+    
+    galleryImages.forEach((imagen, index) => {
+        const thumbnail = document.createElement('div');
+        thumbnail.className = 'gallery-thumbnail';
+        thumbnail.dataset.index = index;
+        thumbnail.dataset.categoria = imagen.categoria || 'general';
+        
+        if (index === 0) {
+            thumbnail.classList.add('active');
+        }
+        
+        // USAR SOLO URL ORIGINAL - no intentar optimizadas
+        const thumbnailUrl = imagen.url; // Siempre usar original
+        
+        console.log(`🖼️ Thumbnail ${index + 1}: ${imagen.nombreDisplay} -> ${thumbnailUrl}`);
+        
+        // Cargar inmediatamente las primeras 8 imágenes
+        const shouldLoadImmediately = index < 8; // Aumentar para evitar lazy loading por ahora
+        
+        thumbnail.innerHTML = `
+            <img src="${shouldLoadImmediately ? thumbnailUrl : ''}" 
+                 ${!shouldLoadImmediately ? `data-src="${thumbnailUrl}"` : ''}
+                 alt="${imagen.nombreDisplay || imagen.nombre}"
+                 class="${shouldLoadImmediately ? 'loaded' : 'lazy-load'}"
+                 loading="lazy"
+                 onerror="handleImageError(this, ${index})"
+                 onload="console.log('✅ Thumbnail ${index + 1} cargado correctamente')">
+            <div class="thumbnail-overlay">
+                <span class="thumbnail-title">${imagen.nombreDisplay || `Imagen ${index + 1}`}</span>
+                <span class="thumbnail-category">${imagen.categoria || ''}</span>
+            </div>
+        `;
+        
+        // Evento click simplificado
+        thumbnail.addEventListener('click', () => {
+            console.log('🔘 Click en thumbnail', index, imagen.nombreDisplay);
+            showOptimizedMainImage(index);
+        });
+        
+        thumbnailsContainer.appendChild(thumbnail);
+    });
+    
+    // Configurar lazy loading solo para imágenes que no se cargaron inmediatamente
+    if (galleryImages.length > 8) {
+        setupThumbnailLazyLoading();
+    }
+    
+    console.log(`✅ ${galleryImages.length} thumbnails creados (primeros 8 cargados inmediatamente)`);
 }
 
-function showMainImage(index) {
-  if (!galleryImages[index]) {
-      console.warn(`⚠️ Imagen ${index} no encontrada`);
-      return;
-  }
-  
-  currentImageIndex = index;
-  const imagen = galleryImages[index];
-  const mainImage = document.getElementById('main-gallery-image');
-  const mainTitle = document.getElementById('main-image-title');
-  
-  if (mainImage) {
-      mainImage.src = imagen.url;
-      mainImage.alt = getNombreImagen(imagen.nombre, index);
-      mainImage.classList.add('fade-in');
-  }
-  
-  if (mainTitle) {
-      mainTitle.textContent = getNombreImagen(imagen.nombre, index);
-  }
-  
-  // Actualizar botones de navegación
-  updateNavigationButtons();
-  
-  // Actualizar thumbnail activo
-  setActiveThumbnail(index);
-  
-  // Scroll automático de thumbnails si es necesario (con delay para asegurar render)
-  setTimeout(() => {
-      scrollToActiveThumbnail(index);
-  }, 50);
+// ========================
+// LAZY LOADING DE THUMBNAILS
+// ========================
+function setupThumbnailLazyLoading() {
+    if (!('IntersectionObserver' in window)) {
+        // Fallback: cargar todas las imágenes lazy
+        document.querySelectorAll('.lazy-load').forEach(loadLazyThumbnail);
+        return;
+    }
+    
+    const thumbnailObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                loadLazyThumbnail(img);
+                thumbnailObserver.unobserve(img);
+            }
+        });
+    }, {
+        rootMargin: '100px' // Cargar 100px antes de que sea visible
+    });
+    
+    document.querySelectorAll('.lazy-load').forEach(img => {
+        thumbnailObserver.observe(img);
+    });
+}
+
+function loadLazyThumbnail(img) {
+    const src = img.dataset.src;
+    if (src && !img.src) {
+        img.src = src;
+        img.classList.remove('lazy-load');
+        img.classList.add('loaded');
+        img.removeAttribute('data-src');
+        
+        // Añadir efecto de fade-in
+        img.style.opacity = '0';
+        img.onload = () => {
+            img.style.transition = 'opacity 0.3s ease';
+            img.style.opacity = '1';
+        };
+    }
+}
+
+// ========================
+// IMAGEN PRINCIPAL OPTIMIZADA
+// ========================
+function showOptimizedMainImage(index) {
+    if (!galleryImages[index]) {
+        console.warn(`⚠️ Imagen ${index} no encontrada`);
+        return;
+    }
+    
+    currentImageIndex = index;
+    const imagen = galleryImages[index];
+    const mainImage = document.getElementById('main-gallery-image');
+    const mainTitle = document.getElementById('main-image-title');
+    
+    if (mainImage) {
+        // Usar siempre la URL original por ahora
+        const imageUrl = imagen.url;
+        
+        console.log(`🖼️ Cargando imagen principal ${index + 1}: ${imagen.nombreDisplay}`);
+        console.log(`🔗 URL: ${imageUrl}`);
+        
+        // Mostrar loading state
+        mainImage.style.opacity = '0.7';
+        if (mainImage.parentElement) {
+            mainImage.parentElement.classList.add('loading');
+        }
+        
+        // Verificar cache primero
+        if (imageCache.has(imageUrl)) {
+            console.log(`📦 Imagen ${index + 1} desde cache`);
+            const cachedImg = imageCache.get(imageUrl);
+            mainImage.src = cachedImg.src;
+            mainImage.alt = imagen.nombreDisplay || imagen.nombre;
+            mainImage.style.opacity = '1';
+            if (mainImage.parentElement) {
+                mainImage.parentElement.classList.remove('loading');
+            }
+            mainImage.classList.add('fade-in');
+        } else {
+            // Cargar nueva imagen
+            const newImg = new Image();
+            newImg.onload = () => {
+                // Guardar en cache
+                imageCache.set(imageUrl, newImg);
+                
+                mainImage.src = newImg.src;
+                mainImage.alt = imagen.nombreDisplay || imagen.nombre;
+                mainImage.style.opacity = '1';
+                if (mainImage.parentElement) {
+                    mainImage.parentElement.classList.remove('loading');
+                }
+                mainImage.classList.add('fade-in');
+                
+                console.log(`✅ Imagen principal ${index + 1} cargada y cacheada`);
+            };
+            newImg.onerror = () => {
+                console.error(`❌ Error cargando imagen principal ${index + 1}:`, imageUrl);
+                mainImage.style.opacity = '1';
+                if (mainImage.parentElement) {
+                    mainImage.parentElement.classList.remove('loading');
+                }
+                handleImageError(mainImage, index);
+            };
+            newImg.src = imageUrl;
+        }
+    }
+    
+    if (mainTitle) {
+        mainTitle.textContent = imagen.nombreDisplay || imagen.nombre;
+    }
+    
+    // Actualizar interfaz
+    updateNavigationButtons();
+    setActiveThumbnail(index);
+    
+    setTimeout(() => {
+        scrollToActiveThumbnail(index);
+    }, 50);
+}
+
+// ========================
+// PRECARGA INTELIGENTE
+// ========================
+function startIntelligentPreloading() {
+    console.log('🚀 Iniciando precarga inteligente...');
+    
+    // Separar imágenes por prioridad
+    const prioridad1 = galleryImages.filter(img => img.prioridad === 1);
+    const prioridad2 = galleryImages.filter(img => img.prioridad === 2);
+    
+    // Precargar prioridad 1 inmediatamente (ya están cargadas en thumbnails)
+    console.log(`📦 Prioridad 1: ${prioridad1.length} imágenes (ya cargadas)`);
+    
+    // Precargar prioridad 2 con delay
+    setTimeout(() => {
+        prioridad2.forEach((imagen, index) => {
+            setTimeout(() => {
+                preloadOptimizedImage(imagen, 'medium');
+            }, index * 200);
+        });
+    }, 1000);
+    
+    console.log(`⏳ Precargando prioridad 2: ${prioridad2.length} imágenes`);
+}
+
+function preloadNearbyImages() {
+    const preloadQueue = [];
+    
+    // Imagen anterior
+    if (currentImageIndex > 0) {
+        preloadQueue.push({ index: currentImageIndex - 1, priority: 1 });
+    }
+    
+    // Siguientes 2 imágenes
+    for (let i = 1; i <= 2; i++) {
+        const nextIndex = currentImageIndex + i;
+        if (nextIndex < galleryImages.length) {
+            preloadQueue.push({ index: nextIndex, priority: i });
+        }
+    }
+    
+    // Precargar con delays escalonados
+    preloadQueue.forEach((item, delay) => {
+        setTimeout(() => {
+            const imagen = galleryImages[item.index];
+            if (imagen) {
+                preloadOptimizedImage(imagen, 'medium');
+            }
+        }, delay * 150);
+    });
+}
+
+function preloadOptimizedImage(imagen, size = 'medium') {
+    const url = window.getImagenOptimizada 
+        ? window.getImagenOptimizada(imagen, size)
+        : imagen.url;
+    
+    // Verificar cache
+    if (imageCache.has(url)) {
+        return Promise.resolve();
+    }
+    
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+            imageCache.set(url, img);
+            console.log(`✅ Precargada: ${imagen.nombreDisplay} (${size})`);
+            resolve(img);
+        };
+        img.onerror = () => {
+            console.warn(`⚠️ Error precargando: ${imagen.nombreDisplay}`);
+            reject();
+        };
+        img.src = url;
+    });
+}
+
+// ========================
+// NAVEGACIÓN OPTIMIZADA
+// ========================
+function changeMainImage(direction) {
+    let newIndex = currentImageIndex + direction;
+    
+    // Navegación circular
+    if (newIndex >= galleryImages.length) {
+        newIndex = 0;
+    } else if (newIndex < 0) {
+        newIndex = galleryImages.length - 1;
+    }
+    
+    showOptimizedMainImage(newIndex);
 }
 
 function setActiveThumbnail(index) {
-  const thumbnails = document.querySelectorAll('.gallery-thumbnail');
-  
-  thumbnails.forEach((thumb, i) => {
-      if (i === index) {
-          thumb.classList.add('active');
-      } else {
-          thumb.classList.remove('active');
-      }
-  });
-}
-
-// ========================
-// NAVEGACIÓN
-// ========================
-function changeMainImage(direction) {
-  let newIndex = currentImageIndex + direction;
-  
-  // Navegación circular
-  if (newIndex >= galleryImages.length) {
-      newIndex = 0;
-  } else if (newIndex < 0) {
-      newIndex = galleryImages.length - 1;
-  }
-  
-  showMainImage(newIndex);
-  setActiveThumbnail(newIndex);
-}
-
-function updateNavigationButtons() {
-  const prevBtn = document.querySelector('.gallery-prev');
-  const nextBtn = document.querySelector('.gallery-next');
-  
-  // En navegación circular, los botones siempre están activos
-  // Si quieres desactivarlos en los extremos, usa esto:
-  /*
-  if (prevBtn) {
-      prevBtn.disabled = currentImageIndex === 0;
-  }
-  if (nextBtn) {
-      nextBtn.disabled = currentImageIndex === galleryImages.length - 1;
-  }
-  */
-}
-
-function scrollThumbnails(direction) {
-  const container = document.getElementById('gallery-thumbnails');
-  if (!container) return;
-  
-  const scrollAmount = 130; // Ancho del thumbnail + gap
-  const newPosition = container.scrollLeft + (direction * scrollAmount);
-  
-  container.scrollTo({
-      left: newPosition,
-      behavior: 'smooth'
-  });
-  
-  // Actualizar estado de botones de scroll
-  updateThumbnailNavButtons();
+    const thumbnails = document.querySelectorAll('.gallery-thumbnail');
+    
+    thumbnails.forEach((thumb, i) => {
+        if (i === index) {
+            thumb.classList.add('active');
+            
+            // Cargar thumbnail si no está cargado
+            const img = thumb.querySelector('img');
+            if (img && img.classList.contains('lazy-load')) {
+                loadLazyThumbnail(img);
+            }
+        } else {
+            thumb.classList.remove('active');
+        }
+    });
 }
 
 function scrollToActiveThumbnail(index) {
-  const container = document.getElementById('gallery-thumbnails');
-  
-  if (!container) {
-      console.warn('⚠️ Contenedor de thumbnails no encontrado');
-      return;
-  }
-  
-  // Verificar que el container tiene children
-  if (!container.children || container.children.length === 0) {
-      console.warn('⚠️ No hay thumbnails en el contenedor');
-      return;
-  }
-  
-  const thumbnail = container.children[index];
-  
-  if (!thumbnail) {
-      console.warn(`⚠️ Thumbnail ${index} no encontrado`);
-      return;
-  }
-  
-  const containerWidth = container.clientWidth;
-  const thumbnailLeft = thumbnail.offsetLeft;
-  const thumbnailWidth = thumbnail.offsetWidth;
-  
-  // Calcular posición de scroll para centrar el thumbnail
-  const scrollPosition = thumbnailLeft - (containerWidth / 2) + (thumbnailWidth / 2);
-  
-  container.scrollTo({
-      left: scrollPosition,
-      behavior: 'smooth'
-  });
-  
-  setTimeout(updateThumbnailNavButtons, 300);
+    const container = document.getElementById('gallery-thumbnails');
+    
+    if (!container || !container.children || container.children.length === 0) {
+        console.warn('⚠️ No hay thumbnails para hacer scroll');
+        return;
+    }
+    
+    const thumbnail = container.children[index];
+    if (!thumbnail) return;
+    
+    const containerWidth = container.clientWidth;
+    const thumbnailLeft = thumbnail.offsetLeft;
+    const thumbnailWidth = thumbnail.offsetWidth;
+    
+    const scrollPosition = thumbnailLeft - (containerWidth / 2) + (thumbnailWidth / 2);
+    
+    container.scrollTo({
+        left: scrollPosition,
+        behavior: 'smooth'
+    });
+    
+    setTimeout(updateThumbnailNavButtons, 300);
+}
+
+function updateNavigationButtons() {
+    // En navegación circular, botones siempre activos
+    const prevBtn = document.querySelector('.gallery-prev');
+    const nextBtn = document.querySelector('.gallery-next');
+    
+    if (prevBtn) prevBtn.disabled = false;
+    if (nextBtn) nextBtn.disabled = false;
+}
+
+function scrollThumbnails(direction) {
+    const container = document.getElementById('gallery-thumbnails');
+    if (!container) return;
+    
+    const scrollAmount = 130;
+    const newPosition = container.scrollLeft + (direction * scrollAmount);
+    
+    container.scrollTo({
+        left: newPosition,
+        behavior: 'smooth'
+    });
+    
+    updateThumbnailNavButtons();
 }
 
 function updateThumbnailNavButtons() {
-  const container = document.getElementById('gallery-thumbnails');
-  const leftBtn = document.querySelector('.thumbnail-nav-left');
-  const rightBtn = document.querySelector('.thumbnail-nav-right');
-  
-  if (!container || !leftBtn || !rightBtn) return;
-  
-  const isAtStart = container.scrollLeft <= 0;
-  const isAtEnd = container.scrollLeft >= container.scrollWidth - container.clientWidth;
-  
-  leftBtn.disabled = isAtStart;
-  rightBtn.disabled = isAtEnd;
+    const container = document.getElementById('gallery-thumbnails');
+    const leftBtn = document.querySelector('.thumbnail-nav-left');
+    const rightBtn = document.querySelector('.thumbnail-nav-right');
+    
+    if (!container || !leftBtn || !rightBtn) return;
+    
+    const isAtStart = container.scrollLeft <= 0;
+    const isAtEnd = container.scrollLeft >= container.scrollWidth - container.clientWidth;
+    
+    leftBtn.disabled = isAtStart;
+    rightBtn.disabled = isAtEnd;
 }
 
 // ========================
-// FULLSCREEN
+// FULLSCREEN OPTIMIZADO
 // ========================
 function openFullscreen() {
-  const modal = document.getElementById('gallery-fullscreen-modal');
-  const fullscreenImage = document.getElementById('fullscreen-image');
-  const fullscreenTitle = document.getElementById('fullscreen-title');
-  const currentCounter = document.getElementById('fullscreen-current');
-  const totalCounter = document.getElementById('fullscreen-total');
-  
-  if (!modal) return;
-  
-  const currentImage = galleryImages[currentImageIndex];
-  
-  if (fullscreenImage) {
-      fullscreenImage.src = currentImage.url;
-      fullscreenImage.alt = getNombreImagen(currentImage.nombre, currentImageIndex);
-  }
-  
-  if (fullscreenTitle) {
-      fullscreenTitle.textContent = getNombreImagen(currentImage.nombre, currentImageIndex);
-  }
-  
-  if (currentCounter) {
-      currentCounter.textContent = currentImageIndex + 1;
-  }
-  
-  if (totalCounter) {
-      totalCounter.textContent = galleryImages.length;
-  }
-  
-  modal.classList.add('active');
-  document.body.classList.add('fullscreen-open');
+    const modal = document.getElementById('gallery-fullscreen-modal');
+    const fullscreenImage = document.getElementById('fullscreen-image');
+    const fullscreenTitle = document.getElementById('fullscreen-title');
+    const currentCounter = document.getElementById('fullscreen-current');
+    const totalCounter = document.getElementById('fullscreen-total');
+    
+    if (!modal) return;
+    
+    const currentImage = galleryImages[currentImageIndex];
+    
+    if (fullscreenImage) {
+        // Usar imagen de alta calidad para fullscreen
+        const largeUrl = window.getImagenOptimizada 
+            ? window.getImagenOptimizada(currentImage, 'large')
+            : currentImage.urlLarge || currentImage.url;
+        
+        fullscreenImage.src = largeUrl;
+        fullscreenImage.alt = currentImage.nombreDisplay || currentImage.nombre;
+    }
+    
+    if (fullscreenTitle) {
+        fullscreenTitle.textContent = currentImage.nombreDisplay || currentImage.nombre;
+    }
+    
+    if (currentCounter) {
+        currentCounter.textContent = currentImageIndex + 1;
+    }
+    
+    if (totalCounter) {
+        totalCounter.textContent = galleryImages.length;
+    }
+    
+    modal.classList.add('active');
+    document.body.classList.add('fullscreen-open');
 }
 
 function closeFullscreen() {
-  const modal = document.getElementById('gallery-fullscreen-modal');
-  
-  if (modal) {
-      modal.classList.remove('active');
-      document.body.classList.remove('fullscreen-open');
-  }
+    const modal = document.getElementById('gallery-fullscreen-modal');
+    
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.classList.remove('fullscreen-open');
+    }
 }
 
 function updateFullscreenContent() {
-  const fullscreenImage = document.getElementById('fullscreen-image');
-  const fullscreenTitle = document.getElementById('fullscreen-title');
-  const currentCounter = document.getElementById('fullscreen-current');
-  
-  if (!fullscreenImage) return;
-  
-  const currentImage = galleryImages[currentImageIndex];
-  
-  fullscreenImage.src = currentImage.url;
-  fullscreenImage.alt = getNombreImagen(currentImage.nombre, currentImageIndex);
-  
-  if (fullscreenTitle) {
-      fullscreenTitle.textContent = getNombreImagen(currentImage.nombre, currentImageIndex);
-  }
-  
-  if (currentCounter) {
-      currentCounter.textContent = currentImageIndex + 1;
-  }
+    const fullscreenImage = document.getElementById('fullscreen-image');
+    const fullscreenTitle = document.getElementById('fullscreen-title');
+    const currentCounter = document.getElementById('fullscreen-current');
+    
+    if (!fullscreenImage) return;
+    
+    const currentImage = galleryImages[currentImageIndex];
+    const largeUrl = window.getImagenOptimizada 
+        ? window.getImagenOptimizada(currentImage, 'large')
+        : currentImage.urlLarge || currentImage.url;
+    
+    fullscreenImage.src = largeUrl;
+    fullscreenImage.alt = currentImage.nombreDisplay || currentImage.nombre;
+    
+    if (fullscreenTitle) {
+        fullscreenTitle.textContent = currentImage.nombreDisplay || currentImage.nombre;
+    }
+    
+    if (currentCounter) {
+        currentCounter.textContent = currentImageIndex + 1;
+    }
 }
 
 // ========================
-// EVENTOS
+// EVENTOS Y CONFIGURACIÓN
 // ========================
 function setupGalleryEvents() {
-  // Scroll de thumbnails
-  const thumbnailsContainer = document.getElementById('gallery-thumbnails');
-  if (thumbnailsContainer) {
-      thumbnailsContainer.addEventListener('scroll', updateThumbnailNavButtons);
-  }
-  
-  // Resize window
-  window.addEventListener('resize', handleWindowResize);
-  
-  // Actualizar botones iniciales
-  setTimeout(updateThumbnailNavButtons, 500);
+    const thumbnailsContainer = document.getElementById('gallery-thumbnails');
+    if (thumbnailsContainer) {
+        thumbnailsContainer.addEventListener('scroll', updateThumbnailNavButtons);
+    }
+    
+    window.addEventListener('resize', handleWindowResize);
+    setTimeout(updateThumbnailNavButtons, 500);
 }
 
 function setupKeyboardNavigation() {
-  document.addEventListener('keydown', (event) => {
-      const modal = document.getElementById('gallery-fullscreen-modal');
-      const isFullscreenOpen = modal && modal.classList.contains('active');
-      
-      switch(event.key) {
-          case 'ArrowLeft':
-              event.preventDefault();
-              changeMainImage(-1);
-              if (isFullscreenOpen) {
-                  updateFullscreenContent();
-              }
-              break;
-          case 'Escape':
-              if (isFullscreenOpen) {
-                  event.preventDefault();
-                  closeFullscreen();
-              }
-              break;
-      }
-  });
+    document.addEventListener('keydown', (event) => {
+        const modal = document.getElementById('gallery-fullscreen-modal');
+        const isFullscreenOpen = modal && modal.classList.contains('active');
+        
+        switch(event.key) {
+            case 'ArrowLeft':
+                event.preventDefault();
+                changeMainImage(-1);
+                if (isFullscreenOpen) {
+                    updateFullscreenContent();
+                }
+                break;
+            case 'ArrowRight':
+                event.preventDefault();
+                changeMainImage(1);
+                if (isFullscreenOpen) {
+                    updateFullscreenContent();
+                }
+                break;
+            case 'Escape':
+                if (isFullscreenOpen) {
+                    event.preventDefault();
+                    closeFullscreen();
+                }
+                break;
+        }
+    });
 }
 
 function handleWindowResize() {
-  // Recalcular posición de thumbnails
-  updateThumbnailNavButtons();
-  
-  // Reajustar scroll si es necesario
-  scrollToActiveThumbnail(currentImageIndex);
+    updateThumbnailNavButtons();
+    scrollToActiveThumbnail(currentImageIndex);
 }
 
 // ========================
 // UTILIDADES
 // ========================
-function getNombreImagen(nombreArchivo, index) {
-  const fileName = nombreArchivo.split('.')[0];
-  
-  const nameMap = {
-      // Alzados y vistas exteriores
-      '01_ALZ_1_CULT_R': 'Imagen 1 Fachada',
-      '02_ALZ_2_CULT_R': 'Imagen 2 Fachada', 
-      '03_ALZ_3_CULT_R': 'Imagen 3 Fachada',
-      '04_ALZ_4_CULT_R': 'Imagen 4 Fachada',
-      '05_ALZ_5_CULT_R': 'Imagen 5 Fachada',
-      '06_ALZ_COMPLETO_CULT_R': 'Imagen Completa Fachada',
-      '07_ALZ_COMPLETO_ESQUINA_CULT_R': 'Imagen Completa Esquina',
-      
-      // Vistas aéreas
-      '08_IMG_AEREA_1': 'Vista Aérea General',
-      '09_IMG_AEREA_2': 'Vista Aérea Lateral',
-      
-      // Patios interiores
-      '10_IMG_PATIO_1': 'Imagen 1 Patio',
-      '11_IMG_PATIO_2': 'Imagen 2 Patio',
-      '12_IMG_PATIO_3': 'Imagen 3 Patio',
-      '13_IMG_PATIO_4': 'Imagen 4 Patio',
-      '14_IMG_PATIO_5': 'Imagen 5 Patio',
-      
-      // Distribuciones de plantas
-      '15_IMG_PLANTA_1': 'Primera Planta',
-      '16_IMG_PLANTA_2': 'Segunda Planta',
-      '17_IMG_PLANTA_3': 'Tercera Planta',
-      
-      // Interiores actualizados (desde la 18)
-      '18_IMG_BAÑO_P1': 'Imagen 1 Baño',
-      '19_IMG_BAÑO_P2': 'Imagen 2 Baño',
-      '20_IMG_BAÑO_P3': 'Imagen 3 Baño',
-      '21_IMG_BAÑO_P4': 'Imagen 4 Baño',
-      '22_IMG_BAÑO_P5': 'Imagen 5 Baño',
-      '23_IMG_DORM_P1': 'Imagen 1 Dormitorio',
-      '24_IMG_DORM_P2': 'Imagen 2 Dormitorio',
-      '25_IMG_DORM_P3': 'Imagen 3 Dormitorio',
-      '26_IMG_DORM_P4': 'Imagen 4 Dormitorio'
-  };
-  
-  return nameMap[fileName] || `Imagen ${index + 1}`;
-}
-
 function handleImageError(img, index) {
-  console.error('Error cargando imagen:', img.src);
-  
-  // Ocultar thumbnail problemático
-  const thumbnail = img.closest('.gallery-thumbnail');
-  if (thumbnail) {
-      thumbnail.style.opacity = '0.5';
-      thumbnail.style.pointerEvents = 'none';
-  }
-  
-  // Si es la imagen principal, mostrar placeholder
-  if (img.id === 'main-gallery-image') {
-      img.alt = 'Error cargando imagen';
-      img.style.background = '#f0f0f0';
-  }
+    console.error(`❌ Error cargando thumbnail ${index + 1}:`, {
+        src: img.src,
+        alt: img.alt,
+        naturalWidth: img.naturalWidth,
+        naturalHeight: img.naturalHeight
+    });
+    
+    // Intentar con URL original si existe
+    const imagen = galleryImages[index];
+    if (imagen && imagen.url && img.src !== imagen.url) {
+        console.log(`🔄 Intentando URL original para imagen ${index + 1}:`, imagen.url);
+        img.src = imagen.url;
+        return;
+    }
+    
+    // Si aún falla, mostrar placeholder
+    const thumbnail = img.closest('.gallery-thumbnail');
+    if (thumbnail) {
+        thumbnail.style.opacity = '0.5';
+        thumbnail.classList.add('error');
+        
+        // Crear placeholder visual
+        img.style.display = 'none';
+        if (!thumbnail.querySelector('.error-placeholder')) {
+            const placeholder = document.createElement('div');
+            placeholder.className = 'error-placeholder';
+            placeholder.innerHTML = `
+                <i class="fas fa-image"></i>
+                <span>Error</span>
+            `;
+            thumbnail.querySelector('.thumbnail-overlay').before(placeholder);
+        }
+    }
 }
 
 // ========================
 // ESTADOS DE CARGA Y ERROR
 // ========================
 function showGalleryLoading() {
-  const container = document.querySelector('.gallery-main-container');
-  if (!container) return;
-  
-  container.innerHTML = `
-      <div class="gallery-loading">
-          <div class="spinner"></div>
-          <h3>Cargando galería...</h3>
-          <p>Obteniendo imágenes desde Firebase Storage...</p>
-      </div>
-  `;
+    const container = document.querySelector('.gallery-main-container');
+    if (!container) return;
+    
+    container.innerHTML = `
+        <div class="gallery-loading">
+            <div class="spinner"></div>
+            <h3>Cargando galería optimizada...</h3>
+            <p>Preparando imágenes con múltiples tamaños...</p>
+            <div class="loading-stats">
+                <small>Sistema de precarga inteligente activado</small>
+            </div>
+        </div>
+    `;
 }
 
 function showGalleryError(message) {
-  const container = document.querySelector('.gallery-main-container');
-  if (!container) return;
-  
-  container.innerHTML = `
-      <div class="gallery-error">
-          <div class="error-icon">
-              <i class="fas fa-exclamation-triangle"></i>
-          </div>
-          <h3>Error cargando galería</h3>
-          <p>${message}</p>
-          <button class="retry-btn" onclick="initSliderGallery()">
-              <i class="fas fa-redo"></i>
-              Reintentar
-          </button>
-      </div>
-  `;
-}
-
-// ========================
-// OPTIMIZACIONES
-// ========================
-function preloadNextImages() {
-  // Precargar las siguientes 2-3 imágenes para mejorar la experiencia
-  const startIndex = Math.max(0, currentImageIndex - 1);
-  const endIndex = Math.min(galleryImages.length, currentImageIndex + 3);
-  
-  for (let i = startIndex; i < endIndex; i++) {
-      if (i !== currentImageIndex && galleryImages[i]) {
-          const img = new Image();
-          img.src = galleryImages[i].url;
-      }
-  }
-}
-
-function optimizeForDevice() {
-  const isMobile = window.innerWidth <= 768;
-  const isTouch = 'ontouchstart' in window;
-  
-  if (isMobile || isTouch) {
-      // Mostrar controles permanentemente en dispositivos táctiles
-      const mainImage = document.querySelector('.gallery-main-image');
-      if (mainImage) {
-          mainImage.classList.add('touch-device');
-      }
-  }
+    const container = document.querySelector('.gallery-main-container');
+    if (!container) return;
+    
+    container.innerHTML = `
+        <div class="gallery-error">
+            <div class="error-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3>Error cargando galería optimizada</h3>
+            <p>${message}</p>
+            <div class="error-details">
+                <small>Verifique la conexión a Firebase Storage</small>
+            </div>
+            <button class="retry-btn" onclick="initOptimizedSliderGallery()">
+                <i class="fas fa-redo"></i>
+                Reintentar
+            </button>
+        </div>
+    `;
 }
 
 // ========================
@@ -562,36 +748,20 @@ window.changeMainImage = changeMainImage;
 window.scrollThumbnails = scrollThumbnails;
 window.openFullscreen = openFullscreen;
 window.closeFullscreen = closeFullscreen;
-window.initSliderGallery = initSliderGallery;
+window.initOptimizedSliderGallery = initOptimizedSliderGallery;
 window.handleImageError = handleImageError;
 
 // ========================
 // INICIALIZACIÓN FINAL
 // ========================
 document.addEventListener('DOMContentLoaded', () => {
-  // Optimizar para el dispositivo actual
-  optimizeForDevice();
-  
-  // Configurar eventos de resize con debounce
-  let resizeTimeout;
-  window.addEventListener('resize', () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(() => {
-          handleWindowResize();
-          optimizeForDevice();
-      }, 250);
-  });
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            handleWindowResize();
+        }, 250);
+    });
 });
 
-// Inicializar cuando se carga una imagen principal
-document.addEventListener('DOMContentLoaded', () => {
-  const mainImage = document.getElementById('main-gallery-image');
-  if (mainImage) {
-      mainImage.addEventListener('load', () => {
-          // Precargar imágenes cercanas después de cargar la principal
-          setTimeout(preloadNextImages, 500);
-      });
-  }
-});
-
-console.log('🎨 Galería tipo slider inicializada - Estilo Gralusa');FullscreenContent();
+console.log('🎨 Galería optimizada con dataService cargada - Múltiples tamaños y precarga inteligente');

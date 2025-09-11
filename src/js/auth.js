@@ -67,8 +67,8 @@ function showUserInfo() {
     const userInfo = getUserInfo();
     if (!userInfo) return;
 
-    // Agregar badge con el nombre de la empresa/usuario
-    addUserBadge(userInfo.name, userInfo.type);
+    // COMENTADO: No mostrar badge de usuario
+    // addUserBadge(userInfo.name, userInfo.type);
     
     // Si es admin, agregar botón de logout
     if (isAdmin()) {
@@ -77,9 +77,13 @@ function showUserInfo() {
 }
 
 /**
- * Agrega un badge de usuario en el header
+ * Agrega un badge de usuario en el header (FUNCIÓN DESHABILITADA)
  */
 function addUserBadge(text, type) {
+    // Función deshabilitada - no mostrar badge
+    return;
+    
+    /* CÓDIGO ORIGINAL COMENTADO:
     const header = document.querySelector('header .header-content');
     if (!header) return;
 
@@ -105,6 +109,7 @@ function addUserBadge(text, type) {
     `;
     
     header.appendChild(badge);
+    */
 }
 
 /**
@@ -139,6 +144,14 @@ function addLogoutButton() {
 }
 
 /**
+ * Elimina cualquier badge existente (función de limpieza)
+ */
+function removeExistingBadges() {
+    const existingBadges = document.querySelectorAll('.user-badge');
+    existingBadges.forEach(badge => badge.remove());
+}
+
+/**
  * Inicialización del sistema de autenticación
  */
 function initAuth() {
@@ -149,7 +162,10 @@ function initAuth() {
         return; // Se redirigió al login
     }
 
-    // Mostrar información del usuario
+    // Limpiar cualquier badge existente
+    removeExistingBadges();
+
+    // Mostrar información del usuario (sin badge)
     showUserInfo();
     
     // Agregar event listeners para logout si existen botones
@@ -170,6 +186,11 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(initAuth, 200);
 });
 
+// Limpiar badges al cargar la página
+window.addEventListener('load', function() {
+    removeExistingBadges();
+});
+
 // Exportar funciones para uso en otros archivos
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
@@ -188,5 +209,6 @@ window.authUtils = {
     getUserInfo,
     getUserName,
     isAdmin,
-    showUserInfo
+    showUserInfo,
+    removeExistingBadges
 };

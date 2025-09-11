@@ -201,7 +201,7 @@ window.initMap = function() {
         const marker = new google.maps.Marker({
             position: ventanillaLocation,
             map: map,
-            title: 'Ventanilla Residencial - Calle Ventanilla, Granada',
+            title: 'Residencial Ángel Ganivet - Calle Ventanilla, Granada',
             icon: {
                 url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
                     <svg width="50" height="60" viewBox="0 0 50 60" xmlns="http://www.w3.org/2000/svg">
@@ -221,7 +221,7 @@ window.initMap = function() {
             content: `
                 <div style="padding: 15px; max-width: 300px; font-family: Arial, sans-serif;">
                     <h3 style="margin: 0 0 10px 0; color: #3a3a3a; font-size: 18px;">
-                        🏠 Ventanilla Residencial
+                        Residencial Ángel Ganivet
                     </h3>
                     <p style="margin: 0 0 8px 0; color: #666; font-size: 14px;">
                         <strong>📍</strong> Calle Ventanilla, s/n<br>

@@ -3,80 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Acceso a Ventanilla: Nueva promoción de 33 viviendas en Granada. Barsant Promociones Inmobiliarias.">
-    <title>Acceso | Ventanilla | Barsant Promociones Inmobiliarias</title>
+    <meta name="description" content="Acceso a Residencial Angel Ganivet: Nueva promoción de 33 viviendas en Granada. Barsant Promociones Inmobiliarias.">
+    <title>Acceso | Residencial Angel Ganivet | Barsant Promociones Inmobiliarias</title>
     <!-- Fuentes -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <!-- Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Estilos Modularizados -->
-    <link rel="stylesheet" href="/src/css/styles.css">
+    <!-- Estilos -->
     <style>
-        .login-container {
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
-            background-color: #f5f5f5;
-            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/assets/images/foto3.jpg');
-            background-size: cover;
-            background-position: center;
             padding: 20px;
         }
         
-        .login-box {
-            background-color: white;
+        .login-container {
+            background: white;
             padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 400px;
             text-align: center;
+            position: relative;
         }
         
-        .login-logo {
-            margin-bottom: 30px;
-            max-width: 200px;
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #3a3a3a;
+            margin-bottom: 10px;
+        }
+
+        .logo span {
+            color: #e0c88c;
         }
         
         .login-title {
             font-family: 'Playfair Display', serif;
             color: #333;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .login-subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .password-container {
+            position: relative;
             margin-bottom: 20px;
         }
         
-        .login-form {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        /* NUEVO: Contenedor para el campo de contraseña con toggle */
-        .password-container {
-            position: relative;
-            margin-bottom: 15px;
-        }
-        
         .login-input {
-            padding: 12px 15px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
             width: 100%;
-            box-sizing: border-box; /* SOLUCIÓN: Incluye padding en el width */
+            padding: 15px 50px 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
         }
         
-        /* NUEVO: Estilo específico para el input de contraseña */
-        .password-container .login-input {
-            padding-right: 50px; /* Espacio para el botón */
-            margin-bottom: 0; /* Removemos margen porque el contenedor ya lo tiene */
+        .login-input:focus {
+            outline: none;
+            border-color: #e0c88c;
+            box-shadow: 0 0 0 3px rgba(224, 200, 140, 0.1);
         }
         
-        /* NUEVO: Botón toggle de contraseña */
         .password-toggle {
             position: absolute;
-            right: 12px;
+            right: 15px;
             top: 50%;
             transform: translateY(-50%);
             background: none;
@@ -84,234 +95,379 @@
             cursor: pointer;
             padding: 8px;
             color: #666;
-            transition: all 0.3s ease;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            transition: color 0.3s ease;
         }
         
         .password-toggle:hover {
-            color: #b8860b;
-            background: rgba(184, 134, 11, 0.1);
-        }
-        
-        .password-toggle:focus {
-            outline: 2px solid #b8860b;
-            outline-offset: 2px;
-        }
-        
-        .password-toggle svg {
-            width: 18px;
-            height: 18px;
+            color: #e0c88c;
         }
         
         .login-button {
-            background-color: #b8860b;
-            color: white;
-            padding: 12px;
+            width: 100%;
+            background: linear-gradient(135deg, #e0c88c, #d4bc80);
+            color: #3a3a3a;
+            padding: 15px 20px;
             border: none;
-            border-radius: 4px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 16px;
-            font-weight: 500;
-            transition: background-color 0.3s;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
         }
         
-        .login-button:hover {
-            background-color: #a67c00;
+        .login-button:hover:not(:disabled) {
+            background: linear-gradient(135deg, #d4bc80, #c4ac70);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(224, 200, 140, 0.3);
+        }
+        
+        .login-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            opacity: 0.7;
+        }
+        
+        .message {
+            margin: 15px 0;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            display: none;
+            animation: slideIn 0.3s ease-out;
         }
         
         .error-message {
-            color: #d9534f;
-            margin-top: 10px;
-            display: none;
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+        }
+        
+        .success-message {
+            background: #e8f5e8;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
         }
 
-        /* NUEVO: Responsivo para móviles */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         @media (max-width: 480px) {
-            .password-toggle {
-                right: 8px;
-                padding: 6px;
+            .login-container {
+                padding: 30px 20px;
+                margin: 10px;
             }
             
-            .password-toggle svg {
-                width: 16px;
-                height: 16px;
+            .logo {
+                font-size: 1.5rem;
             }
             
-            .password-container .login-input {
-                padding-right: 45px;
+            .login-title {
+                font-size: 1.3rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="login-container">
-        <div class="login-box">
-            <img src="/assets/images/logo (3).png" alt="Barsant Promociones Logo" class="login-logo">
-            <h1 class="login-title">Acceso Privado</h1>
-            <p>Introduzca la contraseña para acceder al contenido</p>
-            <div class="login-form">
-                <!-- MODIFICADO: Campo de contraseña con toggle -->
-                <div class="password-container">
-                    <input 
-                        type="password" 
-                        id="password" 
-                        class="login-input" 
-                        placeholder="Contraseña" 
-                        required
-                        autocomplete="current-password"
-                    >
-                    <button 
-                        type="button" 
-                        class="password-toggle" 
-                        id="togglePassword"
-                        aria-label="Mostrar contraseña"
-                        title="Mostrar/Ocultar contraseña"
-                    >
-                        <!-- Icono de ojo cerrado (contraseña oculta) -->
-                        <svg id="eyeOffIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                            <line x1="1" y1="1" x2="23" y2="23"></line>
-                        </svg>
-                        <!-- Icono de ojo abierto (contraseña visible) -->
-                        <svg id="eyeOnIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-                    </button>
-                </div>
-                
-                <button type="button" id="login-btn" class="login-button">Acceder</button>
-                <p id="error-message" class="error-message">Contraseña incorrecta. Por favor, inténtelo de nuevo.</p>
-            </div>
+        <div class="logo">
+            Barsant <span>Promociones</span>
         </div>
+        
+        <h2 class="login-title">Acceso Privado</h2>
+        <p class="login-subtitle">
+            Introduzca su contraseña para acceder a<br>
+            <strong>Residencial Angel Ganivet</strong>
+        </p>
+        
+        <div class="password-container">
+            <input 
+                type="password" 
+                id="password" 
+                class="login-input" 
+                placeholder="Contraseña de acceso" 
+                required
+                autocomplete="current-password"
+            >
+            <button 
+                type="button" 
+                class="password-toggle" 
+                id="togglePassword"
+                title="Mostrar/Ocultar contraseña"
+            >
+                <i class="fas fa-eye" id="eyeIcon"></i>
+            </button>
+        </div>
+        
+        <div id="error-message" class="message error-message"></div>
+        <div id="success-message" class="message success-message"></div>
+        
+        <button type="button" id="login-btn" class="login-button">
+            <i class="fas fa-sign-in-alt"></i> Acceder
+        </button>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // NUEVO: Inicializar toggle de contraseña
-            initPasswordToggle();
-            
-            // Comprobar si ya está autenticado
-            if (sessionStorage.getItem('authenticated') === 'true') {
-                window.location.href = '/index.html';
-                return;
+        class SecureLogin {
+            constructor() {
+                this.attempts = this.getStoredAttempts();
+                this.maxAttempts = 3;
+                this.lockoutDuration = 10 * 60 * 1000; // 10 minutos
+                this.init();
             }
-            
-            // Elementos del DOM
-            const passwordInput = document.getElementById('password');
-            const loginButton = document.getElementById('login-btn');
-            const errorMessage = document.getElementById('error-message');
-            
-            // Función para verificar la contraseña
-            async function checkPassword() {
 
-                const inputPassword = passwordInput.value.trim();
+            init() {
+                // Verificar si ya está autenticado
+                if (sessionStorage.getItem('authenticated') === 'true') {
+                    window.location.href = '/index.html';
+                    return;
+                }
+
+                // Verificar si está bloqueado
+                if (this.isLocked()) {
+                    this.showLockoutMessage();
+                    return;
+                }
+
+                this.setupEventListeners();
+                this.initPasswordToggle();
+            }
+
+            isLocked() {
+                if (this.attempts.count < this.maxAttempts) return false;
                 
+                const lockoutEnd = this.attempts.lastAttempt + this.lockoutDuration;
+                return Date.now() < lockoutEnd;
+            }
+
+            getLockoutTimeRemaining() {
+                if (!this.isLocked()) return 0;
+                
+                const lockoutEnd = this.attempts.lastAttempt + this.lockoutDuration;
+                return Math.ceil((lockoutEnd - Date.now()) / 1000);
+            }
+
+            async verifyPassword(password) {
+                if (this.isLocked()) {
+                    throw new Error('Demasiados intentos fallidos. Intente más tarde.');
+                }
+
                 try {
+                    // Llamar a la función serverless de Netlify
                     const response = await fetch('/.netlify/functions/auth', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({ password: inputPassword })
+                        body: JSON.stringify({ password: password })
                     });
 
                     const data = await response.json();
 
-                    if (data.success) {
-                        sessionStorage.setItem('authenticated', 'true');
-                        window.location.href = '/index.html';
-                    } else {
-                        errorMessage.style.display = 'block';
-                        passwordInput.value = '';
-                        passwordInput.focus();
+                    if (!response.ok || !data.success) {
+                        this.recordFailedAttempt();
+                        throw new Error(data.error || 'Contraseña incorrecta');
+                    }
+
+                    // Autenticación exitosa
+                    this.resetAttempts();
+                    this.setAuthenticated(data.user);
+                    
+                    return {
+                        success: true,
+                        name: data.user.name,
+                        type: data.user.type,
+                        company: data.user.company
+                    };
+
+                } catch (error) {
+                    // Si es un error de red, no contar como intento fallido
+                    if (error.message.includes('fetch')) {
+                        throw new Error('Error de conexión. Verifique su conexión a internet.');
+                    }
+                    throw error;
+                }
+            }
+
+            setAuthenticated(userInfo) {
+                sessionStorage.setItem('authenticated', 'true');
+                sessionStorage.setItem('userInfo', JSON.stringify({
+                    name: userInfo.name,
+                    type: userInfo.type,
+                    company: userInfo.company,
+                    loginTime: new Date().toISOString()
+                }));
+            }
+
+            recordFailedAttempt() {
+                this.attempts.count++;
+                this.attempts.lastAttempt = Date.now();
+                localStorage.setItem('authAttempts', JSON.stringify(this.attempts));
+            }
+
+            resetAttempts() {
+                this.attempts = { count: 0, lastAttempt: 0 };
+                localStorage.setItem('authAttempts', JSON.stringify(this.attempts));
+            }
+
+            getStoredAttempts() {
+                try {
+                    const stored = localStorage.getItem('authAttempts');
+                    return stored ? JSON.parse(stored) : { count: 0, lastAttempt: 0 };
+                } catch {
+                    return { count: 0, lastAttempt: 0 };
+                }
+            }
+
+            setupEventListeners() {
+                const passwordInput = document.getElementById('password');
+                const loginButton = document.getElementById('login-btn');
+
+                loginButton.addEventListener('click', () => this.handleLogin());
+                
+                passwordInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        this.handleLogin();
+                    }
+                });
+
+                // Limpiar mensajes al escribir
+                passwordInput.addEventListener('input', () => {
+                    this.hideAllMessages();
+                });
+            }
+
+            async handleLogin() {
+                const passwordInput = document.getElementById('password');
+                const loginButton = document.getElementById('login-btn');
+
+                const password = passwordInput.value.trim();
+
+                if (!password) {
+                    this.showMessage('Por favor ingrese una contraseña', 'error');
+                    passwordInput.focus();
+                    return;
+                }
+
+                // Estado de carga
+                loginButton.disabled = true;
+                loginButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando...';
+
+                try {
+                    const result = await this.verifyPassword(password);
+                    
+                    if (result.success) {
+                        this.showMessage(`¡Acceso concedido! Bienvenido ${result.name}`, 'success');
+                        
+                        // Delay antes de redireccionar para mostrar el mensaje
+                        setTimeout(() => {
+                            window.location.href = '/index.html';
+                        }, 1500);
                     }
                 } catch (error) {
-                    console.error('Error:', error);
-                    errorMessage.textContent = 'Error al verificar la contraseña';
-                    errorMessage.style.display = 'block';
-                }
-                /*
-                // Simulación de verificación de contraseña
-                const correctPassword = '1234'; // Cambia esto por la contraseña real
-                if (inputPassword === correctPassword) {
-                    sessionStorage.setItem('authenticated', 'true');
-                    window.location.href = '/index.html';
-                } else {
-                    errorMessage.style.display = 'block';
+                    console.error('Login error:', error);
+                    this.showMessage(error.message, 'error');
                     passwordInput.value = '';
                     passwordInput.focus();
-                }
-                    */  
-                
-            }
-            
-            // Evento click para el botón de login
-            loginButton.addEventListener('click', checkPassword);
-            
-            // Evento keypress para permitir presionar Enter
-            passwordInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    checkPassword();
-                }
-            });
-        });
 
-        // NUEVA FUNCIÓN: Toggle de contraseña
-        function initPasswordToggle() {
-            const passwordInput = document.getElementById('password');
-            const toggleButton = document.getElementById('togglePassword');
-            const eyeOffIcon = document.getElementById('eyeOffIcon');
-            const eyeOnIcon = document.getElementById('eyeOnIcon');
-            
-            let isPasswordVisible = false;
-
-            function togglePassword() {
-                isPasswordVisible = !isPasswordVisible;
-                
-                // Cambiar tipo de input
-                passwordInput.type = isPasswordVisible ? 'text' : 'password';
-                
-                // Cambiar iconos
-                if (isPasswordVisible) {
-                    eyeOffIcon.style.display = 'none';
-                    eyeOnIcon.style.display = 'block';
-                } else {
-                    eyeOffIcon.style.display = 'block';
-                    eyeOnIcon.style.display = 'none';
+                    // Si alcanzó el máximo de intentos, mostrar mensaje de bloqueo
+                    if (this.isLocked()) {
+                        setTimeout(() => {
+                            this.showLockoutMessage();
+                        }, 2000);
+                    }
+                } finally {
+                    loginButton.disabled = false;
+                    loginButton.innerHTML = '<i class="fas fa-sign-in-alt"></i> Acceder';
                 }
-
-                // Actualizar aria-label para accesibilidad
-                const label = isPasswordVisible ? 'Ocultar contraseña' : 'Mostrar contraseña';
-                toggleButton.setAttribute('aria-label', label);
-                toggleButton.setAttribute('title', label);
-                
-                // Mantener el foco en el input
-                passwordInput.focus();
             }
 
-            // Event listeners
-            toggleButton.addEventListener('click', (e) => {
-                e.preventDefault();
-                togglePassword();
-            });
-            
-            // Accesibilidad: permitir toggle con teclado
-            toggleButton.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
+            showMessage(message, type) {
+                this.hideAllMessages();
+
+                const messageId = type === 'error' ? 'error-message' : 'success-message';
+                const messageElement = document.getElementById(messageId);
+                
+                if (messageElement) {
+                    messageElement.textContent = message;
+                    messageElement.style.display = 'block';
+                }
+            }
+
+            hideAllMessages() {
+                const messages = document.querySelectorAll('.message');
+                messages.forEach(msg => msg.style.display = 'none');
+            }
+
+            showLockoutMessage() {
+                const passwordInput = document.getElementById('password');
+                const loginButton = document.getElementById('login-btn');
+                
+                if (passwordInput) passwordInput.disabled = true;
+                if (loginButton) loginButton.disabled = true;
+
+                const updateCountdown = () => {
+                    const timeRemaining = this.getLockoutTimeRemaining();
+                    
+                    if (timeRemaining <= 0) {
+                        location.reload();
+                        return;
+                    }
+
+                    const minutes = Math.floor(timeRemaining / 60);
+                    const seconds = timeRemaining % 60;
+                    const message = `Demasiados intentos fallidos. Intente de nuevo en ${minutes}:${seconds.toString().padStart(2, '0')}`;
+                    
+                    this.showMessage(message, 'error');
+                };
+
+                updateCountdown();
+                setInterval(updateCountdown, 1000);
+            }
+
+            initPasswordToggle() {
+                const passwordInput = document.getElementById('password');
+                const toggleButton = document.getElementById('togglePassword');
+                const eyeIcon = document.getElementById('eyeIcon');
+                
+                if (!passwordInput || !toggleButton) return;
+
+                let isPasswordVisible = false;
+
+                const togglePassword = () => {
+                    isPasswordVisible = !isPasswordVisible;
+                    
+                    passwordInput.type = isPasswordVisible ? 'text' : 'password';
+                    eyeIcon.className = isPasswordVisible ? 'fas fa-eye-slash' : 'fas fa-eye';
+                    
+                    const label = isPasswordVisible ? 'Ocultar contraseña' : 'Mostrar contraseña';
+                    toggleButton.setAttribute('title', label);
+                    
+                    passwordInput.focus();
+                };
+
+                toggleButton.addEventListener('click', (e) => {
                     e.preventDefault();
                     togglePassword();
-                }
-            });
-
-            // Prevenir que el botón haga submit del formulario
-            toggleButton.addEventListener('mousedown', (e) => {
-                e.preventDefault();
-            });
+                });
+            }
         }
+
+        // Inicializar cuando el DOM esté cargado
+        document.addEventListener('DOMContentLoaded', function() {
+            new SecureLogin();
+        });
     </script>
 </body>
 </html>

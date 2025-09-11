@@ -575,3 +575,83 @@ export async function getDownloadUrl(filePath) {
 }
 
 console.log('🚀 DataService optimizado cargado - modo público con múltiples tamaños');
+
+// Función para forzar recarga de datos (sin caché)
+export async function forzarRecargaDatos() {
+  try {
+    console.log('🔄 Forzando recarga de datos desde Firebase...');
+    
+    const db = await getDb();
+    const { collection, getDocs } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+    
+    // Obtener datos frescos con timestamp para evitar caché
+    const snapshot = await getDocs(collection(db, 'datos_web'));
+    
+    if (snapshot.empty) {
+      throw new Error('No se encontraron viviendas en Firebase');
+    }
+    
+    const viviendasFrescas = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+    
+    // Limpiar cualquier caché que pueda existir
+    if (window.viviendas) {
+      window.viviendas = viviendasFrescas;
+    }
+    
+    console.log(`✅ ${viviendasFrescas.length} viviendas recargadas desde Firebase`);
+    console.log('📊 Estados actuales:', 
+      viviendasFrescas.reduce((acc, v) => {
+        acc[v.estado] = (acc[v.estado] || 0) + 1;
+        return acc;
+      }, {})
+    );
+    
+    return viviendasFrescas;
+    
+  } catch (err) {
+    console.error('❌ Error forzando recarga:', err);
+    throw err;
+  }
+}
+
+// Función para debugging - mostrar estados actuales
+export async function mostrarEstadosActuales() {
+  try {
+    const viviendas = await fetchAllViviendas();
+    
+    console.log('📋 ESTADOS ACTUALES DE VIVIENDAS:');
+    console.log('================================');
+    
+    const estadisticas = viviendas.reduce((acc, v) => {
+      const key = `${v.bloque} ${v.planta} ${v.letra}`;
+      acc[key] = v.estado;
+      return acc;
+    }, {});
+    
+    Object.entries(estadisticas)
+      .sort()
+      .forEach(([vivienda, estado]) => {
+        const emoji = estado === 'Disponible' ? '✅' : '🔴';
+        console.log(`${emoji} ${vivienda}: ${estado}`);
+      });
+    
+    const totales = viviendas.reduce((acc, v) => {
+      acc[v.estado] = (acc[v.estado] || 0) + 1;
+      return acc;
+    }, {});
+    
+    console.log('\n📊 RESUMEN:');
+    Object.entries(totales).forEach(([estado, cantidad]) => {
+      console.log(`${estado}: ${cantidad} viviendas`);
+    });
+    
+    return viviendas;
+    
+  } catch (err) {
+    console.error('❌ Error obteniendo estados:', err);
+  }
+}
+
+// Para usar desde la consola del navegador:
+// window.forzarRecarga = forzarRecargaDatos;
+// window.mostrarEstados = mostrarEstadosActuales;

@@ -69,29 +69,88 @@ header.scrolled {
     
 }
 
-.logo {
-    font-size: 24px;
-    font-family: 'Playfair Display', serif;
-    font-weight: 700;
-    color: var(--primary-color);
+/* ================================
+   REEMPLAZAR TODA LA SECCIÓN DEL LOGO EN styles.css
+   Busca la regla ".logo" y reemplázala completamente por esto:
+   ================================ */
+
+.header-content {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 10px;
-    margin-left: -150px;
-    
+    padding: 15px 0;
+    position: relative;
 }
 
-.logo img {
-    height: 200px;
-    width: auto;
-    object-fit: contain;
-
+.logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 700;
+    margin-right: auto; /* Empuja el logo hacia la izquierda */
+    margin-left: 0; /* Asegura que no tenga margen izquierdo */
 }
 
 .logo span {
-    display: none;
+    color: var(--secondary-color);
 }
 
+.logo:hover {
+    text-decoration: none;
+    color: var(--primary-color);
+}
+
+.logo:hover span {
+    color: var(--secondary-color);
+}
+
+/* Ajustar la navegación para que tenga más espacio */
+nav {
+    margin-left: 60px; /* Aumenta la separación entre logo y navegación */
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    margin-left: 30px;
+}
+
+/* ================================
+   RESPONSIVE
+   ================================ */
+
+@media (max-width: 992px) {
+    nav {
+        margin-left: 40px;
+    }
+    
+    nav ul li {
+        margin-left: 25px;
+    }
+}
+
+@media (max-width: 768px) {
+    .logo {
+        font-size: 20px;
+    }
+    
+    /* En móvil, el menú se oculta así que no necesitamos el margen */
+    nav {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        font-size: 18px;
+    }
+}
 nav ul {
     display: flex;
     list-style: none;
@@ -128,6 +187,7 @@ nav ul li a.active {
     background-color: var(--primary-color);
     color: var(--light-text);
 }
+
 
 /* Hero Section */
 .hero {
@@ -2130,6 +2190,7 @@ body.menu-open {
     color: #3a3a3a !important;
     border-left-color: #e0c88c !important;
 }
+
 
 .mobile-menu-info h4 {
     color: #3a3a3a !important;

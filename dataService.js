@@ -395,7 +395,27 @@ function getNombreImagen(nombreArchivo, index) {
       '23_IMG_DORM_P1': 'Imagen 1 Dormitorio',
       '24_IMG_DORM_P2': 'Imagen 2 Dormitorio',
       '25_IMG_DORM_P3': 'Imagen 3 Dormitorio',
-      '26_IMG_DORM_P4': 'Imagen 4 Dormitorio'
+      '26_IMG_DORM_P4': 'Imagen 4 Dormitorio',
+
+      // Salón (nuevos)
+      '32_IMG_SALON 1_SALON_R': 'Imagen 1 Salón',
+      '29_IMG_SALON 2_SALON_R': 'Imagen 2 Salón',
+      '28_IMG_SALON 3_SALON_R': 'Imagen 3 Salón',
+      // Cocina (nuevos)
+      '31_IMG_SALON 1_COCINA_R': 'Imagen 1 Salón Cocina',
+      '30_IMG_SALON 2_COCINA_R': 'Imagen 2 Salón Cocina',
+      '27_IMG_SALON 3_COCINA_R': 'Imagen 3 Salón Cocina',
+
+      '27_IMG_SALON 3_COCINA_R.jpg',
+      '28_IMG_SALON 3_SALON_R.jpg',
+      '29_IMG_SALON 2_SALON_R.jpg',
+      
+      // Cocina (30-32) - NUEVOS AÑADIDOS
+      '30_IMG_SALON 2_COCINA_R.jpg',
+      '31_IMG_SALON 1_COCINA_R.jpg',
+      '32_IMG_SALON 1_SALON_R.jpg'
+
+
   };
   
   return nameMap[fileName] || `Imagen ${index + 1}`;

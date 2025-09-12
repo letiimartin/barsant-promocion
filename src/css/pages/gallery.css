@@ -611,3 +611,292 @@ body.fullscreen-open {
         transform: none;
     }
 }
+
+/* ================================
+   PLACEHOLDERS Y LOADING STATES
+   ================================ */
+
+   .thumbnail-placeholder {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #f0f0f0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.main-image-placeholder {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.thumbnail-number {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.loading-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: #666;
+}
+
+.loading-indicator span {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+/* ================================
+   SHIMMER LOADING ANIMATION
+   ================================ */
+
+.loading-shimmer {
+    position: relative;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 8px;
+    width: 100%;
+    height: 100%;
+}
+
+.loading-shimmer.large {
+    width: 300px;
+    height: 200px;
+    border-radius: 12px;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* ================================
+   ANIMACIONES MEJORADAS
+   ================================ */
+
+.fade-in {
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from { 
+        opacity: 0; 
+        transform: translateY(10px);
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0);
+    }
+}
+
+.gallery-thumbnail {
+    transition: all 0.3s ease, transform 0.2s ease;
+}
+
+.gallery-thumbnail:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.main-gallery-img {
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* ================================
+   ESTADOS DE ERROR MEJORADOS
+   ================================ */
+
+.image-error-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background: #fff3cd;
+    border: 2px dashed #ffeaa7;
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+    color: #856404;
+}
+
+.image-error-placeholder .error-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    opacity: 0.7;
+}
+
+.image-error-placeholder p {
+    margin: 10px 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.retry-btn.small {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+
+/* ================================
+   OPTIMIZACIONES DE RENDIMIENTO
+   ================================ */
+
+.gallery-thumbnail,
+.gallery-main-image img {
+    will-change: transform;
+}
+
+.gallery-thumbnails {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Optimizar reflows durante scroll */
+.gallery-thumbnail img {
+    backface-visibility: hidden;
+    transform: translateZ(0);
+}
+
+/* ================================
+   MEJORAS RESPONSIVE
+   ================================ */
+
+@media (max-width: 768px) {
+    .loading-shimmer.large {
+        width: 250px;
+        height: 150px;
+    }
+    
+    .thumbnail-number {
+        font-size: 0.6rem;
+        padding: 1px 4px;
+    }
+    
+    .main-image-placeholder {
+        padding: 20px;
+    }
+    
+    .loading-indicator span {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .loading-shimmer.large {
+        width: 200px;
+        height: 120px;
+    }
+    
+    .image-error-placeholder {
+        padding: 20px;
+    }
+    
+    .image-error-placeholder .error-icon {
+        font-size: 2rem;
+    }
+    
+    .image-error-placeholder p {
+        font-size: 1rem;
+    }
+}
+
+/* ================================
+   ESTADOS ESPECÍFICOS
+   ================================ */
+
+.gallery-thumbnail.loading .thumbnail-placeholder {
+    background: #e9ecef;
+}
+
+.gallery-thumbnail.error {
+    opacity: 0.6;
+    filter: grayscale(50%);
+}
+
+.gallery-thumbnail.loaded {
+    animation: thumbnailLoaded 0.5s ease-out;
+}
+
+@keyframes thumbnailLoaded {
+    0% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ================================
+   OPTIMIZACIONES ADICIONALES
+   ================================ */
+
+/* Preload hint para mejor rendimiento */
+.gallery-main-image img[loading="lazy"] {
+    loading: eager;
+}
+
+/* Mejoras para conexiones lentas */
+@media (prefers-reduced-motion: reduce) {
+    .loading-shimmer {
+        animation: none;
+        background: #f0f0f0;
+    }
+    
+    .fade-in,
+    .thumbnailLoaded {
+        animation: none;
+    }
+    
+    .gallery-thumbnail:hover {
+        transform: none;
+    }
+}
+
+/* Soporte para dark mode */
+@media (prefers-color-scheme: dark) {
+    .thumbnail-placeholder {
+        background: #2a2a2a;
+    }
+    
+    .main-image-placeholder {
+        background: #1a1a1a;
+        color: #e0e0e0;
+    }
+    
+    .loading-shimmer {
+        background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+    }
+    
+    .image-error-placeholder {
+        background: #3a2a1a;
+        border-color: #5a4a2a;
+        color: #e0d0a0;
+    }
+}

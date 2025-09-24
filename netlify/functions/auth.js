@@ -54,8 +54,8 @@ exports.handler = async (event, context) => {
               type: 'inmobiliaria',
               company: 'Partner'
           },
-          [process.env.INVERCASA_PASSWORD]: {
-              name: 'Inmercasa',
+          [process.env.IVERCASA_PASSWORD]: {
+              name: 'Ivercasa',
               type: 'inmobiliaria',
               company: 'Partner'
           },

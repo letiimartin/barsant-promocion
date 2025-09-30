@@ -30,7 +30,7 @@ Thumbs.db
 
 # Archivos de utilidad
 src/js/generate-hash.js
-
+assets/
 
 
 data/*.json

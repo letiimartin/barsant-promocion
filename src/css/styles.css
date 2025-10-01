@@ -1632,6 +1632,79 @@ nav ul li a.active {
         min-height: 48px;
     }
 }
+/* ========================================
+   BOTÓN PARA CAMBIAR ESTADO DE VIVIENDA
+   ======================================== */
+
+.btn-cambiar-estado {
+padding: 8px 16px;
+border: none;
+border-radius: 20px;
+cursor: pointer;
+font-weight: 500;
+font-size: 14px;
+transition: all 0.3s ease;
+font-family: 'Montserrat', sans-serif;
+min-width: 100px;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-cambiar-estado:hover {
+transform: scale(1.05);
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-cambiar-estado:active {
+transform: scale(0.98);
+}
+
+.btn-cambiar-estado:disabled {
+opacity: 0.6;
+cursor: not-allowed;
+transform: none;
+}
+
+/* Estilos según el estado */
+.btn-cambiar-estado.estado-disponible {
+background-color: #d4edda;
+color: #155724;
+border: 2px solid #c3e6cb;
+}
+
+.btn-cambiar-estado.estado-disponible:hover {
+background-color: #c3e6cb;
+border-color: #b1dfbb;
+}
+
+.btn-cambiar-estado.estado-reservado {
+background-color: #f8d7da;
+color: #721c24;
+border: 2px solid #f5c6cb;
+}
+
+.btn-cambiar-estado.estado-reservado:hover {
+background-color: #f5c6cb;
+border-color: #f1b0b7;
+}
+
+/* Icono de carga cuando se está actualizando */
+.btn-cambiar-estado .fa-spinner {
+animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+0% { transform: rotate(0deg); }
+100% { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+.btn-cambiar-estado {
+    padding: 6px 12px;
+    font-size: 12px;
+    min-width: 80px;
+}
+}
 
 /* Footer */
 footer {

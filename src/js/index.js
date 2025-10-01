@@ -2,6 +2,11 @@
  * Archivo principal para la web de Barsant Promociones - Ventanilla
  * Versión simplificada sin problemas de MIME types
  */
+// AÑADIR AL INICIO DEL ARCHIVO
+import { cambiarEstadoVivienda } from './src/js/adminLogger.js';
+
+// Hacer función global para onclick
+window.cambiarEstadoVivienda = cambiarEstadoVivienda;
 /**
  * Función para diagnosticar problemas de carga
  **/
@@ -680,6 +685,10 @@ function displayViviendas(vivs) {
       return (a.planta - b.planta);
   });
 
+  // Verificar si el usuario es admin
+  const userInfo = window.authUtils?.getUserInfo();
+  const esAdmin = userInfo && userInfo.type === 'admin';
+
   viviendasSinDuplicar.forEach((v, index) => {
       const row = document.createElement('tr');
       const estadoClass = v.estado === 'Reservado' ? 'estado-reservado' : 'estado-disponible';
@@ -711,6 +720,16 @@ function displayViviendas(vivs) {
           ? `${v.m2_construidos.toFixed(2)} m²` 
           : '-';
 
+      // Botón de estado (solo visible para admin)
+      const botonEstado = esAdmin ? `
+          <button 
+              class="btn-cambiar-estado ${estadoClass}" 
+              onclick="cambiarEstadoVivienda('${id}', '${v.estado}')"
+              title="Click para cambiar estado">
+              ${v.estado}
+          </button>
+      ` : `<span class="${estadoClass}">${v.estado}</span>`;
+
       row.innerHTML = `
           <td><strong>${v.bloque}</strong></td>
           <td>${pisoLabel}</td>
@@ -719,7 +738,7 @@ function displayViviendas(vivs) {
           <td>${superficieFormateada}</td>
           <td><strong>${precioFormateado}</strong></td>
           <td class="planos">${planoLinks}</td>
-          <td><span class="${estadoClass}">${v.estado}</span></td>
+          <td>${botonEstado}</td>
           <td>
               <a href="viviendas/template-viviendas.html?id=${id}" class="vivienda-link">
                   <i class="fas fa-info-circle"></i> Más info
@@ -742,10 +761,12 @@ function displayViviendas(vivs) {
 
   // Reinicializar funcionalidad de scroll después de cargar datos
   setTimeout(() => {
-      initScrollableTable();
+      if (typeof initScrollableTable === 'function') {
+          initScrollableTable();
+      }
   }, 100);
   
-  console.log(`✅ ${viviendasSinDuplicar.length} viviendas mostradas en tabla deslizable`);
+  console.log(`${viviendasSinDuplicar.length} viviendas mostradas. Admin: ${esAdmin}`);
 }
 
 function mapPlantaNumeroALetra(num) {

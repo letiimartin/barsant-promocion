@@ -9,23 +9,26 @@ import { registrarCambioEstado, actualizarEstadoVivienda } from './firebaseHisto
 // ========================================
 let USUARIOS_AUTORIZADOS = [];
 
-// Cargar usuarios autorizados al inicializar
-(async function cargarUsuariosAutorizados() {
+
+
+// Cargar configuración desde Netlify Function
+async function cargarConfiguracion() {
   try {
-    const response = await fetch('/.netlify/functions/get-admin-users');
-    const { users } = await response.json();
-    USUARIOS_AUTORIZADOS = users || [];
+    const response = await fetch('/.netlify/functions/get-email-config');
+    const config = await response.json();
+    USUARIOS_AUTORIZADOS = config.usuarios || [];
     
     if (USUARIOS_AUTORIZADOS.length === 0) {
-      console.error('⚠️ No hay usuarios autorizados configurados en variables de entorno');
-    } else {
-      console.log('✅ Usuarios autorizados cargados:', USUARIOS_AUTORIZADOS.length);
+      console.error('⚠️ No hay usuarios autorizados configurados');
     }
   } catch (error) {
-    console.error('❌ Error cargando usuarios autorizados:', error);
-    USUARIOS_AUTORIZADOS = [];
+    console.error('Error cargando configuración:', error);
   }
-})();
+}
+
+// Cargar configuración al iniciar
+cargarConfiguracion();
+
 
 // ========================================
 // MODAL DE IDENTIFICACIÓN DE USUARIO

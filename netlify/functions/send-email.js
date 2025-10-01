@@ -87,8 +87,6 @@ exports.handler = async (event, context) => {
       user_name: sanitize(accessData.name),
       user_email: sanitize(accessData.email),
       user_phone: sanitize(accessData.phone),
-      account_name: sanitize(accessData.accountName),
-      company: sanitize(accessData.company),
       access_date: formattedDate,
       access_time: formattedTime
     };
@@ -104,7 +102,7 @@ exports.handler = async (event, context) => {
     };
 
     // AÑADE ESTA LÍNEA PARA VER QUÉ SE ESTÁ ENVIANDO
-    //console.log('EmailJS Payload:', JSON.stringify(emailPayload, null, 2));
+    console.log('EmailJS Payload:', JSON.stringify(emailPayload, null, 2));
     const emailData = JSON.stringify(emailPayload);
 
     const options = {

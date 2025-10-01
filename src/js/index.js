@@ -2,8 +2,8 @@
  * Archivo principal para la web de Barsant Promociones - Ventanilla
  * Versión simplificada sin problemas de MIME types
  */
-// AÑADIR AL INICIO DEL ARCHIVO
-import { cambiarEstadoVivienda } from './src/js/adminLogger.js';
+
+import { cambiarEstadoVivienda } from './adminLogger.js';
 
 // Hacer función global para onclick
 window.cambiarEstadoVivienda = cambiarEstadoVivienda;

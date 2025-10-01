@@ -7,8 +7,8 @@ import { registrarCambioEstado, actualizarEstadoVivienda } from './firebaseHisto
 // CONFIGURACIÓN DE USUARIOS AUTORIZADOS
 // Obtener desde variables de entorno
 // ========================================
-const USUARIOS_AUTORIZADOS = import.meta.env.VITE_USUARIOS_AUTORIZADOS 
-  ? import.meta.env.VITE_USUARIOS_AUTORIZADOS.split(',').map(u => u.trim())
+const USUARIOS_AUTORIZADOS = import.meta.env.USUARIOS_AUTORIZADOS 
+  ? import.meta.env.USUARIOS_AUTORIZADOS.split(',').map(u => u.trim())
   : [];
 
 // Validar que existan usuarios configurados

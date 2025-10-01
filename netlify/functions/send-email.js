@@ -104,7 +104,7 @@ exports.handler = async (event, context) => {
     };
 
     // AÑADE ESTA LÍNEA PARA VER QUÉ SE ESTÁ ENVIANDO
-    console.log('EmailJS Payload:', JSON.stringify(emailPayload, null, 2));
+    //console.log('EmailJS Payload:', JSON.stringify(emailPayload, null, 2));
     const emailData = JSON.stringify(emailPayload);
 
     const options = {

@@ -462,7 +462,19 @@
                     
                     if (result.success) {
                         this.showMessage('¡Contraseña correcta!', 'success');
-                        setTimeout(() => this.showUserDataForm(), 1000);
+                        
+                        // SI ES ADMIN, ir directo a la página sin pedir datos
+                        if (result.type === 'admin') {
+                            this.setAuthenticated(this.userInfo);
+                            setTimeout(() => {
+                                window.location.href = '/index.html';
+                            }, 1000);
+                        } else {
+                            // Para inmobiliarias, mostrar formulario de datos
+                            setTimeout(() => {
+                                this.showUserDataForm();
+                            }, 1000);
+                        }
                     }
                 } catch (error) {
                     console.error('Login error:', error);

@@ -1,6 +1,7 @@
 const https = require('https');
 
 exports.handler = async (event, context) => {
+  // Solo permitir POST requests
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
@@ -13,6 +14,7 @@ exports.handler = async (event, context) => {
     };
   }
 
+  // Manejar preflight CORS requests
   if (event.httpMethod === 'OPTIONS') {
     return {
       statusCode: 200,
@@ -28,6 +30,22 @@ exports.handler = async (event, context) => {
   try {
     const { accessData } = JSON.parse(event.body);
 
+    // Si es administrador, NO enviar email
+    if (accessData.accountName === 'Administrador') {
+      console.log('Admin login - no email notification sent');
+      return {
+        statusCode: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+          success: true, 
+          message: 'Admin login - no email sent' 
+        })
+      };
+    }
+
     // Determinar email destinatario según la cuenta (DESDE VARIABLES DE ENTORNO)
     let recipientEmail;
     switch (accessData.accountName) {
@@ -37,11 +55,13 @@ exports.handler = async (event, context) => {
       case 'Ivercasa':
         recipientEmail = process.env.EMAIL_IVERCASA;
         break;
-      case 'Administrador':
-        recipientEmail = process.env.EMAIL_ADMIN;
-        break;
       default:
-        recipientEmail = process.env.EMAIL_ADMIN;
+        throw new Error(`Cuenta no reconocida: ${accessData.accountName}`);
+    }
+
+    // Validar que existe el email destinatario
+    if (!recipientEmail) {
+      throw new Error('Email destinatario no configurado');
     }
 
     // Formatear fecha y hora
@@ -68,6 +88,8 @@ exports.handler = async (event, context) => {
       access_time: formattedTime
     };
 
+    console.log(`Enviando email a ${recipientEmail} para acceso de ${accessData.accountName}`);
+
     // Enviar email via EmailJS API
     const emailData = JSON.stringify({
       service_id: process.env.EMAILJS_SERVICE_ID,
@@ -92,14 +114,20 @@ exports.handler = async (event, context) => {
         res.on('data', (chunk) => { data += chunk; });
         res.on('end', () => {
           if (res.statusCode === 200) {
+            console.log('Email enviado exitosamente');
             resolve({ success: true });
           } else {
-            reject(new Error(`EmailJS error: ${data}`));
+            console.error(`EmailJS error: ${data}`);
+            reject(new Error(`EmailJS API responded with status ${res.statusCode}: ${data}`));
           }
         });
       });
 
-      req.on('error', reject);
+      req.on('error', (error) => {
+        console.error('Error en request a EmailJS:', error);
+        reject(error);
+      });
+      
       req.write(emailData);
       req.end();
     });
@@ -123,7 +151,7 @@ exports.handler = async (event, context) => {
       },
       body: JSON.stringify({ 
         success: false, 
-        error: 'Failed to send email' 
+        error: error.message || 'Failed to send email' 
       })
     };
   }

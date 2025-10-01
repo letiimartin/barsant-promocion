@@ -27,7 +27,6 @@ let USUARIOS_AUTORIZADOS = [];
   }
 })();
 
-
 // ========================================
 // MODAL DE IDENTIFICACIÓN DE USUARIO
 // ========================================

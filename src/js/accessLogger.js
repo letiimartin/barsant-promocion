@@ -14,7 +14,6 @@ async function initializeFirebaseForAccessLog() {
     if (firebaseInitialized) return db;
     
     try {
-        // Cargar configuración desde el archivo existente
         const resp = await fetch('/src/firebase/firebase-client-config.json');
         if (!resp.ok) {
             throw new Error(`Configuración no encontrada: ${resp.status}`);
@@ -26,8 +25,7 @@ async function initializeFirebaseForAccessLog() {
             throw new Error('Configuración Firebase incompleta');
         }
         
-        // Inicializar Firebase
-        const app = initializeApp(config, 'access-logger'); // Usar nombre único para evitar conflictos
+        const app = initializeApp(config, 'access-logger');
         db = getFirestore(app);
         
         firebaseInitialized = true;
@@ -42,8 +40,6 @@ async function initializeFirebaseForAccessLog() {
 
 /**
  * Guarda el registro de acceso en Firestore
- * @param {Object} accessData - Datos del acceso
- * @returns {Promise<string>} - ID del documento creado
  */
 export async function saveAccessLog(accessData) {
     try {
@@ -51,78 +47,115 @@ export async function saveAccessLog(accessData) {
             await initializeFirebaseForAccessLog();
         }
         
-        // Preparar datos para guardar
         const logData = {
-            // Datos del usuario
             name: accessData.name || '',
             email: accessData.email || '',
             phone: accessData.phone || '',
-            
-            // Datos de la cuenta utilizada
             company: accessData.company || '',
             userType: accessData.userType || '',
             accountName: accessData.accountName || '',
-            
-            // Timestamps
-            timestamp: serverTimestamp(), // Timestamp del servidor
-            date: new Date().toISOString(), // Fecha ISO del cliente
-            
-            // Información adicional
+            timestamp: serverTimestamp(),
+            date: new Date().toISOString(),
             userAgent: navigator.userAgent || '',
             language: navigator.language || '',
             referrer: document.referrer || 'direct',
-            
-            // Metadata
             source: 'web_login',
             version: '1.0'
         };
         
-        // Guardar en la colección access_logs
         const docRef = await addDoc(collection(db, 'access_logs'), logData);
-        
-        console.log('✅ Registro de acceso guardado con ID:', docRef.id);
+        console.log('✅ Registro guardado en Firebase con ID:', docRef.id);
         return docRef.id;
         
     } catch (error) {
-        console.error('❌ Error guardando registro de acceso:', error);
+        console.error('❌ Error guardando registro:', error);
         throw new Error(`Error al guardar registro: ${error.message}`);
     }
 }
 
 /**
- * Envía notificación por email usando EmailJS
- * @param {Object} accessData - Datos del acceso
- * @param {string} emailConfig - Configuración de EmailJS
+ * Envía notificación por email usando EmailJS desde el navegador
  */
 export async function sendAccessNotification(accessData) {
     try {
-        // Llamar a la función serverless (que tiene los emails en variables de entorno)
-        const response = await fetch('/.netlify/functions/send-email', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ accessData })
-        });
+        // Si es administrador, no enviar email
+        if (accessData.accountName === 'Administrador') {
+            console.log('ℹ️ Admin login - no se envía email');
+            return { success: true, skipped: true };
+        }
+
+        // Verificar que EmailJS esté disponible
+        if (typeof emailjs === 'undefined') {
+            throw new Error('EmailJS no está cargado');
+        }
+
+        // Obtener configuración desde función serverless
+        console.log('📧 Obteniendo configuración de EmailJS...');
+        const configResponse = await fetch('/.netlify/functions/get-email-config');
         
-        if (!response.ok) {
-            throw new Error('Error sending email');
+        if (!configResponse.ok) {
+            throw new Error('No se pudo obtener la configuración de email');
         }
         
-        console.log('✅ Email enviado correctamente');
+        const config = await configResponse.json();
+        
+        // Formatear fecha y hora
+        const now = new Date();
+        const formattedDate = now.toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+        const formattedTime = now.toLocaleTimeString('es-ES', {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        
+        // Determinar email destinatario
+        let recipientEmail;
+        if (accessData.accountName === 'Grupo Torres') {
+            recipientEmail = 'leticia.martin.cabrera@hotmail.es';
+        } else if (accessData.accountName === 'Ivercasa') {
+            recipientEmail = 'letiimartin12@gmail.com';
+        } else {
+            throw new Error(`Cuenta no reconocida: ${accessData.accountName}`);
+        }
+        
+        // Preparar parámetros (EmailJS maneja correctamente UTF-8 desde el navegador)
+        const templateParams = {
+            to_email: recipientEmail,
+            user_name: accessData.name,
+            user_email: accessData.email,
+            user_phone: accessData.phone,
+            access_date: formattedDate,
+            access_time: formattedTime
+        };
+        
+        console.log(`📤 Enviando email a ${recipientEmail}...`);
+        
+        // Enviar email usando EmailJS desde el navegador
+        const response = await emailjs.send(
+            config.serviceId,
+            config.templateId,
+            templateParams,
+            config.publicKey
+        );
+        
+        console.log('✅ Email enviado correctamente:', response);
         return { success: true };
         
     } catch (error) {
         console.error('❌ Error enviando email:', error);
-        console.warn('⚠️ El acceso se registró pero el email falló');
+        console.warn('⚠️ El acceso se registró en Firebase pero el email falló');
+        // No lanzar error para no bloquear el acceso
+        return { success: false, error: error.message };
     }
 }
 
 /**
  * Función principal que combina guardado en Firebase y envío de email
- * @param {Object} userData - Datos del usuario
- * @param {Object} accountInfo - Información de la cuenta
- * @param {Object} emailConfig - Configuración de EmailJS
  */
-export async function logUserAccess(userData, accountInfo, emailConfig) {
+export async function logUserAccess(userData, accountInfo) {
     const accessData = {
         name: userData.name,
         email: userData.email,
@@ -138,9 +171,7 @@ export async function logUserAccess(userData, accountInfo, emailConfig) {
         console.log('📝 Acceso registrado con ID:', logId);
         
         // 2. Enviar email (no bloqueante)
-        if (emailConfig) {
-            await sendAccessNotification(accessData, emailConfig);
-        }
+        await sendAccessNotification(accessData);
         
         return { success: true, logId };
         
@@ -150,5 +181,4 @@ export async function logUserAccess(userData, accountInfo, emailConfig) {
     }
 }
 
-// Exportar también la función de inicialización por si se necesita
 export { initializeFirebaseForAccessLog };

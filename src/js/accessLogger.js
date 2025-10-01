@@ -171,12 +171,14 @@ export async function logUserAccess(userData, accountInfo) {
     };
     
     try {
-        // 1. Guardar en Firebase
+        // 1. Guardar en Firebase (esperar esto)
         const logId = await saveAccessLog(accessData);
         console.log('Acceso registrado con ID:', logId);
         
-        // 2. Enviar email (no bloqueante)
-        await sendAccessNotification(accessData);
+        // 2. Enviar email en segundo plano (NO esperar)
+        sendAccessNotification(accessData).catch(err => {
+            console.error('Error enviando email:', err);
+        });
         
         return { success: true, logId };
         

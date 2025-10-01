@@ -9,26 +9,23 @@ import { registrarCambioEstado, actualizarEstadoVivienda } from './firebaseHisto
 // ========================================
 let USUARIOS_AUTORIZADOS = [];
 
-
-
-// Cargar configuración desde Netlify Function
-async function cargarConfiguracion() {
+// Cargar usuarios autorizados al inicializar
+(async function cargarUsuariosAutorizados() {
   try {
-    const response = await fetch('/.netlify/functions/get-email-config');
-    const config = await response.json();
-    USUARIOS_AUTORIZADOS = config.usuarios || [];
+    const response = await fetch('/.netlify/functions/get-admin-users');
+    const { users } = await response.json();
+    USUARIOS_AUTORIZADOS = users || [];
     
     if (USUARIOS_AUTORIZADOS.length === 0) {
-      console.error('⚠️ No hay usuarios autorizados configurados');
+      console.error('⚠️ No hay usuarios autorizados configurados en variables de entorno');
+    } else {
+      console.log('✅ Usuarios autorizados cargados:', USUARIOS_AUTORIZADOS.length);
     }
   } catch (error) {
-    console.error('Error cargando configuración:', error);
+    console.error('❌ Error cargando usuarios autorizados:', error);
+    USUARIOS_AUTORIZADOS = [];
   }
-}
-
-// Cargar configuración al iniciar
-cargarConfiguracion();
-
+})();
 
 // ========================================
 // MODAL DE IDENTIFICACIÓN DE USUARIO
@@ -142,7 +139,6 @@ function mostrarModalIdentificacion(callback) {
   
   document.body.appendChild(modal);
   
-  // Añadir estilos de animación
   const style = document.createElement('style');
   style.textContent = `
     @keyframes fadeIn {
@@ -167,15 +163,12 @@ function mostrarModalIdentificacion(callback) {
   `;
   document.head.appendChild(style);
   
-  // Event listeners
   const inputUsuario = document.getElementById('input-usuario-admin');
   const btnConfirmar = document.getElementById('btn-confirmar-usuario-admin');
   const btnCancelar = document.getElementById('btn-cancelar-usuario-admin');
   
-  // Focus automático en el input
   setTimeout(() => inputUsuario.focus(), 100);
   
-  // Confirmar con Enter
   inputUsuario.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
       btnConfirmar.click();
@@ -191,7 +184,6 @@ function mostrarModalIdentificacion(callback) {
       return;
     }
     
-    // Validar que el usuario esté autorizado
     if (!USUARIOS_AUTORIZADOS.includes(usuarioId)) {
       inputUsuario.style.borderColor = '#dc3545';
       alert('⚠️ Usuario no autorizado.\n\nUsuarios válidos: ' + USUARIOS_AUTORIZADOS.join(', '));
@@ -207,14 +199,12 @@ function mostrarModalIdentificacion(callback) {
     modal.remove();
   });
   
-  // Cerrar al hacer click fuera
   modal.addEventListener('click', (e) => {
     if (e.target === modal) {
       modal.remove();
     }
   });
   
-  // Cerrar con ESC
   const handleEscape = (e) => {
     if (e.key === 'Escape') {
       modal.remove();
@@ -229,19 +219,19 @@ function mostrarModalIdentificacion(callback) {
 // ========================================
 export async function cambiarEstadoVivienda(idVivienda, estadoActual) {
   try {
-    // Verificar que el usuario es admin
     const userInfo = window.authUtils?.getUserInfo();
     if (!userInfo || userInfo.type !== 'admin') {
       alert('No tienes permisos para realizar esta acción.\nDebes iniciar sesión como administrador.');
       return;
     }
     
-    // Paso 1: Mostrar modal de identificación
     mostrarModalIdentificacion(async (usuarioId) => {
+      let boton = null;
+      let textoOriginal = '';
+      
       try {
         const nuevoEstado = estadoActual === "Disponible" ? "Reservado" : "Disponible";
         
-        // Confirmar el cambio
         const confirmar = confirm(
           `Usuario: ${usuarioId}\n\n` +
           `¿Confirmar cambio de estado?\n\n` +
@@ -251,24 +241,24 @@ export async function cambiarEstadoVivienda(idVivienda, estadoActual) {
         
         if (!confirmar) return;
         
-        // Mostrar indicador de carga en el botón
-        const boton = event?.target?.closest('button');
-        let textoOriginal = '';
+        boton = event?.target?.closest('button');
         if (boton) {
           textoOriginal = boton.innerHTML;
           boton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
           boton.disabled = true;
         }
         
-        // Paso 2: Actualizar estado en Firebase (usando firebaseHistorial.js)
+        // Actualizar estado en Firebase
         await actualizarEstadoVivienda(idVivienda, nuevoEstado, usuarioId);
-        
         console.log(`Estado actualizado: ${idVivienda} -> ${nuevoEstado}`);
         
-        // Paso 3: Registrar el cambio en el historial (usando firebaseHistorial.js)
-        await registrarCambioEstado(idVivienda, estadoActual, nuevoEstado, usuarioId);
+        // Intentar registrar en historial (no crítico)
+        try {
+          await registrarCambioEstado(idVivienda, estadoActual, nuevoEstado, usuarioId);
+        } catch (historialError) {
+          console.warn('No se pudo registrar en historial (el cambio se aplicó correctamente):', historialError);
+        }
         
-        // Paso 4: Mostrar éxito y recargar
         alert(`Estado cambiado exitosamente\n\nCambio realizado por: ${usuarioId}`);
         window.location.reload();
         
@@ -276,8 +266,6 @@ export async function cambiarEstadoVivienda(idVivienda, estadoActual) {
         console.error("Error al actualizar el estado:", error);
         alert(`Error al cambiar el estado:\n${error.message}\n\nVerifica tu conexión e intenta de nuevo.`);
         
-        // Restaurar botón si hay error
-        const boton = event?.target?.closest('button');
         if (boton && textoOriginal) {
           boton.disabled = false;
           boton.innerHTML = textoOriginal;
@@ -291,5 +279,4 @@ export async function cambiarEstadoVivienda(idVivienda, estadoActual) {
   }
 }
 
-// Exportar lista de usuarios para uso externo si es necesario
 export { USUARIOS_AUTORIZADOS };

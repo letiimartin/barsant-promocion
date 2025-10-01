@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Acceso a Residencial Angel Ganivet: Nueva promoción de 33 viviendas en Granada. Barsant Promociones Inmobiliarias.">
     <title>Acceso | Residencial Angel Ganivet | Barsant Promociones Inmobiliarias</title>
-    <!-- Fuentes -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <!-- Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Estilos -->
+    
+    <!-- EmailJS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -78,8 +79,20 @@
             transition: all 0.3s ease;
             font-family: 'Montserrat', sans-serif;
         }
+
+        .form-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+            margin-bottom: 15px;
+        }
         
-        .login-input:focus {
+        .login-input:focus,
+        .form-input:focus {
             outline: none;
             border-color: #e0c88c;
             box-shadow: 0 0 0 3px rgba(224, 200, 140, 0.1);
@@ -152,6 +165,30 @@
             border: 1px solid #c8e6c9;
         }
 
+        .hidden {
+            display: none !important;
+        }
+
+        .user-data-form {
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .required {
+            color: #c62828;
+        }
+
         @keyframes slideIn {
             from {
                 opacity: 0;
@@ -185,56 +222,129 @@
             Barsant <span>Promociones</span>
         </div>
         
-        <h2 class="login-title">Acceso Privado</h2>
-        <p class="login-subtitle">
-            Introduzca su contraseña para acceder a<br>
-            <strong>Residencial Angel Ganivet</strong>
-        </p>
-        
-        <div class="password-container">
-            <input 
-                type="password" 
-                id="password" 
-                class="login-input" 
-                placeholder="Contraseña de acceso" 
-                required
-                autocomplete="current-password"
-            >
-            <button 
-                type="button" 
-                class="password-toggle" 
-                id="togglePassword"
-                title="Mostrar/Ocultar contraseña"
-            >
-                <i class="fas fa-eye" id="eyeIcon"></i>
+        <!-- Paso 1: Login con contraseña -->
+        <div id="password-step">
+            <h2 class="login-title">Acceso Privado</h2>
+            <p class="login-subtitle">
+                Introduzca su contraseña para acceder a<br>
+                <strong>Residencial Angel Ganivet</strong>
+            </p>
+            
+            <div class="password-container">
+                <input 
+                    type="password" 
+                    id="password" 
+                    class="login-input" 
+                    placeholder="Contraseña de acceso" 
+                    required
+                    autocomplete="current-password"
+                >
+                <button 
+                    type="button" 
+                    class="password-toggle" 
+                    id="togglePassword"
+                    title="Mostrar/Ocultar contraseña"
+                >
+                    <i class="fas fa-eye" id="eyeIcon"></i>
+                </button>
+            </div>
+            
+            <div id="error-message" class="message error-message"></div>
+            <div id="success-message" class="message success-message"></div>
+            
+            <button type="button" id="login-btn" class="login-button">
+                <i class="fas fa-sign-in-alt"></i> Acceder
             </button>
         </div>
-        
-        <div id="error-message" class="message error-message"></div>
-        <div id="success-message" class="message success-message"></div>
-        
-        <button type="button" id="login-btn" class="login-button">
-            <i class="fas fa-sign-in-alt"></i> Acceder
-        </button>
+
+        <!-- Paso 2: Formulario de datos del usuario -->
+        <div id="user-data-step" class="hidden">
+            <h2 class="login-title">Datos de Contacto</h2>
+            <p class="login-subtitle">
+                Por favor, complete sus datos para continuar
+            </p>
+
+            <form id="user-data-form" class="user-data-form">
+                <div class="form-group">
+                    <label for="user-name" class="form-label">
+                        Nombre completo <span class="required">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        id="user-name" 
+                        class="form-input" 
+                        placeholder="Ej: Juan Pérez García"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="user-email" class="form-label">
+                        Correo electrónico <span class="required">*</span>
+                    </label>
+                    <input 
+                        type="email" 
+                        id="user-email" 
+                        class="form-input" 
+                        placeholder="ejemplo@email.com"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="user-phone" class="form-label">
+                        Teléfono <span class="required">*</span>
+                    </label>
+                    <input 
+                        type="tel" 
+                        id="user-phone" 
+                        class="form-input" 
+                        placeholder="+34 600 000 000"
+                        required
+                    >
+                </div>
+
+                <div id="form-error-message" class="message error-message"></div>
+                <div id="form-success-message" class="message success-message"></div>
+
+                <button type="submit" id="submit-data-btn" class="login-button">
+                    <i class="fas fa-check"></i> Continuar
+                </button>
+            </form>
+        </div>
     </div>
 
-    <script>
+    <script type="module">
+        import { logUserAccess } from '/src/js/accessLogger.js';
+
+        // Configuración de EmailJS - REEMPLAZAR CON TUS CREDENCIALES
+        const EMAILJS_CONFIG = {
+            publicKey: 'TU_PUBLIC_KEY',        // Tu Public Key de EmailJS
+            serviceId: 'TU_SERVICE_ID',         // Tu Service ID
+            templateId: 'TU_TEMPLATE_ID'        // Tu Template ID
+        };
+
+        // Inicializar EmailJS
+        if (typeof emailjs !== 'undefined') {
+            emailjs.init(EMAILJS_CONFIG.publicKey);
+            console.log('✅ EmailJS inicializado');
+        }
+
         class SecureLogin {
             constructor() {
                 this.attempts = this.getStoredAttempts();
                 this.maxAttempts = 3;
-                this.lockoutDuration = 10 * 60 * 1000; // 10 minutos
+                this.lockoutDuration = 10 * 60 * 1000;
+                this.userInfo = null;
                 this.init();
             }
 
             init() {
-                // Verificar si ya está autenticado
                 if (sessionStorage.getItem('authenticated') === 'true') {
                     window.location.href = '/index.html';
                     return;
                 }
 
-                // Verificar si está bloqueado
                 if (this.isLocked()) {
                     this.showLockoutMessage();
                     return;
@@ -246,14 +356,12 @@
 
             isLocked() {
                 if (this.attempts.count < this.maxAttempts) return false;
-                
                 const lockoutEnd = this.attempts.lastAttempt + this.lockoutDuration;
                 return Date.now() < lockoutEnd;
             }
 
             getLockoutTimeRemaining() {
                 if (!this.isLocked()) return 0;
-                
                 const lockoutEnd = this.attempts.lastAttempt + this.lockoutDuration;
                 return Math.ceil((lockoutEnd - Date.now()) / 1000);
             }
@@ -264,12 +372,9 @@
                 }
 
                 try {
-                    // Llamar a la función serverless de Netlify
                     const response = await fetch('/.netlify/functions/auth', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ password: password })
                     });
 
@@ -280,9 +385,8 @@
                         throw new Error(data.error || 'Contraseña incorrecta');
                     }
 
-                    // Autenticación exitosa
+                    this.userInfo = data.user;
                     this.resetAttempts();
-                    this.setAuthenticated(data.user);
                     
                     return {
                         success: true,
@@ -292,22 +396,11 @@
                     };
 
                 } catch (error) {
-                    // Si es un error de red, no contar como intento fallido
                     if (error.message.includes('fetch')) {
                         throw new Error('Error de conexión. Verifique su conexión a internet.');
                     }
                     throw error;
                 }
-            }
-
-            setAuthenticated(userInfo) {
-                sessionStorage.setItem('authenticated', 'true');
-                sessionStorage.setItem('userInfo', JSON.stringify({
-                    name: userInfo.name,
-                    type: userInfo.type,
-                    company: userInfo.company,
-                    loginTime: new Date().toISOString()
-                }));
             }
 
             recordFailedAttempt() {
@@ -333,25 +426,25 @@
             setupEventListeners() {
                 const passwordInput = document.getElementById('password');
                 const loginButton = document.getElementById('login-btn');
+                const userDataForm = document.getElementById('user-data-form');
 
                 loginButton.addEventListener('click', () => this.handleLogin());
                 
                 passwordInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        this.handleLogin();
-                    }
+                    if (e.key === 'Enter') this.handleLogin();
                 });
 
-                // Limpiar mensajes al escribir
-                passwordInput.addEventListener('input', () => {
-                    this.hideAllMessages();
+                passwordInput.addEventListener('input', () => this.hideAllMessages());
+
+                userDataForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleUserDataSubmit();
                 });
             }
 
             async handleLogin() {
                 const passwordInput = document.getElementById('password');
                 const loginButton = document.getElementById('login-btn');
-
                 const password = passwordInput.value.trim();
 
                 if (!password) {
@@ -360,7 +453,6 @@
                     return;
                 }
 
-                // Estado de carga
                 loginButton.disabled = true;
                 loginButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando...';
 
@@ -368,12 +460,8 @@
                     const result = await this.verifyPassword(password);
                     
                     if (result.success) {
-                        this.showMessage(`¡Acceso concedido! Bienvenido ${result.name}`, 'success');
-                        
-                        // Delay antes de redireccionar para mostrar el mensaje
-                        setTimeout(() => {
-                            window.location.href = '/index.html';
-                        }, 1500);
+                        this.showMessage('¡Contraseña correcta!', 'success');
+                        setTimeout(() => this.showUserDataForm(), 1000);
                     }
                 } catch (error) {
                     console.error('Login error:', error);
@@ -381,11 +469,8 @@
                     passwordInput.value = '';
                     passwordInput.focus();
 
-                    // Si alcanzó el máximo de intentos, mostrar mensaje de bloqueo
                     if (this.isLocked()) {
-                        setTimeout(() => {
-                            this.showLockoutMessage();
-                        }, 2000);
+                        setTimeout(() => this.showLockoutMessage(), 2000);
                     }
                 } finally {
                     loginButton.disabled = false;
@@ -393,11 +478,93 @@
                 }
             }
 
+            showUserDataForm() {
+                document.getElementById('password-step').classList.add('hidden');
+                document.getElementById('user-data-step').classList.remove('hidden');
+                document.getElementById('user-name').focus();
+            }
+
+            async handleUserDataSubmit() {
+                const submitButton = document.getElementById('submit-data-btn');
+                const userName = document.getElementById('user-name').value.trim();
+                const userEmail = document.getElementById('user-email').value.trim();
+                const userPhone = document.getElementById('user-phone').value.trim();
+
+                if (!userName || !userEmail || !userPhone) {
+                    this.showFormMessage('Por favor complete todos los campos', 'error');
+                    return;
+                }
+
+                if (!this.validateEmail(userEmail)) {
+                    this.showFormMessage('Por favor ingrese un email válido', 'error');
+                    return;
+                }
+
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registrando...';
+
+                try {
+                    const userData = {
+                        name: userName,
+                        email: userEmail,
+                        phone: userPhone
+                    };
+
+                    // Guardar en Firebase y enviar email
+                    await logUserAccess(userData, this.userInfo, EMAILJS_CONFIG);
+
+                    // Establecer autenticación
+                    this.setAuthenticated({
+                        ...this.userInfo,
+                        userName: userName,
+                        userEmail: userEmail,
+                        userPhone: userPhone
+                    });
+
+                    this.showFormMessage('¡Registro exitoso! Redirigiendo...', 'success');
+
+                    setTimeout(() => {
+                        window.location.href = '/index.html';
+                    }, 1500);
+
+                } catch (error) {
+                    console.error('Error al registrar datos:', error);
+                    this.showFormMessage('Error al registrar. Por favor intente nuevamente.', 'error');
+                } finally {
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = '<i class="fas fa-check"></i> Continuar';
+                }
+            }
+
+            validateEmail(email) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            }
+
+            setAuthenticated(userInfo) {
+                sessionStorage.setItem('authenticated', 'true');
+                sessionStorage.setItem('userInfo', JSON.stringify({
+                    ...userInfo,
+                    loginTime: new Date().toISOString()
+                }));
+            }
+
             showMessage(message, type) {
                 this.hideAllMessages();
-
                 const messageId = type === 'error' ? 'error-message' : 'success-message';
                 const messageElement = document.getElementById(messageId);
+                
+                if (messageElement) {
+                    messageElement.textContent = message;
+                    messageElement.style.display = 'block';
+                }
+            }
+
+            showFormMessage(message, type) {
+                const messageId = type === 'error' ? 'form-error-message' : 'form-success-message';
+                const messageElement = document.getElementById(messageId);
+                
+                document.getElementById('form-error-message').style.display = 'none';
+                document.getElementById('form-success-message').style.display = 'none';
                 
                 if (messageElement) {
                     messageElement.textContent = message;
@@ -447,13 +614,9 @@
 
                 const togglePassword = () => {
                     isPasswordVisible = !isPasswordVisible;
-                    
                     passwordInput.type = isPasswordVisible ? 'text' : 'password';
                     eyeIcon.className = isPasswordVisible ? 'fas fa-eye-slash' : 'fas fa-eye';
-                    
-                    const label = isPasswordVisible ? 'Ocultar contraseña' : 'Mostrar contraseña';
-                    toggleButton.setAttribute('title', label);
-                    
+                    toggleButton.setAttribute('title', isPasswordVisible ? 'Ocultar contraseña' : 'Mostrar contraseña');
                     passwordInput.focus();
                 };
 
@@ -464,7 +627,6 @@
             }
         }
 
-        // Inicializar cuando el DOM esté cargado
         document.addEventListener('DOMContentLoaded', function() {
             new SecureLogin();
         });

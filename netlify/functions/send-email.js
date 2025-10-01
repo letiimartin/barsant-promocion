@@ -76,14 +76,19 @@ exports.handler = async (event, context) => {
       minute: '2-digit'
     });
 
-    // Preparar parámetros del email
+    // Preparar parámetros del email (sanitizando para evitar problemas con JSON)
+    const sanitize = (str) => {
+      if (typeof str !== 'string') return str;
+      return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '\\r');
+    };
+
     const templateParams = {
       to_email: recipientEmail,
-      user_name: accessData.name,
-      user_email: accessData.email,
-      user_phone: accessData.phone,
-      account_name: accessData.accountName,
-      company: accessData.company,
+      user_name: sanitize(accessData.name),
+      user_email: sanitize(accessData.email),
+      user_phone: sanitize(accessData.phone),
+      account_name: sanitize(accessData.accountName),
+      company: sanitize(accessData.company),
       access_date: formattedDate,
       access_time: formattedTime
     };
@@ -91,12 +96,14 @@ exports.handler = async (event, context) => {
     console.log(`Enviando email a ${recipientEmail} para acceso de ${accessData.accountName}`);
 
     // Enviar email via EmailJS API
-    const emailData = JSON.stringify({
+    const emailPayload = {
       service_id: process.env.EMAILJS_SERVICE_ID,
       template_id: process.env.EMAILJS_TEMPLATE_ID,
       user_id: process.env.EMAILJS_PUBLIC_KEY,
       template_params: templateParams
-    });
+    };
+
+    const emailData = JSON.stringify(emailPayload);
 
     const options = {
       hostname: 'api.emailjs.com',

@@ -105,9 +105,6 @@ function mostrarModalIdentificacion(callback) {
             transition: border-color 0.3s;
           "
         />
-        <small style="color: #999; font-size: 0.85rem; display: block; margin-top: 8px;">
-          Ejemplo: lmartin, smartin, jsarabia, cbaro
-        </small>
       </div>
       
       <div style="display: flex; gap: 12px; justify-content: center;">

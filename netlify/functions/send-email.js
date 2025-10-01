@@ -58,7 +58,7 @@ exports.handler = async (event, context) => {
       default:
         throw new Error(`Cuenta no reconocida: ${accessData.accountName}`);
     }
-
+ 
     // Validar que existe el email destinatario
     if (!recipientEmail) {
       throw new Error('Email destinatario no configurado');
@@ -103,6 +103,8 @@ exports.handler = async (event, context) => {
       template_params: templateParams
     };
 
+    // AÑADE ESTA LÍNEA PARA VER QUÉ SE ESTÁ ENVIANDO
+    console.log('EmailJS Payload:', JSON.stringify(emailPayload, null, 2));
     const emailData = JSON.stringify(emailPayload);
 
     const options = {

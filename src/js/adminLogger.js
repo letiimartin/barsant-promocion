@@ -7,14 +7,26 @@ import { registrarCambioEstado, actualizarEstadoVivienda } from './firebaseHisto
 // CONFIGURACIÓN DE USUARIOS AUTORIZADOS
 // Obtener desde variables de entorno
 // ========================================
-const USUARIOS_AUTORIZADOS = import.meta.env.USUARIOS_AUTORIZADOS 
-  ? import.meta.env.USUARIOS_AUTORIZADOS.split(',').map(u => u.trim())
-  : [];
+let USUARIOS_AUTORIZADOS = [];
 
-// Validar que existan usuarios configurados
-if (USUARIOS_AUTORIZADOS.length === 0) {
-  console.error('⚠️ No hay usuarios autorizados configurados en variables de entorno');
-}
+// Cargar usuarios autorizados al inicializar
+(async function cargarUsuariosAutorizados() {
+  try {
+    const response = await fetch('/.netlify/functions/get-admin-users');
+    const { users } = await response.json();
+    USUARIOS_AUTORIZADOS = users || [];
+    
+    if (USUARIOS_AUTORIZADOS.length === 0) {
+      console.error('⚠️ No hay usuarios autorizados configurados en variables de entorno');
+    } else {
+      console.log('✅ Usuarios autorizados cargados:', USUARIOS_AUTORIZADOS.length);
+    }
+  } catch (error) {
+    console.error('❌ Error cargando usuarios autorizados:', error);
+    USUARIOS_AUTORIZADOS = [];
+  }
+})();
+
 
 // ========================================
 // MODAL DE IDENTIFICACIÓN DE USUARIO

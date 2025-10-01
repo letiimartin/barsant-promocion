@@ -24,6 +24,10 @@ exports.handler = async (event, context) => {
     }
   
     try {
+      const users = process.env.USUARIOS_AUTORIZADOS 
+        ? process.env.USUARIOS_AUTORIZADOS.split(',').map(u => u.trim())
+        : [];
+  
       return {
         statusCode: 200,
         headers: {
@@ -31,18 +35,10 @@ exports.handler = async (event, context) => {
           'Content-Type': 'application/json',
           'Cache-Control': 'public, max-age=3600'
         },
-        body: JSON.stringify({
-          publicKey: process.env.EMAILJS_PUBLIC_KEY,
-          serviceId: process.env.EMAILJS_SERVICE_ID,
-          templateId: process.env.EMAILJS_TEMPLATE_ID,
-          emails: {
-            grupoTorres: process.env.EMAIL_GRUPO_TORRES,
-            ivercasa: process.env.EMAIL_IVERCASA
-          }
-        })
+        body: JSON.stringify({ users })
       };
     } catch (error) {
-      console.error('Error obteniendo configuración:', error);
+      console.error('Error obteniendo usuarios admin:', error);
       return {
         statusCode: 500,
         headers: {
@@ -50,7 +46,8 @@ exports.handler = async (event, context) => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ 
-          error: 'Failed to get email configuration' 
+          error: 'Failed to get admin users',
+          users: []
         })
       };
     }

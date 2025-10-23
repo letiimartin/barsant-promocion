@@ -778,27 +778,7 @@
     const trasteroText = document.getElementById('trastero-text');
     const trasteroDetails = document.getElementById('trastero-details');
     const trasteroPrice = document.getElementById('trastero-price');
-    if (v.dormitorios === 3) {
-        const cocheraFeature = document.getElementById('cochera-feature');
-        const trasteroFeature = document.getElementById('trastero-feature');
-        
-        // Añadir badge "INCLUIDO" si tiene cochera y trastero
-        if (v.cochera && v.trastero) {
-            const badgeHTML = '<span class="badge-incluido">INCLUIDO</span>';
-            
-            // Modificar el texto de cochera
-            const cocheraText = document.getElementById('cochera-text');
-            if (cocheraText) {
-                cocheraText.innerHTML = `Plaza de garaje incluida ${badgeHTML}`;
-            }
-            
-            // Modificar el texto de trastero
-            const trasteroText = document.getElementById('trastero-text');
-            if (trasteroText) {
-                trasteroText.innerHTML = `Trastero incluido ${badgeHTML}`;
-            }
-        }
-    }
+ 
 
     // ESCENARIO 1: Sin cochera ni trastero
     if (!vivienda.cochera && !vivienda.trastero) {
@@ -839,7 +819,29 @@
         trasteroPrice.textContent = `+€${(vivienda.precio_trastero || 0).toLocaleString()}`;
         trasteroPrice.style.display = 'block';
     }
+    if (v.dormitorios === 3) {
+        const cocheraFeature = document.getElementById('cochera-feature');
+        const trasteroFeature = document.getElementById('trastero-feature');
+        
+        // Añadir badge "INCLUIDO" si tiene cochera y trastero
+        if (v.cochera && v.trastero) {
+            const badgeHTML = '<span class="badge-incluido">INCLUIDO</span>';
+            
+            // Modificar el texto de cochera
+            const cocheraText = document.getElementById('cochera-text');
+            if (cocheraText) {
+                cocheraText.innerHTML = `Plaza de garaje incluida ${badgeHTML}`;
+            }
+            
+            // Modificar el texto de trastero
+            const trasteroText = document.getElementById('trastero-text');
+            if (trasteroText) {
+                trasteroText.innerHTML = `Trastero incluido ${badgeHTML}`;
+            }
+        }
     }
+    }
+
 
     // Funcionalidad del plano PDF - MODIFICADA PARA USAR planoLink
     function initPlanoFunctionality(viviendaData) {

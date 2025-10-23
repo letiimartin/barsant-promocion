@@ -438,6 +438,16 @@
             border-top: 2px solid var(--secondary-color);
             padding-top: 20px;
         }
+        .badge-incluido {
+            background-color: #28a745;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 8px;
+            text-transform: uppercase;
+        }
 
         @media (max-width: 992px) {
             .vivienda-content {
@@ -768,6 +778,27 @@
     const trasteroText = document.getElementById('trastero-text');
     const trasteroDetails = document.getElementById('trastero-details');
     const trasteroPrice = document.getElementById('trastero-price');
+    if (v.dormitorios === 3) {
+        const cocheraFeature = document.getElementById('cochera-feature');
+        const trasteroFeature = document.getElementById('trastero-feature');
+        
+        // Añadir badge "INCLUIDO" si tiene cochera y trastero
+        if (v.cochera && v.trastero) {
+            const badgeHTML = '<span class="badge-incluido">INCLUIDO</span>';
+            
+            // Modificar el texto de cochera
+            const cocheraText = document.getElementById('cochera-text');
+            if (cocheraText) {
+                cocheraText.innerHTML = `Plaza de garaje incluida ${badgeHTML}`;
+            }
+            
+            // Modificar el texto de trastero
+            const trasteroText = document.getElementById('trastero-text');
+            if (trasteroText) {
+                trasteroText.innerHTML = `Trastero incluido ${badgeHTML}`;
+            }
+        }
+    }
 
     // ESCENARIO 1: Sin cochera ni trastero
     if (!vivienda.cochera && !vivienda.trastero) {

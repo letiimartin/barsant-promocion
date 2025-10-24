@@ -438,15 +438,10 @@
             border-top: 2px solid var(--secondary-color);
             padding-top: 20px;
         }
-        .badge-incluido {
-            background-color: #28a745;
-            color: white;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-left: 8px;
+        .texto-incluido {
+            font-weight: 700;
             text-transform: uppercase;
+            color: #28a745;
         }
 
         @media (max-width: 992px) {
@@ -783,11 +778,11 @@
 
     // CASO ESPECIAL: Viviendas de 3 dormitorios SIN cochera/trastero asignados aún
     if (esVivienda3Dorm && !vivienda.cochera && !vivienda.trastero) {
-        cocheraText.innerHTML = 'Plaza de garaje incluida <span class="badge-incluido">INCLUIDO</span>';
+        cocheraText.innerHTML = 'Plaza de garaje <span class="texto-incluido">incluida</span>';
         cocheraDetails.style.display = 'none';
         cocheraPrice.style.display = 'none';
         
-        trasteroText.innerHTML = 'Trastero incluido <span class="badge-incluido">INCLUIDO</span>';
+        trasteroText.innerHTML = 'Trastero <span class="texto-incluido">incluido</span>';
         trasteroDetails.style.display = 'none';
         trasteroPrice.style.display = 'none';
         
@@ -799,13 +794,16 @@
         return;
     }
 
-    const badgeIncluido = esVivienda3Dorm ? ' <span class="badge-incluido">INCLUIDO</span>' : '';
-
     // ESCENARIO 3: Pack vinculado
     if (vivienda.vinculado && vivienda.cochera && vivienda.trastero) {
         const precioTotal = (vivienda.precio_cochera || 0) + (vivienda.precio_trastero || 0);
         
-        cocheraText.innerHTML = `Pack Cochera + Trastero${badgeIncluido} <span class="pack-indicator">PACK</span>`;
+        if (esVivienda3Dorm) {
+            cocheraText.innerHTML = 'Pack Cochera + Trastero <span class="texto-incluido">incluido</span> <span class="pack-indicator">PACK</span>';
+        } else {
+            cocheraText.innerHTML = 'Pack Cochera + Trastero <span class="pack-indicator">PACK</span>';
+        }
+        
         cocheraDetails.textContent = `Cochera ${vivienda.cochera} + Trastero ${vivienda.trastero}`;
         cocheraDetails.style.display = 'block';
         
@@ -822,9 +820,11 @@
 
     // ESCENARIO 2: Cochera y/o trastero asignados independientes
     if (vivienda.cochera) {
-        cocheraText.innerHTML = esVivienda3Dorm 
-            ? `Plaza de garaje incluida${badgeIncluido}`
-            : 'Plaza de garaje asignada (opcional)';
+        if (esVivienda3Dorm) {
+            cocheraText.innerHTML = 'Plaza de garaje <span class="texto-incluido">incluida</span>';
+        } else {
+            cocheraText.textContent = 'Plaza de garaje asignada (opcional)';
+        }
         cocheraDetails.textContent = `Cochera ${vivienda.cochera}`;
         cocheraDetails.style.display = 'block';
         
@@ -837,9 +837,11 @@
     }
 
     if (vivienda.trastero) {
-        trasteroText.innerHTML = esVivienda3Dorm 
-            ? `Trastero incluido${badgeIncluido}`
-            : 'Trastero asignado (opcional)';
+        if (esVivienda3Dorm) {
+            trasteroText.innerHTML = 'Trastero <span class="texto-incluido">incluido</span>';
+        } else {
+            trasteroText.textContent = 'Trastero asignado (opcional)';
+        }
         trasteroDetails.textContent = `Trastero ${vivienda.trastero}`;
         trasteroDetails.style.display = 'block';
         

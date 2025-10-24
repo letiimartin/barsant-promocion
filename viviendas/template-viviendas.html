@@ -156,21 +156,30 @@
             font-size: 1.5rem;
         }
 
-        .feature-list {
-            list-style: none;
-        }
-
         .feature-list li {
             margin-bottom: 10px;
             display: flex;
-            align-items: center;
+            align-items: flex-start; /* Cambiar de center a flex-start */
+            gap: 10px; /* Añadir gap */
         }
 
         .feature-list i {
             color: var(--secondary-color);
-            margin-right: 10px;
+            margin-right: 0; /* Cambiar de 10px a 0 porque usamos gap */
             width: 20px;
+            flex-shrink: 0; /* Evitar que el icono se encoja */
         }
+
+        /* Añadir este nuevo estilo */
+        .feature-text {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+    
 
         .price {
             font-size: 2rem;

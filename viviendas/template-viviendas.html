@@ -770,7 +770,7 @@
     }
 
     // Función para actualizar información de cochera y trastero
-function actualizarCocheraYTrastero(vivienda) {
+    function actualizarCocheraYTrastero(vivienda) {
     const cocheraText = document.getElementById('cochera-text');
     const cocheraDetails = document.getElementById('cochera-details');
     const cocheraPrice = document.getElementById('cochera-price');
@@ -779,13 +779,26 @@ function actualizarCocheraYTrastero(vivienda) {
     const trasteroDetails = document.getElementById('trastero-details');
     const trasteroPrice = document.getElementById('trastero-price');
 
-    // ESCENARIO 1: Sin cochera ni trastero
+    const esVivienda3Dorm = vivienda.dormitorios === 3;
+
+    // CASO ESPECIAL: Viviendas de 3 dormitorios SIN cochera/trastero asignados aún
+    if (esVivienda3Dorm && !vivienda.cochera && !vivienda.trastero) {
+        cocheraText.innerHTML = 'Plaza de garaje incluida <span class="badge-incluido">INCLUIDO</span>';
+        cocheraDetails.style.display = 'none';
+        cocheraPrice.style.display = 'none';
+        
+        trasteroText.innerHTML = 'Trastero incluido <span class="badge-incluido">INCLUIDO</span>';
+        trasteroDetails.style.display = 'none';
+        trasteroPrice.style.display = 'none';
+        
+        return;
+    }
+
+    // ESCENARIO 1: Sin cochera ni trastero (y NO es de 3 dormitorios)
     if (!vivienda.cochera && !vivienda.trastero) {
         return;
     }
 
-    // Detectar si es vivienda de 3 dormitorios
-    const esVivienda3Dorm = vivienda.dormitorios === 3;
     const badgeIncluido = esVivienda3Dorm ? ' <span class="badge-incluido">INCLUIDO</span>' : '';
 
     // ESCENARIO 3: Pack vinculado
@@ -796,7 +809,6 @@ function actualizarCocheraYTrastero(vivienda) {
         cocheraDetails.textContent = `Cochera ${vivienda.cochera} + Trastero ${vivienda.trastero}`;
         cocheraDetails.style.display = 'block';
         
-        // Si es de 3 dormitorios, NO mostrar precio (está incluido)
         if (!esVivienda3Dorm) {
             cocheraPrice.textContent = `+€${precioTotal.toLocaleString()}`;
             cocheraPrice.style.display = 'block';
@@ -816,7 +828,6 @@ function actualizarCocheraYTrastero(vivienda) {
         cocheraDetails.textContent = `Cochera ${vivienda.cochera}`;
         cocheraDetails.style.display = 'block';
         
-        // Si es de 3 dormitorios, NO mostrar precio
         if (!esVivienda3Dorm) {
             cocheraPrice.textContent = `+€${(vivienda.precio_cochera || 0).toLocaleString()}`;
             cocheraPrice.style.display = 'block';
@@ -832,7 +843,6 @@ function actualizarCocheraYTrastero(vivienda) {
         trasteroDetails.textContent = `Trastero ${vivienda.trastero}`;
         trasteroDetails.style.display = 'block';
         
-        // Si es de 3 dormitorios, NO mostrar precio
         if (!esVivienda3Dorm) {
             trasteroPrice.textContent = `+€${(vivienda.precio_trastero || 0).toLocaleString()}`;
             trasteroPrice.style.display = 'block';

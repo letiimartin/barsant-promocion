@@ -469,6 +469,12 @@
                             setTimeout(() => {
                                 window.location.href = '/index.html';
                             }, 1000);
+                        } else if (result.type === 'standard') {
+                            this.setAuthenticated(this.userInfo);
+                            setTimeout(() => {
+                                window.location.href = '/index.html';
+                            }, 1000);
+                         
                         } else {
                             // Para inmobiliarias, mostrar formulario de datos
                             setTimeout(() => {

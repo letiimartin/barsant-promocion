@@ -63,7 +63,12 @@ exports.handler = async (event, context) => {
               name: 'Administrador',
               type: 'admin',
               company: 'Barsant'
-          }
+          },
+          [process.env.BARSANT_PASSWORD]: {
+            name: 'Barsant',
+            type: 'standard',  // Nuevo tipo para acceso estándar
+            company: 'Barsant'
+        }
       };
 
       // Verificar si la contraseña es válida

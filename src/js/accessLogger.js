@@ -79,7 +79,7 @@ export async function saveAccessLog(accessData) {
 export async function sendAccessNotification(accessData) {
     try {
         // Si es administrador, no enviar email
-        if (accessData.accountName === 'Administrador') {
+        if (accessData.accountName === 'Administrador' || accessData.accountName === 'Barsant') {
             console.log('Admin login - no se envía email');
             return { success: true, skipped: true };
         }

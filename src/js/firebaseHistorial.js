@@ -93,6 +93,8 @@ export async function actualizarEstadoVivienda(viviendaId, nuevoEstado, usuarioI
     console.error('Error al actualizar estado:', error);
     throw new Error(`Error al actualizar vivienda: ${error.message}`);
   }
+}
+
 // ========================================
 // ACTUALIZAR PRECIO DE VIVIENDA
 // ========================================

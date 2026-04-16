@@ -586,7 +586,7 @@ function displayViviendas(vivs) {
       <td>${v.dormitorios}</td>
       <td>${v.baños}</td>
       <td>${(v.m2_construidos || 0).toFixed(2)} m²</td>
-      <td>€${v.precio_vivienda?.toLocaleString() || ''}</td>
+      <td>€${v.precio_vivienda ? Number(v.precio_vivienda).toLocaleString('es-ES') : ''}</td>
       <td class="planos">${planoLink}</td>
       <td class="${estadoClass}">${v.estado}</td>
       <td class="acciones-cell" style="min-width: 160px;">

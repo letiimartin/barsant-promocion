@@ -8,7 +8,7 @@ export function getHeader(activePage = '') {
   <div class="container">
       <div class="header-content">
           <a href="../index.html" class="logo">
-              <img src="assets/images/logo (3).png" alt="Barsant Promociones Logo">
+              <img src="assets/images/logo (3).webp" alt="Barsant Promociones Logo">
           </a>
           <nav>
               <ul>

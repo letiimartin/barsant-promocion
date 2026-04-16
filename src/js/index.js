@@ -3,10 +3,11 @@
  * Versión simplificada sin problemas de MIME types
  */
 
-import { cambiarEstadoVivienda } from './adminLogger.js';
+import { cambiarEstadoVivienda, cambiarPrecioVivienda } from './adminLogger.js';
 
 // Hacer función global para onclick
 window.cambiarEstadoVivienda = cambiarEstadoVivienda;
+window.cambiarPrecioVivienda = cambiarPrecioVivienda;
 /**
  * Función para diagnosticar problemas de carga
  **/
@@ -588,30 +589,7 @@ function initScrollableTable() {
       }
   });
   
-  // Touch scroll mejorado para móviles
-  let startX = 0;
-  let scrollLeft = 0;
-  let isScrolling = false;
-  
-  tableWrapper.addEventListener('touchstart', function(e) {
-      startX = e.touches[0].pageX - this.offsetLeft;
-      scrollLeft = this.scrollLeft;
-      isScrolling = true;
-      this.style.scrollBehavior = 'auto';
-  }, { passive: true });
-  
-  tableWrapper.addEventListener('touchmove', function(e) {
-      if (!isScrolling) return;
-      e.preventDefault();
-      const x = e.touches[0].pageX - this.offsetLeft;
-      const walk = (x - startX) * 1.5; // Multiplicador para sensibilidad
-      this.scrollLeft = scrollLeft - walk;
-  }, { passive: false });
-  
-  tableWrapper.addEventListener('touchend', function() {
-      isScrolling = false;
-      this.style.scrollBehavior = 'smooth';
-  });
+// Touch scroll manejado nativamente por CSS (overflow-x: auto)
   
   // Verificar scroll al cargar y redimensionar
   window.addEventListener('load', checkScrollNeeded);
@@ -710,10 +688,24 @@ function displayViviendas(vivs) {
           `;
       }
 
-      // Formatear precio
-      const precioFormateado = v.precio_vivienda 
-          ? `€${v.precio_vivienda.toLocaleString('es-ES')}` 
+      // Formatear precio y botón
+      let elementPrecio;
+      const precioFormateadoStr = v.precio_vivienda 
+          ? `€${Number(v.precio_vivienda).toLocaleString('es-ES')}` 
           : 'Consultar';
+
+      if (esAdmin) {
+          elementPrecio = `
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <strong>${precioFormateadoStr}</strong>
+                <button class="btn-editar-precio" onclick="cambiarPrecioVivienda('${id}', '${precioFormateadoStr}')" title="Editar Precio" style="background:none; border:none; color:var(--secondary-color); cursor:pointer;">
+                    <i class="fas fa-edit"></i>
+                </button>
+            </div>
+          `;
+      } else {
+          elementPrecio = `<strong>${precioFormateadoStr}</strong>`;
+      }
 
       // Formatear superficie
       const superficieFormateada = v.m2_construidos 
@@ -736,7 +728,7 @@ function displayViviendas(vivs) {
           <td><strong>${v.dormitorios}</strong></td>
           <td>${v.baños}</td>
           <td>${superficieFormateada}</td>
-          <td><strong>${precioFormateado}</strong></td>
+          <td>${elementPrecio}</td>
           <td class="planos">${planoLinks}</td>
           <td>${botonEstado}</td>
           <td>
@@ -1295,7 +1287,7 @@ async function loadHeaderLogo() {
             headerLogo.src = logoUrl;
             headerLogo.onload = () => console.log('Logo del header cargado desde Firebase');
             headerLogo.onerror = () => {
-                headerLogo.src = 'assets/images/logo (3).png';
+                headerLogo.src = 'assets/images/logo (3).webp';
             };
         }
         
@@ -1303,7 +1295,7 @@ async function loadHeaderLogo() {
             mobileMenuLogo.src = logoUrl;
             mobileMenuLogo.onload = () => console.log('Logo del menú móvil cargado desde Firebase');
             mobileMenuLogo.onerror = () => {
-                mobileMenuLogo.src = 'assets/images/logo (3).png';
+                mobileMenuLogo.src = 'assets/images/logo (3).webp';
             };
         }
         
@@ -1313,8 +1305,8 @@ async function loadHeaderLogo() {
         const headerLogo = document.getElementById('header-logo');
         const mobileMenuLogo = document.getElementById('mobile-menu-logo');
         
-        if (headerLogo) headerLogo.src = 'assets/images/logo (3).png';
-        if (mobileMenuLogo) mobileMenuLogo.src = 'assets/images/logo (3).png';
+        if (headerLogo) headerLogo.src = 'assets/images/logo (3).webp';
+        if (mobileMenuLogo) mobileMenuLogo.src = 'assets/images/logo (3).webp';
     }
 }
 

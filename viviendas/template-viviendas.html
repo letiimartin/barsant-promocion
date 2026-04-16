@@ -1132,7 +1132,7 @@
 
     // Actualizar precio - usar precio_vivienda si está disponible, sino precio_total
     const precioMostrar = v.precio_vivienda || v.precio_total || 0;
-    document.getElementById('precio').textContent = `€${precioMostrar.toLocaleString()}`;
+    document.getElementById('precio').textContent = `€${Number(precioMostrar).toLocaleString('es-ES')}`;
 
     // Actualizar estado
     document.getElementById('estado').textContent = v.estado;

@@ -464,17 +464,11 @@
                         this.showMessage('¡Contraseña correcta!', 'success');
                         
                         // SI ES ADMIN, ir directo a la página sin pedir datos
-                        if (result.type === 'admin') {
+                        if (result.type === 'admin' || result.type === 'standard') {
                             this.setAuthenticated(this.userInfo);
                             setTimeout(() => {
                                 window.location.href = '/index.html';
                             }, 1000);
-                        } else if (result.type === 'standard') {
-                            this.setAuthenticated(this.userInfo);
-                            setTimeout(() => {
-                                window.location.href = '/index.html';
-                            }, 1000);
-                         
                         } else {
                             // Para inmobiliarias, mostrar formulario de datos
                             setTimeout(() => {

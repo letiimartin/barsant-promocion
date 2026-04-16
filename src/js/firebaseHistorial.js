@@ -93,4 +93,36 @@ export async function actualizarEstadoVivienda(viviendaId, nuevoEstado, usuarioI
     console.error('Error al actualizar estado:', error);
     throw new Error(`Error al actualizar vivienda: ${error.message}`);
   }
+// ========================================
+// ACTUALIZAR PRECIO DE VIVIENDA
+// ========================================
+export async function actualizarPrecioVivienda(viviendaId, nuevoPrecio, usuarioId) {
+  try {
+    if (!db) {
+      await initializeFirebase();
+    }
+    
+    // Validar y castear el precio a formato numérico
+    const precioNumerico = typeof nuevoPrecio === 'string' 
+      ? parseFloat(nuevoPrecio.replace(/[^\d.-]/g, '')) 
+      : parseFloat(nuevoPrecio);
+
+    if (isNaN(precioNumerico)) {
+      throw new Error('El precio proporcionado no es un número válido');
+    }
+
+    const viviendaRef = doc(db, "datos_web", viviendaId);
+    await updateDoc(viviendaRef, {
+      precio_vivienda: precioNumerico,
+      fecha_actualizacion: new Date().toISOString(),
+      ultimo_usuario_modificacion: usuarioId
+    });
+    
+    console.log(`Precio actualizado: ${viviendaId} -> ${precioNumerico}`);
+    return true;
+    
+  } catch (error) {
+    console.error('Error al actualizar precio:', error);
+    throw new Error(`Error al actualizar vivienda: ${error.message}`);
+  }
 }

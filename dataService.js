@@ -292,7 +292,7 @@ export function getNombreVivienda(vivienda) {
 
 // Formatea el precio
 export function formatearPrecio(precio) {
-  return `€${precio?.toLocaleString() || 0}`;
+  return `€${precio ? Number(precio).toLocaleString('es-ES') : 0}`;
 }
 
 // Genera el subtitulo con caracteristicas

@@ -1,7 +1,7 @@
 // src/js/adminLogger.js
 // Sistema de identificación de usuarios admin y cambio de estado
 
-import { registrarCambioEstado, actualizarEstadoVivienda } from './firebaseHistorial.js';
+import { registrarCambioEstado, actualizarEstadoVivienda, actualizarPrecioVivienda } from './firebaseHistorial.js';
 
 // ========================================
 // CONFIGURACIÓN DE USUARIOS AUTORIZADOS
@@ -276,6 +276,72 @@ export async function cambiarEstadoVivienda(idVivienda, estadoActual) {
   } catch (error) {
     console.error("Error en cambiarEstadoVivienda:", error);
     alert("Error al iniciar el cambio de estado.");
+  }
+}
+
+// ========================================
+// FUNCIÓN PRINCIPAL PARA CAMBIAR PRECIO
+// ========================================
+export async function cambiarPrecioVivienda(idVivienda, precioActual) {
+  try {
+    const userInfo = window.authUtils?.getUserInfo();
+    if (!userInfo || userInfo.type !== 'admin') {
+      alert('No tienes permisos para realizar esta acción.\nDebes iniciar sesión como administrador.');
+      return;
+    }
+    
+    mostrarModalIdentificacion(async (usuarioId) => {
+      let textoOriginal = '';
+      let targetElement = event?.target;
+      let boton = targetElement?.closest('button') || targetElement;
+      
+      try {
+        const nuevoPrecioStr = prompt(`Usuario: ${usuarioId}\n\nVivienda: ${idVivienda}\nPrecio actual: ${precioActual}\n\nIngresa el nuevo precio (solo números):`, precioActual ? precioActual.toString().replace(/[^\d.-]/g, '') : '');
+        
+        if (nuevoPrecioStr === null) return; // Cancelado
+        
+        const nuevoPrecio = parseFloat(nuevoPrecioStr.replace(/[^\d.-]/g, ''));
+        
+        if (isNaN(nuevoPrecio)) {
+            alert('Por favor ingresa un número válido.');
+            return;
+        }
+
+        const confirmar = confirm(
+          `¿Confirmar cambio de precio?\n\n` +
+          `Vivienda: ${idVivienda}\n` +
+          `${precioActual} → €${nuevoPrecio.toLocaleString('es-ES')}`
+        );
+        
+        if (!confirmar) return;
+        
+        if (boton) {
+          textoOriginal = boton.innerHTML;
+          boton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+          boton.disabled = true;
+        }
+        
+        // Actualizar precio en Firebase
+        await actualizarPrecioVivienda(idVivienda, nuevoPrecio, usuarioId);
+        console.log(`Precio actualizado: ${idVivienda} -> ${nuevoPrecio}`);
+        
+        alert(`Precio cambiado exitosamente\n\nCambio realizado por: ${usuarioId}`);
+        window.location.reload();
+        
+      } catch (error) {
+        console.error("Error al actualizar el precio:", error);
+        alert(`Error al cambiar el precio:\n${error.message}\n\nVerifica tu conexión e intenta de nuevo.`);
+        
+        if (boton && textoOriginal) {
+          boton.disabled = false;
+          boton.innerHTML = textoOriginal;
+        }
+      }
+    });
+    
+  } catch (error) {
+    console.error("Error en cambiarPrecioVivienda:", error);
+    alert("Error al iniciar el cambio de precio.");
   }
 }
 

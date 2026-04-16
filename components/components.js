@@ -15,7 +15,7 @@ class BarsantComponents {
       <div class="container">
         <div class="header-content">
           <a href="../index.html" class="logo">
-            <img src="../assets/images/logo (3).png" alt="Barsant Promociones Logo">
+            <img src="../assets/images/logo (3).webp" alt="Barsant Promociones Logo">
             <span>Barsant Promociones</span>
           </a>
           <nav>
@@ -148,7 +148,7 @@ class BarsantComponents {
       <div class="container">
         <div class="property-summary-container">
           <div class="property-summary-details">
-            <div class="property-image" style="background-image: url('../assets/images/foto1.jpg');"></div>
+            <div class="property-image" style="background-image: url('../assets/images/foto1.webp');"></div>
             <div class="property-info">
               <h3 id="property-title">${title}</h3>
               <p id="property-specs">${specs}</p>

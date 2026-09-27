@@ -3,11 +3,12 @@
  * Versión simplificada sin problemas de MIME types
  */
 
-import { cambiarEstadoVivienda, cambiarPrecioVivienda } from './adminLogger.js';
+import { cambiarEstadoVivienda, cambiarPrecioVivienda, editarDatosVivienda } from './adminLogger.js';
 
 // Hacer función global para onclick
 window.cambiarEstadoVivienda = cambiarEstadoVivienda;
 window.cambiarPrecioVivienda = cambiarPrecioVivienda;
+window.editarDatosVivienda = editarDatosVivienda;
 /**
  * Función para diagnosticar problemas de carga
  **/
@@ -695,13 +696,20 @@ function displayViviendas(vivs) {
           : 'Consultar';
 
       if (esAdmin) {
+          // Resumen de cochera/trastero asignados (solo visible para admin)
+          const extras = [
+              v.cochera ? `Cochera ${v.cochera}${v.precio_cochera ? ` (€${Number(v.precio_cochera).toLocaleString('es-ES')})` : ''}` : '',
+              v.trastero ? `Trastero ${v.trastero}${v.precio_trastero ? ` (€${Number(v.precio_trastero).toLocaleString('es-ES')})` : ''}` : ''
+          ].filter(Boolean).join(v.vinculado ? ' + ' : ' · ');
+
           elementPrecio = `
             <div style="display: flex; align-items: center; gap: 8px;">
                 <strong>${precioFormateadoStr}</strong>
-                <button class="btn-editar-precio" onclick="cambiarPrecioVivienda('${id}', '${precioFormateadoStr}')" title="Editar Precio" style="background:none; border:none; color:var(--secondary-color); cursor:pointer;">
+                <button class="btn-editar-precio" onclick="editarDatosVivienda('${id}')" title="Editar precio, cochera y trastero" style="background:none; border:none; color:var(--secondary-color); cursor:pointer;">
                     <i class="fas fa-edit"></i>
                 </button>
             </div>
+            <small style="display:block; color:#888; font-size:0.75rem;">${extras || 'Sin cochera ni trastero'}</small>
           `;
       } else {
           elementPrecio = `<strong>${precioFormateadoStr}</strong>`;

@@ -128,3 +128,57 @@ export async function actualizarPrecioVivienda(viviendaId, nuevoPrecio, usuarioI
     throw new Error(`Error al actualizar vivienda: ${error.message}`);
   }
 }
+// ========================================
+// ACTUALIZAR DATOS COMERCIALES (precio, cochera, trastero)
+// ========================================
+const CAMPOS_EDITABLES = ['precio_vivienda', 'cochera', 'precio_cochera', 'trastero', 'precio_trastero', 'vinculado'];
+
+export async function actualizarDatosVivienda(viviendaId, cambios, valoresAnteriores, usuarioId) {
+  try {
+    if (!db) {
+      await initializeFirebase();
+    }
+
+    const datos = {};
+    CAMPOS_EDITABLES.forEach(campo => {
+      if (campo in cambios) datos[campo] = cambios[campo];
+    });
+
+    if (Object.keys(datos).length === 0) {
+      throw new Error('No hay cambios que guardar');
+    }
+
+    const viviendaRef = doc(db, "datos_web", viviendaId);
+    await updateDoc(viviendaRef, {
+      ...datos,
+      fecha_actualizacion: new Date().toISOString(),
+      ultimo_usuario_modificacion: usuarioId
+    });
+
+    // Registrar en historial (no crítico)
+    try {
+      const anteriores = {};
+      Object.keys(datos).forEach(campo => {
+        anteriores[campo] = valoresAnteriores?.[campo] ?? null;
+      });
+      await addDoc(collection(db, 'historial_cambios_datos'), {
+        vivienda_id: viviendaId,
+        valores_anteriores: anteriores,
+        valores_nuevos: datos,
+        usuario_id: usuarioId,
+        timestamp: serverTimestamp(),
+        fecha_iso: new Date().toISOString(),
+        source: 'web_admin'
+      });
+    } catch (historialError) {
+      console.warn('No se pudo registrar en historial (el cambio se aplicó correctamente):', historialError);
+    }
+
+    console.log(`Datos actualizados: ${viviendaId}`, datos);
+    return true;
+
+  } catch (error) {
+    console.error('Error al actualizar datos:', error);
+    throw new Error(`Error al actualizar vivienda: ${error.message}`);
+  }
+}

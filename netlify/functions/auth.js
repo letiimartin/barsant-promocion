@@ -46,33 +46,34 @@ exports.handler = async (event, context) => {
           };
       }
 
-      // Obtener contraseñas de las variables de entorno
-      const passwords = {
-          
-          [process.env.GTORRES_PASSWORD]: {
-              name: 'Grupo Torres',
-              type: 'inmobiliaria',
-              company: 'Partner'
-          },
-          [process.env.IVERCASA_PASSWORD]: {
-              name: 'Ivercasa',
-              type: 'inmobiliaria',
-              company: 'Partner'
-          },
-          [process.env.ADMIN_PASSWORD]: {
-              name: 'Administrador',
-              type: 'admin',
-              company: 'Barsant'
-          },
-          [process.env.BARSANT_PASSWORD]: {
-            name: 'Barsant',
-            type: 'standard',  // Nuevo tipo para acceso estándar
-            company: 'Barsant'
-        }
+      // Perfiles de acceso
+      const profiles = {
+          gtorres: { name: 'Grupo Torres', type: 'inmobiliaria', company: 'Partner' },
+          ivercasa: { name: 'Ivercasa', type: 'inmobiliaria', company: 'Partner' },
+          admin: { name: 'Administrador', type: 'admin', company: 'Barsant' },
+          barsant: { name: 'Barsant', type: 'standard', company: 'Barsant' } // Acceso estándar
       };
 
+      // Contraseñas (variables de entorno de Netlify) -> perfil
+      // GTORRES_EXTRA_PASSWORDS admite contraseñas adicionales de Grupo Torres separadas por comas
+      const passwordEntries = [
+          [process.env.GTORRES_PASSWORD, profiles.gtorres],
+          ...(process.env.GTORRES_EXTRA_PASSWORDS || '').split(',').map(p => [p.trim(), profiles.gtorres]),
+          [process.env.IVERCASA_PASSWORD, profiles.ivercasa],
+          [process.env.ADMIN_PASSWORD, profiles.admin],
+          [process.env.BARSANT_PASSWORD, profiles.barsant]
+      ];
+
+      // Ignorar variables no definidas o vacías (evita que "undefined" sea una contraseña válida)
+      const passwords = {};
+      for (const [pwd, profile] of passwordEntries) {
+          if (pwd && !Object.prototype.hasOwnProperty.call(passwords, pwd)) {
+              passwords[pwd] = profile;
+          }
+      }
+
       // Verificar si la contraseña es válida
-      const authInfo = passwords[password];
+      const authInfo = Object.prototype.hasOwnProperty.call(passwords, password) ? passwords[password] : null;
 
       if (!authInfo) {
           return {

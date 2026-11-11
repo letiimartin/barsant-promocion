@@ -393,7 +393,8 @@
                         success: true,
                         name: data.user.name,
                         type: data.user.type,
-                        company: data.user.company
+                        company: data.user.company,
+                        skipContactForm: data.user.skipContactForm === true
                     };
 
                 } catch (error) {
@@ -463,8 +464,8 @@
                     if (result.success) {
                         this.showMessage('¡Contraseña correcta!', 'success');
                         
-                        // SI ES ADMIN, ir directo a la página sin pedir datos
-                        if (result.type === 'admin' || result.type === 'standard') {
+                        // Admin, acceso estándar o contraseñas sin datos: ir directo a la página sin pedir datos
+                        if (result.type === 'admin' || result.type === 'standard' || result.skipContactForm) {
                             this.setAuthenticated(this.userInfo);
                             setTimeout(() => {
                                 window.location.href = '/index.html';

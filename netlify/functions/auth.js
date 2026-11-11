@@ -53,12 +53,15 @@ exports.handler = async (event, context) => {
           admin: { name: 'Administrador', type: 'admin', company: 'Barsant' },
           barsant: { name: 'Barsant', type: 'standard', company: 'Barsant' } // Acceso estándar
       };
+      // Contraseñas adicionales de Grupo Torres: mismo perfil, pero sin pedir datos de contacto
+      const grupoGTSinDatos = { ...profiles.grupoGT, skipContactForm: true };
 
       // Contraseñas (variables de entorno de Netlify) -> perfil
       // GTORRES_EXTRA_PASSWORDS admite contraseñas adicionales de Grupo Torres separadas por comas
+      // (con ellas no se piden datos de contacto al entrar)
       const passwordEntries = [
           [process.env.GTORRES_PASSWORD, profiles.grupoGT],
-          ...(process.env.GTORRES_EXTRA_PASSWORDS || '').split(',').map(p => [p.trim(), profiles.grupoGT]),
+          ...(process.env.GTORRES_EXTRA_PASSWORDS || '').split(',').map(p => [p.trim(), grupoGTSinDatos]),
           [process.env.IVERCASA_PASSWORD, profiles.ivercasa],
           [process.env.ADMIN_PASSWORD, profiles.admin],
           [process.env.BARSANT_PASSWORD, profiles.barsant]
@@ -101,7 +104,8 @@ exports.handler = async (event, context) => {
               user: {
                   name: authInfo.name,
                   type: authInfo.type,
-                  company: authInfo.company
+                  company: authInfo.company,
+                  skipContactForm: authInfo.skipContactForm === true
               }
           })
       };

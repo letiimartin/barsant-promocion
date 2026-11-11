@@ -21,7 +21,6 @@ function cerrarSesion(e) {
     
     // Eliminar la autenticación
     sessionStorage.removeItem('authenticated');
-    sessionStorage.removeItem('user');
     
     // Obtener la ruta base del sitio
     const baseUrl = window.location.origin;

@@ -1,21 +1,25 @@
 const crypto = require('crypto');
 
-/**
- * Usuarios con contraseña propia.
- * La contraseña de cada usuario se lee de una variable de entorno de Netlify,
- * nunca se guarda en el repositorio.
- * Para añadir un usuario nuevo: añadir aquí su nombre y la variable correspondiente.
- */
-const USERS = {
-  torres: 'USER_TORRES_PASSWORD'
-};
-
 // Comparación en tiempo constante para no filtrar información por tiempos de respuesta
 function safeEqual(a, b) {
   if (typeof a !== 'string' || typeof b !== 'string' || b.length === 0) return false;
   const hashA = crypto.createHash('sha256').update(a).digest();
   const hashB = crypto.createHash('sha256').update(b).digest();
   return crypto.timingSafeEqual(hashA, hashB);
+}
+
+/**
+ * Contraseñas válidas:
+ * - SITE_PASSWORD: contraseña general del sitio.
+ * - EXTRA_PASSWORDS: contraseñas adicionales separadas por comas (p. ej. "torres").
+ * Ambas se configuran como variables de entorno en Netlify, nunca en el repositorio.
+ */
+function getValidPasswords() {
+  const extra = (process.env.EXTRA_PASSWORDS || '')
+    .split(',')
+    .map(p => p.trim())
+    .filter(Boolean);
+  return [process.env.SITE_PASSWORD, ...extra].filter(Boolean);
 }
 
 exports.handler = async function(event, context) {
@@ -28,29 +32,19 @@ exports.handler = async function(event, context) {
   }
 
   try {
-    const { username, password } = JSON.parse(event.body || '{}');
-    const user = typeof username === 'string' ? username.trim().toLowerCase() : '';
-
-    let valid = false;
-    if (user) {
-      // Acceso con usuario: usar la contraseña propia de ese usuario
-      const envVar = Object.prototype.hasOwnProperty.call(USERS, user) ? USERS[user] : null;
-      valid = envVar ? safeEqual(password, process.env[envVar]) : false;
-    } else {
-      // Acceso sin usuario: contraseña general del sitio
-      valid = safeEqual(password, process.env.SITE_PASSWORD);
-    }
+    const { password } = JSON.parse(event.body || '{}');
+    const valid = getValidPasswords().some(p => safeEqual(password, p));
 
     if (valid) {
       return {
         statusCode: 200,
-        body: JSON.stringify({ success: true, user: user || null })
+        body: JSON.stringify({ success: true })
       };
     }
 
     return {
       statusCode: 401,
-      body: JSON.stringify({ success: false, error: 'Usuario o contraseña incorrectos' })
+      body: JSON.stringify({ success: false, error: 'Contraseña incorrecta' })
     };
   } catch (error) {
     return {

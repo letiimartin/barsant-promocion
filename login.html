@@ -151,17 +151,8 @@
         <div class="login-box">
             <img src="/assets/images/logo (3).png" alt="Barsant Promociones Logo" class="login-logo">
             <h1 class="login-title">Acceso Privado</h1>
-            <p>Introduzca su usuario (opcional) y contraseña para acceder al contenido</p>
+            <p>Introduzca la contraseña para acceder al contenido</p>
             <div class="login-form">
-                <input 
-                    type="text" 
-                    id="username" 
-                    class="login-input" 
-                    placeholder="Usuario (opcional)" 
-                    autocomplete="username"
-                    autocapitalize="none"
-                    spellcheck="false"
-                >
                 <!-- MODIFICADO: Campo de contraseña con toggle -->
                 <div class="password-container">
                     <input 
@@ -193,7 +184,7 @@
                 </div>
                 
                 <button type="button" id="login-btn" class="login-button">Acceder</button>
-                <p id="error-message" class="error-message">Usuario o contraseña incorrectos. Por favor, inténtelo de nuevo.</p>
+                <p id="error-message" class="error-message">Contraseña incorrecta. Por favor, inténtelo de nuevo.</p>
             </div>
         </div>
     </div>
@@ -210,14 +201,12 @@
             }
             
             // Elementos del DOM
-            const usernameInput = document.getElementById('username');
             const passwordInput = document.getElementById('password');
             const loginButton = document.getElementById('login-btn');
             const errorMessage = document.getElementById('error-message');
             
             // Función para verificar la contraseña
             async function checkPassword() {
-                const inputUsername = usernameInput.value.trim();
                 const inputPassword = passwordInput.value.trim();
                 
                 try {
@@ -226,18 +215,13 @@
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({ username: inputUsername, password: inputPassword })
+                        body: JSON.stringify({ password: inputPassword })
                     });
 
                     const data = await response.json();
 
                     if (data.success) {
                         sessionStorage.setItem('authenticated', 'true');
-                        if (data.user) {
-                            sessionStorage.setItem('user', data.user);
-                        } else {
-                            sessionStorage.removeItem('user');
-                        }
                         window.location.href = '/index.html';
                     } else {
                         errorMessage.style.display = 'block';
@@ -255,12 +239,10 @@
             loginButton.addEventListener('click', checkPassword);
             
             // Evento keypress para permitir presionar Enter
-            [usernameInput, passwordInput].forEach(function(input) {
-                input.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        checkPassword();
-                    }
-                });
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkPassword();
+                }
             });
         });
 

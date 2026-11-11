@@ -48,7 +48,7 @@ exports.handler = async (event, context) => {
 
       // Perfiles de acceso
       const profiles = {
-          gtorres: { name: 'Grupo Torres', type: 'inmobiliaria', company: 'Partner' },
+          grupoGT: { name: 'Grupo Torres', type: 'inmobiliaria', company: 'Partner' },
           ivercasa: { name: 'Ivercasa', type: 'inmobiliaria', company: 'Partner' },
           admin: { name: 'Administrador', type: 'admin', company: 'Barsant' },
           barsant: { name: 'Barsant', type: 'standard', company: 'Barsant' } // Acceso estándar
@@ -57,8 +57,8 @@ exports.handler = async (event, context) => {
       // Contraseñas (variables de entorno de Netlify) -> perfil
       // GTORRES_EXTRA_PASSWORDS admite contraseñas adicionales de Grupo Torres separadas por comas
       const passwordEntries = [
-          [process.env.GTORRES_PASSWORD, profiles.gtorres],
-          ...(process.env.GTORRES_EXTRA_PASSWORDS || '').split(',').map(p => [p.trim(), profiles.gtorres]),
+          [process.env.GTORRES_PASSWORD, profiles.grupoGT],
+          ...(process.env.GTORRES_EXTRA_PASSWORDS || '').split(',').map(p => [p.trim(), profiles.grupoGT]),
           [process.env.IVERCASA_PASSWORD, profiles.ivercasa],
           [process.env.ADMIN_PASSWORD, profiles.admin],
           [process.env.BARSANT_PASSWORD, profiles.barsant]
